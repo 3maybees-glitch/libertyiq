@@ -330,7 +330,7 @@ export default function LibertyIQPublicSpeakingTrainer() {
 return (
     <div className="min-h-screen">
       {/* Hero Header with Back Link */}
-      <div className="bg-primary/20 border-b border-border">
+      <div className="bg-primary/40 border-b border-primary/50">
         <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-10">
           <Link 
             href="/" 
@@ -419,11 +419,11 @@ return (
                     </Alert>
                   )}
 
-                  {error && (
-                    <Alert variant="destructive">
-                      <AlertCircle className="h-4 w-4" />
-                      <AlertTitle>Recording issue</AlertTitle>
-                      <AlertDescription>{error}</AlertDescription>
+{error && (
+                    <Alert className="bg-white border-red-500 border-2">
+                      <AlertCircle className="h-4 w-4 text-red-600" />
+                      <AlertTitle className="text-red-700 font-semibold">Recording issue</AlertTitle>
+                      <AlertDescription className="text-red-600">{error}</AlertDescription>
                     </Alert>
                   )}
 
@@ -434,7 +434,7 @@ return (
                       </div>
                       <div>
                         <p className="text-2xl font-semibold text-foreground">{durationSeconds}s</p>
-                        <p className="text-sm text-foreground/70">
+                        <p className="text-sm text-foreground">
                           {isRecording ? "Recording in progress" : "Ready to begin"}
                         </p>
                       </div>
@@ -470,10 +470,10 @@ return (
                         setTranscript(e.target.value)
                         setInterimTranscript("")
                       }}
-                      className="min-h-[180px] text-base"
+                      className="min-h-[180px] text-base text-foreground"
                       placeholder="Your live transcript will appear here. You can also type or paste text manually."
                     />
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-foreground">
                       Manual editing is enabled so users can clean up the transcript before reviewing results.
                     </p>
                   </div>
