@@ -8,7 +8,8 @@ import { Progress } from "@/components/ui/progress"
 import { Textarea } from "@/components/ui/textarea"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Mic, MicOff, Play, RotateCcw, Trophy, Volume2, AlertCircle, CheckCircle2, Brain, BarChart3 } from "lucide-react"
+import { Mic, MicOff, Play, RotateCcw, Trophy, Volume2, AlertCircle, CheckCircle2, Brain, BarChart3, ArrowLeft } from "lucide-react"
+import Link from "next/link"
 
 // Drop-in LibertyIQ feature for v0.app
 // Notes:
@@ -326,38 +327,53 @@ export default function LibertyIQPublicSpeakingTrainer() {
     setSelectedPrompt(next)
   }
 
-  return (
-    <div className="w-full max-w-6xl mx-auto p-4 md:p-6">
-      <div className="grid gap-6">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Public Speaking Trainer</h1>
-            <p className="text-muted-foreground mt-1">
-              Practice short spoken responses and get instant LibertyIQ-style coaching on clarity, filler words, and confidence.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary" className="text-sm px-3 py-1">
-              <Mic className="w-4 h-4 mr-1" /> Native microphone practice
-            </Badge>
-            <Badge variant="outline" className="text-sm px-3 py-1">
-              <Brain className="w-4 h-4 mr-1" /> Client-side analysis
-            </Badge>
+return (
+    <div className="min-h-screen">
+      {/* Hero Header with Back Link */}
+      <div className="bg-primary/20 border-b border-border">
+        <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-10">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors mb-4"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Field Guide
+          </Link>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Public Speaking Trainer</h1>
+              <p className="text-foreground/80 mt-2 text-base md:text-lg">
+                Practice short spoken responses and get instant LibertyIQ-style coaching on clarity, filler words, and confidence.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="secondary" className="text-sm px-3 py-1.5">
+                <Mic className="w-4 h-4 mr-1.5" /> Native microphone practice
+              </Badge>
+              <Badge variant="outline" className="text-sm px-3 py-1.5 bg-card/50">
+                <Brain className="w-4 h-4 mr-1.5" /> Client-side analysis
+              </Badge>
+            </div>
           </div>
         </div>
+      </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:w-[340px]">
-            <TabsTrigger value="trainer">Trainer</TabsTrigger>
-            <TabsTrigger value="results">Results</TabsTrigger>
+      {/* Main Content */}
+      <div className="w-full max-w-6xl mx-auto p-4 md:p-6">
+        <div className="grid gap-6">
+
+<Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 md:w-[340px] bg-muted/60">
+            <TabsTrigger value="trainer" className="text-foreground data-[state=active]:text-foreground">Trainer</TabsTrigger>
+            <TabsTrigger value="results" className="text-foreground data-[state=active]:text-foreground">Results</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="trainer" className="mt-6">
+<TabsContent value="trainer" className="mt-6">
             <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-              <Card className="rounded-2xl shadow-sm">
+              <Card className="rounded-2xl shadow-sm bg-card border-border">
                 <CardHeader>
-                  <CardTitle>Practice Prompt</CardTitle>
-                  <CardDescription>Use one of these prompts or replace it with your own interview, debate, or presentation question.</CardDescription>
+                  <CardTitle className="text-xl text-card-foreground">Practice Prompt</CardTitle>
+                  <CardDescription className="text-base text-foreground/70">Use one of these prompts or replace it with your own interview, debate, or presentation question.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Textarea
@@ -385,11 +401,11 @@ export default function LibertyIQPublicSpeakingTrainer() {
                 </CardContent>
               </Card>
 
-              <Card className="rounded-2xl shadow-sm">
+<Card className="rounded-2xl shadow-sm bg-card border-border">
                 <CardHeader>
-                  <CardTitle>Record Response</CardTitle>
-                  <CardDescription>
-                    Speak for 30–60 seconds. The app will analyze your transcript and coaching metrics.
+                  <CardTitle className="text-xl text-card-foreground">Record Response</CardTitle>
+                  <CardDescription className="text-base text-foreground/70">
+                    Speak for 30-60 seconds. The app will analyze your transcript and coaching metrics.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-5">
@@ -411,14 +427,14 @@ export default function LibertyIQPublicSpeakingTrainer() {
                     </Alert>
                   )}
 
-                  <div className="rounded-2xl border bg-muted/40 p-5">
+<div className="rounded-2xl border border-border bg-secondary/20 p-5">
                     <div className="flex flex-col items-center justify-center gap-4 text-center">
-                      <div className={`flex h-20 w-20 items-center justify-center rounded-full border-4 ${isRecording ? "border-red-500 animate-pulse" : "border-muted-foreground/30"}`}>
-                        {isRecording ? <Mic className="h-9 w-9" /> : <MicOff className="h-9 w-9" />}
+                      <div className={`flex h-20 w-20 items-center justify-center rounded-full border-4 ${isRecording ? "border-primary animate-pulse bg-primary/20" : "border-foreground/30"}`}>
+                        {isRecording ? <Mic className="h-9 w-9 text-foreground" /> : <MicOff className="h-9 w-9 text-foreground/70" />}
                       </div>
                       <div>
-                        <p className="text-2xl font-semibold">{durationSeconds}s</p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-2xl font-semibold text-foreground">{durationSeconds}s</p>
+                        <p className="text-sm text-foreground/70">
                           {isRecording ? "Recording in progress" : "Ready to begin"}
                         </p>
                       </div>
@@ -439,15 +455,15 @@ export default function LibertyIQPublicSpeakingTrainer() {
                     </div>
                   </div>
 
-                  {audioURL && (
+{audioURL && (
                     <div className="space-y-2">
-                      <p className="text-sm font-medium">Playback</p>
+                      <p className="text-sm font-medium text-foreground">Playback</p>
                       <audio controls src={audioURL} className="w-full" />
                     </div>
                   )}
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Transcript</label>
+<div className="space-y-2">
+                    <label className="text-sm font-medium text-foreground">Transcript</label>
                     <Textarea
                       value={finalTranscript}
                       onChange={(e) => {
@@ -466,20 +482,20 @@ export default function LibertyIQPublicSpeakingTrainer() {
             </div>
           </TabsContent>
 
-          <TabsContent value="results" className="mt-6">
+<TabsContent value="results" className="mt-6">
             <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
               <div className="grid gap-6">
-                <Card className="rounded-2xl shadow-sm">
+                <Card className="rounded-2xl shadow-sm bg-card border-border">
                   <CardHeader>
-                    <CardTitle>Score Snapshot</CardTitle>
-                    <CardDescription>Fast speaking feedback based on your current transcript.</CardDescription>
+                    <CardTitle className="text-xl text-card-foreground">Score Snapshot</CardTitle>
+                    <CardDescription className="text-base text-foreground/70">Fast speaking feedback based on your current transcript.</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-5">
-                    <div className="rounded-2xl border p-5">
+                    <div className="rounded-2xl border border-primary/30 bg-primary/10 p-5">
                       <div className="flex items-center justify-between gap-4">
                         <div>
-                          <p className="text-sm text-muted-foreground">Overall</p>
-                          <p className="text-4xl font-bold">{analysis.overallScore}</p>
+                          <p className="text-sm text-foreground/70">Overall</p>
+                          <p className="text-4xl font-bold text-foreground">{analysis.overallScore}</p>
                         </div>
                         <div className="text-right">
                           <Badge className="text-sm px-3 py-1">
@@ -487,16 +503,16 @@ export default function LibertyIQPublicSpeakingTrainer() {
                           </Badge>
                         </div>
                       </div>
-                      <div className="mt-4 grid gap-4">
+<div className="mt-4 grid gap-4">
                         <div>
-                          <div className="mb-2 flex items-center justify-between text-sm">
+                          <div className="mb-2 flex items-center justify-between text-sm text-foreground">
                             <span>Clarity</span>
                             <span>{analysis.clarityScore}/100</span>
                           </div>
                           <Progress value={analysis.clarityScore} />
                         </div>
                         <div>
-                          <div className="mb-2 flex items-center justify-between text-sm">
+                          <div className="mb-2 flex items-center justify-between text-sm text-foreground">
                             <span>Confidence</span>
                             <span>{analysis.confidenceScore}/100</span>
                           </div>
@@ -506,38 +522,38 @@ export default function LibertyIQPublicSpeakingTrainer() {
                     </div>
 
                     <div className="grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-xl border p-4">
-                        <p className="text-sm text-muted-foreground">Word count</p>
-                        <p className="text-2xl font-semibold">{analysis.wordCount}</p>
+                      <div className="rounded-xl border border-border bg-muted/30 p-4">
+                        <p className="text-sm text-foreground/70">Word count</p>
+                        <p className="text-2xl font-semibold text-foreground">{analysis.wordCount}</p>
                       </div>
-                      <div className="rounded-xl border p-4">
-                        <p className="text-sm text-muted-foreground">Filler words</p>
-                        <p className="text-2xl font-semibold">{analysis.totalFillers}</p>
+                      <div className="rounded-xl border border-border bg-muted/30 p-4">
+                        <p className="text-sm text-foreground/70">Filler words</p>
+                        <p className="text-2xl font-semibold text-foreground">{analysis.totalFillers}</p>
                       </div>
-                      <div className="rounded-xl border p-4">
-                        <p className="text-sm text-muted-foreground">Fillers / 100 words</p>
-                        <p className="text-2xl font-semibold">{analysis.fillerPer100}</p>
+                      <div className="rounded-xl border border-border bg-muted/30 p-4">
+                        <p className="text-sm text-foreground/70">Fillers / 100 words</p>
+                        <p className="text-2xl font-semibold text-foreground">{analysis.fillerPer100}</p>
                       </div>
-                      <div className="rounded-xl border p-4">
-                        <p className="text-sm text-muted-foreground">Avg words / sentence</p>
-                        <p className="text-2xl font-semibold">{analysis.avgWordsPerSentence}</p>
+                      <div className="rounded-xl border border-border bg-muted/30 p-4">
+                        <p className="text-sm text-foreground/70">Avg words / sentence</p>
+                        <p className="text-2xl font-semibold text-foreground">{analysis.avgWordsPerSentence}</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="rounded-2xl shadow-sm">
+<Card className="rounded-2xl shadow-sm bg-secondary/20 border-secondary/40">
                   <CardHeader>
-                    <CardTitle>Filler Word Breakdown</CardTitle>
-                    <CardDescription>These verbal crutches are commonly overused in interviews, talks, and debates.</CardDescription>
+                    <CardTitle className="text-xl text-card-foreground">Filler Word Breakdown</CardTitle>
+                    <CardDescription className="text-base text-foreground/70">These verbal crutches are commonly overused in interviews, talks, and debates.</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-2 sm:grid-cols-2">
                       {Object.entries(analysis.fillerCounts)
                         .sort((a, b) => b[1] - a[1])
                         .map(([word, count]) => (
-                          <div key={word} className="flex items-center justify-between rounded-xl border px-3 py-2 text-sm">
-                            <span className="capitalize">{word}</span>
+                          <div key={word} className="flex items-center justify-between rounded-xl border border-border bg-card/50 px-3 py-2 text-sm">
+                            <span className="capitalize text-foreground">{word}</span>
                             <Badge variant={count > 0 ? "default" : "secondary"}>{count}</Badge>
                           </div>
                         ))}
@@ -546,27 +562,27 @@ export default function LibertyIQPublicSpeakingTrainer() {
                 </Card>
               </div>
 
-              <div className="grid gap-6">
-                <Card className="rounded-2xl shadow-sm">
+<div className="grid gap-6">
+                <Card className="rounded-2xl shadow-sm bg-card border-border">
                   <CardHeader>
-                    <CardTitle>Coaching Feedback</CardTitle>
-                    <CardDescription>Actionable suggestions to make your next response sharper and more persuasive.</CardDescription>
+                    <CardTitle className="text-xl text-card-foreground">Coaching Feedback</CardTitle>
+                    <CardDescription className="text-base text-foreground/70">Actionable suggestions to make your next response sharper and more persuasive.</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-5">
                     <div>
                       <div className="mb-3 flex items-center gap-2">
-                        <CheckCircle2 className="h-4 w-4" />
-                        <h3 className="font-semibold">Strengths</h3>
+                        <CheckCircle2 className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold text-lg text-foreground">Strengths</h3>
                       </div>
                       <div className="space-y-2">
                         {analysis.strengths.length > 0 ? (
                           analysis.strengths.map((item, index) => (
-                            <div key={index} className="rounded-xl border bg-muted/30 p-3 text-sm">
+                            <div key={index} className="rounded-xl border border-primary/30 bg-primary/10 p-3 text-sm text-foreground">
                               {item}
                             </div>
                           ))
                         ) : (
-                          <div className="rounded-xl border bg-muted/30 p-3 text-sm text-muted-foreground">
+                          <div className="rounded-xl border border-border bg-muted/30 p-3 text-sm text-foreground/70">
                             Record a longer response to surface stronger coaching strengths.
                           </div>
                         )}
@@ -575,12 +591,12 @@ export default function LibertyIQPublicSpeakingTrainer() {
 
                     <div>
                       <div className="mb-3 flex items-center gap-2">
-                        <BarChart3 className="h-4 w-4" />
-                        <h3 className="font-semibold">Improvement Focus</h3>
+                        <BarChart3 className="h-5 w-5 text-secondary" />
+                        <h3 className="font-semibold text-lg text-foreground">Improvement Focus</h3>
                       </div>
                       <div className="space-y-2">
                         {analysis.coaching.map((item, index) => (
-                          <div key={index} className="rounded-xl border p-3 text-sm">
+                          <div key={index} className="rounded-xl border border-border bg-muted/30 p-3 text-sm text-foreground">
                             {item}
                           </div>
                         ))}
@@ -589,30 +605,31 @@ export default function LibertyIQPublicSpeakingTrainer() {
                   </CardContent>
                 </Card>
 
-                <Card className="rounded-2xl shadow-sm">
+<Card className="rounded-2xl shadow-sm bg-primary/10 border-primary/30">
                   <CardHeader>
-                    <CardTitle>Suggested LibertyIQ Add-Ons</CardTitle>
-                    <CardDescription>Easy upgrades once this first version is working inside your app.</CardDescription>
+                    <CardTitle className="text-xl text-card-foreground">Suggested LibertyIQ Add-Ons</CardTitle>
+                    <CardDescription className="text-base text-foreground/70">Easy upgrades once this first version is working inside your app.</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-muted-foreground">
-                    <div className="rounded-xl border p-3">
-                      <span className="font-medium text-foreground">1. Session history:</span> Save the score, transcript, and date in local storage or your DB.
+                  <CardContent className="space-y-3 text-sm">
+                    <div className="rounded-xl border border-border bg-card/50 p-3">
+                      <span className="font-medium text-foreground">1. Session history:</span> <span className="text-foreground/80">Save the score, transcript, and date in local storage or your DB.</span>
                     </div>
-                    <div className="rounded-xl border p-3">
-                      <span className="font-medium text-foreground">2. Prompt packs:</span> Interview mode, debate mode, leadership mode, classroom mode.
+                    <div className="rounded-xl border border-border bg-card/50 p-3">
+                      <span className="font-medium text-foreground">2. Prompt packs:</span> <span className="text-foreground/80">Interview mode, debate mode, leadership mode, classroom mode.</span>
                     </div>
-                    <div className="rounded-xl border p-3">
-                      <span className="font-medium text-foreground">3. Native polish:</span> In a real mobile build, swap browser transcription for a backend speech-to-text service.
+                    <div className="rounded-xl border border-border bg-card/50 p-3">
+                      <span className="font-medium text-foreground">3. Native polish:</span> <span className="text-foreground/80">In a real mobile build, swap browser transcription for a backend speech-to-text service.</span>
                     </div>
-                    <div className="rounded-xl border p-3">
-                      <span className="font-medium text-foreground">4. Progression:</span> Award XP for streaks, low filler counts, and improved confidence score.
+                    <div className="rounded-xl border border-border bg-card/50 p-3">
+                      <span className="font-medium text-foreground">4. Progression:</span> <span className="text-foreground/80">Award XP for streaks, low filler counts, and improved confidence score.</span>
                     </div>
                   </CardContent>
                 </Card>
               </div>
             </div>
-          </TabsContent>
+</TabsContent>
         </Tabs>
+        </div>
       </div>
     </div>
   )
