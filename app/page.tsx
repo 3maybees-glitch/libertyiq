@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { GraduationCap } from 'lucide-react';
+import { GraduationCap, Mic } from 'lucide-react';
 import ReferencesButton from '@/components/references-button';
 import Image from 'next/image';
 
@@ -60,6 +60,12 @@ export default function Home() {
                   Test Your LibertyIQ
                 </div>
               </Link>
+              <Link href="/speaking-trainer" className="block w-full">
+                <div className="w-full flex items-center justify-center gap-2 bg-secondary text-secondary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
+                  <Mic className="h-4 w-4 shrink-0" />
+                  Speaking Trainer
+                </div>
+              </Link>
               <ReferencesButton fullWidth />
             </div>
           </div>
@@ -88,6 +94,12 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2 shrink-0 pt-1">
               <ReferencesButton />
+              <Link href="/speaking-trainer">
+                <Button variant="secondary" size="default" className="gap-2 whitespace-nowrap font-semibold">
+                  <Mic className="h-5 w-5" />
+                  Speaking Trainer
+                </Button>
+              </Link>
               <Link href="/libertyiq">
                 <Button variant="default" size="default" className="gap-2 whitespace-nowrap font-semibold">
                   <GraduationCap className="h-5 w-5" />
