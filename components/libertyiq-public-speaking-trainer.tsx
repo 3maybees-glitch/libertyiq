@@ -334,15 +334,15 @@ return (
         <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-10">
           <Link 
             href="/" 
-            className="inline-flex items-center gap-2 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors mb-4"
+            className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
-            Back to Field Guide
+            Back to Library
           </Link>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Public Speaking Trainer</h1>
-              <p className="text-foreground/80 mt-2 text-base md:text-lg">
+              <p className="text-foreground mt-2 text-base md:text-lg">
                 Practice short spoken responses and get instant LibertyIQ-style coaching on clarity, filler words, and confidence.
               </p>
             </div>
@@ -373,7 +373,7 @@ return (
               <Card className="rounded-2xl shadow-sm bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-xl text-card-foreground">Practice Prompt</CardTitle>
-                  <CardDescription className="text-base text-foreground/70">Use one of these prompts or replace it with your own interview, debate, or presentation question.</CardDescription>
+                  <CardDescription className="text-base text-foreground">Use one of these prompts or replace it with your own interview, debate, or presentation question.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Textarea
@@ -404,7 +404,7 @@ return (
 <Card className="rounded-2xl shadow-sm bg-card border-border">
                 <CardHeader>
                   <CardTitle className="text-xl text-card-foreground">Record Response</CardTitle>
-                  <CardDescription className="text-base text-foreground/70">
+                  <CardDescription className="text-base text-foreground">
                     Speak for 30-60 seconds. The app will analyze your transcript and coaching metrics.
                   </CardDescription>
                 </CardHeader>
@@ -412,8 +412,8 @@ return (
                   {!supportsSpeechRecognition && (
                     <Alert>
                       <AlertCircle className="h-4 w-4" />
-                      <AlertTitle>Live transcription not supported here</AlertTitle>
-                      <AlertDescription>
+                      <AlertTitle className="text-foreground">Live transcription not supported here</AlertTitle>
+                      <AlertDescription className="text-foreground">
                         Your browser may not support the Web Speech API. You can still record audio and paste your transcript manually below.
                       </AlertDescription>
                     </Alert>
