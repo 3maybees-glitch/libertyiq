@@ -1,5 +1,7 @@
 // Quiz data types and questions for all topics
 
+import { illegalImmigrationQuiz, secondAmendmentQuiz } from '@/lib/quizzes/immigration-second-amendment';
+
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type QuizLevel = DifficultyLevel;
 export type QuizDifficulty = Difficulty;
@@ -18,10 +20,15 @@ export interface DifficultyLevel {
   description: string;
   passingScore: number; // percentage
   rankEarned: string;
-  rankTitle: string;
-  rankId: 'intern' | 'fellow' | 'chief';
+  rankTitle?: string;
+  rankId?: 'intern' | 'fellow' | 'chief';
   questions: QuizQuestion[];
 }
+
+export type NormalizedDifficultyLevel = DifficultyLevel & {
+  rankTitle: string;
+  rankId: 'intern' | 'fellow' | 'chief';
+};
 
 export interface TopicQuiz {
   topicId: string;
@@ -31,7 +38,7 @@ export interface TopicQuiz {
 }
 
 export interface Quiz {
-  levels: DifficultyLevel[];
+  levels: NormalizedDifficultyLevel[];
   topicTitle: string;
 }
 
@@ -437,9 +444,9 @@ const proLifeQuiz: TopicQuiz = {
 
 // Pro-Traditional Marriage Quiz
 const traditionalMarriageQuiz: TopicQuiz = {
-  topicId: 'traditional-marriage',
-  topicName: 'Traditional Marriage',
-  topicTitle: 'Traditional Marriage',
+  topicId: 'marriage',
+  topicName: 'Marriage',
+  topicTitle: 'Marriage: One Man & One Woman',
   levels: [
     {
       difficulty: 'easy',
@@ -2813,7 +2820,7 @@ const limitedGovernmentQuiz: TopicQuiz = {
 
 // Anti-Critical Race Theory Quiz
 const antiCRTQuiz: TopicQuiz = {
-  topicId: 'anti-critical-race-theory',
+  topicId: 'anti-crt',
   topicName: 'Anti-Critical Race Theory',
   topicTitle: 'Anti-Critical Race Theory',
   levels: [
@@ -3606,6 +3613,8 @@ const crimeJusticeQuiz: TopicQuiz = {
 // Export all quizzes
 export const allQuizzes: TopicQuiz[] = [
   proLifeQuiz,
+  illegalImmigrationQuiz,
+  secondAmendmentQuiz,
   traditionalMarriageQuiz,
   twoSexesQuiz,
   proIsraelQuiz,

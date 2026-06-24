@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { type Topic } from '@/lib/types';
+import { type TopicItem } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useQuizProgress } from '@/hooks/use-quiz-progress';
@@ -23,7 +23,7 @@ const RANK_LABELS: Record<string, string> = {
 };
 
 interface Props {
-  topics: Topic[];
+  topics: TopicItem[];
 }
 
 export function LibertyIQClient({ topics }: Props) {
