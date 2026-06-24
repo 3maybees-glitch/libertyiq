@@ -7,33 +7,18 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Conservative Field Guide - Debate Points & Arguments',
+  title: 'LibertyIQ — Conservative Arguments Library',
   description:
-    'An interactive field guide to conservative arguments on pro-life, immigration, and constitutional rights. Learn biblical foundations, scientific evidence, and debate strategies.',
-  generator: 'v0.app',
+    'An interactive field guide to conservative arguments on pro-life, immigration, constitutional rights, and more. Learn biblical foundations, scientific evidence, and debate strategies.',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/libertyiq-logo.png',
+    apple: '/libertyiq-logo.png',
   },
 }
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
 }
 
 export default function RootLayout({
