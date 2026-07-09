@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { GraduationCap, Mic } from 'lucide-react';
+import { GraduationCap, Mic, ExternalLink } from 'lucide-react';
 import ReferencesButton from '@/components/references-button';
 import Image from 'next/image';
 
@@ -111,7 +111,7 @@ export default function Home() {
         </div>
 
         {/* Mobile dropdown */}
-        <div className="mb-6 md:hidden">
+        <div className="mb-6 md:hidden space-y-3">
           <Select value={selectedId} onValueChange={setSelectedId}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a topic..." />
@@ -124,6 +124,13 @@ export default function Home() {
               ))}
             </SelectContent>
           </Select>
+          <Link
+            href={`/topic/${selected.slug}`}
+            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+          >
+            View full topic page
+            <ExternalLink className="h-3.5 w-3.5" />
+          </Link>
         </div>
 
         {/* Split panel */}
@@ -133,31 +140,39 @@ export default function Home() {
           <aside className="hidden md:block">
             <div className="sticky top-6 space-y-2">
               {topics.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => setSelectedId(t.id)}
-                  className={cn(
-                    'w-full rounded-xl border px-4 py-3 text-left transition-all',
-                    selectedId === t.id
-                      ? 'border-primary bg-primary/5 shadow-sm'
-                      : 'border-border bg-card hover:bg-muted/50'
-                  )}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className={cn(
-                      'text-sm font-semibold leading-snug',
-                      selectedId === t.id ? 'text-primary' : 'text-foreground'
-                    )}>
-                      {t.title}
-                    </span>
-                    <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                      {t.arguments.length}
-                    </span>
-                  </div>
-                  <p className="mt-1 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                    {t.shortDescription}
-                  </p>
-                </button>
+                <div key={t.id} className="space-y-1">
+                  <button
+                    onClick={() => setSelectedId(t.id)}
+                    className={cn(
+                      'w-full rounded-xl border px-4 py-3 text-left transition-all',
+                      selectedId === t.id
+                        ? 'border-primary bg-primary/5 shadow-sm'
+                        : 'border-border bg-card hover:bg-muted/50'
+                    )}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <span className={cn(
+                        'text-sm font-semibold leading-snug',
+                        selectedId === t.id ? 'text-primary' : 'text-foreground'
+                      )}>
+                        {t.title}
+                      </span>
+                      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                        {t.arguments.length}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                      {t.shortDescription}
+                    </p>
+                  </button>
+                  <Link
+                    href={`/topic/${t.slug}`}
+                    className="inline-flex items-center gap-1 px-1 text-xs text-primary hover:underline"
+                  >
+                    Full page
+                    <ExternalLink className="h-3 w-3" />
+                  </Link>
+                </div>
               ))}
             </div>
           </aside>
@@ -182,18 +197,26 @@ export default function Home() {
               </div>
 
               {/* Stats row */}
-              <div className="bg-card px-5 py-4 flex items-center gap-4 justify-between overflow-x-auto">
-                <div className="shrink-0">
-                  <span className="text-2xl font-bold text-primary">{selected.arguments.length}</span>
-                  <span className="ml-1.5 text-sm text-muted-foreground">argument{selected.arguments.length !== 1 ? 's' : ''}</span>
-                </div>
-                {selected.defenseTips && selected.defenseTips.length > 0 && (
+              <div className="bg-card px-5 py-4 flex flex-wrap items-center gap-4 justify-between overflow-x-auto">
+                <div className="flex flex-wrap items-center gap-4">
                   <div className="shrink-0">
-                    <span className="text-2xl font-bold text-primary">{selected.defenseTips.length}</span>
-                    <span className="ml-1.5 text-sm text-muted-foreground">defense &amp; counter arg{selected.defenseTips.length !== 1 ? 's' : ''}</span>
+                    <span className="text-2xl font-bold text-primary">{selected.arguments.length}</span>
+                    <span className="ml-1.5 text-sm text-muted-foreground">argument{selected.arguments.length !== 1 ? 's' : ''}</span>
                   </div>
-                )}
-
+                  {selected.defenseTips && selected.defenseTips.length > 0 && (
+                    <div className="shrink-0">
+                      <span className="text-2xl font-bold text-primary">{selected.defenseTips.length}</span>
+                      <span className="ml-1.5 text-sm text-muted-foreground">defense &amp; counter arg{selected.defenseTips.length !== 1 ? 's' : ''}</span>
+                    </div>
+                  )}
+                </div>
+                <Link
+                  href={`/topic/${selected.slug}`}
+                  className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline shrink-0"
+                >
+                  View full topic page
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </Link>
               </div>
 
               {/* Overview */}

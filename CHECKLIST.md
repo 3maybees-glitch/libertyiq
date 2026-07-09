@@ -55,17 +55,9 @@ Last updated: July 2026
 
 ## Known Gaps (not blocking)
 
-- [ ] `/topic/[slug]` pages exist but are not linked from the home UI
-- [ ] Quiz level gating (`isLevelUnlocked`) is implemented in the hook but not enforced in the quiz UI
+- [x] `/topic/[slug]` pages linked from the home UI
+- [x] Quiz level gating enforced in the quiz UI
+- [x] Image optimization enabled via `next/image`
+- [x] Unused shadcn/ui components and dependencies pruned
 - [ ] Dark mode CSS variables exist; no theme toggle wired up
-- [ ] Many unused shadcn/ui components from initial scaffold remain in `components/ui/`
-- [ ] `images.unoptimized: true` in `next.config.mjs` — image optimization disabled
-
-## Future Enhancements
-
-- [ ] Dark mode toggle
-- [ ] Cloud sync for quiz progress
-- [ ] Enforce sequential quiz difficulty
-- [ ] Link topic detail pages from home
-- [ ] Prune unused UI components and dependencies
 - [ ] Split monolithic `lib/types.ts` into per-topic modules

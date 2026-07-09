@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ArrowLeft, Trophy, Target, BookOpen, ChevronRight, Check, X, RotateCcw, Award } from 'lucide-react';
+import { ArrowLeft, Trophy, Target, BookOpen, ChevronRight, Check, X, RotateCcw, Award, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PageProps {
@@ -130,7 +130,7 @@ export default function QuizPage({ params }: PageProps) {
         </div>
 
         {state === 'select' && (
-          <LevelSelect quiz={quiz} onSelectLevel={startQuiz} />
+          <LevelSelect quiz={quiz} topicId={topicId} onSelectLevel={startQuiz} />
         )}
 
         {state === 'taking' && selectedLevel && progress && (
@@ -161,7 +161,28 @@ export default function QuizPage({ params }: PageProps) {
 }
 
 // Level Selection Component
-function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; onSelectLevel: (level: QuizLevel) => void }) {
+function LevelSelect({
+  quiz,
+  topicId,
+  onSelectLevel,
+}: {
+  quiz: { levels: QuizLevel[] };
+  topicId: string;
+  onSelectLevel: (level: QuizLevel) => void;
+}) {
+  const { isLevelUnlocked, isLevelCompleted, isLoaded } = useQuizProgress();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const prerequisite: Record<QuizDifficulty, string> = {
+    easy: '',
+    medium: 'Pass the Easy quiz first',
+    hard: 'Pass the Medium quiz first',
+  };
+
   const levelIcons: Record<QuizDifficulty, React.ReactNode> = {
     easy: <BookOpen className="h-6 w-6" />,
     medium: <Target className="h-6 w-6" />,
@@ -186,15 +207,38 @@ function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; o
         Select Difficulty Level
       </h2>
       <div className="grid gap-4 sm:grid-cols-3">
-        {quiz.levels.map((level) => (
+        {quiz.levels.map((level) => {
+          const unlocked =
+            mounted && isLoaded
+              ? isLevelUnlocked(topicId, level.difficulty)
+              : level.difficulty === 'easy';
+          const completed =
+            mounted && isLoaded ? isLevelCompleted(topicId, level.difficulty) : false;
+
+          return (
           <button
             key={level.difficulty}
-            onClick={() => onSelectLevel(level)}
+            type="button"
+            onClick={() => unlocked && onSelectLevel(level)}
+            disabled={!unlocked}
             className={cn(
               'group relative rounded-xl border-2 bg-card p-6 text-left transition-all',
-              levelColors[level.difficulty]
+              unlocked
+                ? levelColors[level.difficulty]
+                : 'border-border opacity-70 cursor-not-allowed',
+              completed && unlocked && 'ring-1 ring-green-500/40',
             )}
           >
+            {!unlocked && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-background/70">
+                <div className="px-4 text-center">
+                  <Lock className="mx-auto mb-1.5 h-5 w-5 text-muted-foreground" />
+                  <p className="text-xs font-medium text-muted-foreground">
+                    {prerequisite[level.difficulty]}
+                  </p>
+                </div>
+              </div>
+            )}
             <div className="flex items-start justify-between mb-4">
               <div className={cn(
                 'rounded-lg p-2',
@@ -205,7 +249,7 @@ function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; o
                 {levelIcons[level.difficulty]}
               </div>
               <Badge variant="outline" className={badgeColors[level.difficulty]}>
-                {level.questions.length} Questions
+                {completed ? 'Completed' : `${level.questions.length} Questions`}
               </Badge>
             </div>
             
@@ -227,7 +271,8 @@ function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; o
               <ChevronRight className="h-5 w-5 text-muted-foreground" />
             </div>
           </button>
-        ))}
+          );
+        })}
       </div>
 
       <Card className="mt-8 border-border/50">
