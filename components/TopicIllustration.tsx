@@ -1,4 +1,4 @@
-import React from 'react';
+import Image from 'next/image';
 
 interface Props {
   slug: string;
@@ -24,11 +24,12 @@ export function TopicIllustration({ slug, title }: Props) {
   if (!src) return null;
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={src}
       alt={title}
-      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+      fill
+      className="object-cover"
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
     />
   );
 }
