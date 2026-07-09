@@ -36,9 +36,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deployment
 
-Push to `main` on GitHub to trigger automatic deployment via Vercel (connected through v0).
+This project deploys automatically to [Vercel](https://vercel.com) when changes are pushed to `main`. No environment variables or database setup is required.
 
-You can also develop entirely in Cursor — no v0 subscription required.
+**Local development** — clone the repo and run `pnpm install && pnpm dev`. Works fully in [Cursor](https://cursor.com) or any editor.
+
+**CI** — GitHub Actions runs `pnpm lint` and `pnpm build` on every push and pull request to `main`.
 
 ## Project Structure
 
