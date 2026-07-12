@@ -2,6 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 
+const SOFT_PRO_KEY = 'li_pro_soft'
+
 type EntitlementState = {
   isPro: boolean
   configured: boolean
@@ -10,9 +12,23 @@ type EntitlementState = {
   refresh: () => Promise<void>
   startCheckout: (plan: 'monthly' | 'yearly') => Promise<void>
   openPortal: () => Promise<void>
+  /** Soft-unlock used when Stripe secret keys are not yet on the server. */
+  grantSoftPro: (sessionId: string) => void
 }
 
 const EntitlementContext = createContext<EntitlementState | null>(null)
+
+function readSoftPro(): boolean {
+  if (typeof window === 'undefined') return false
+  try {
+    const raw = localStorage.getItem(SOFT_PRO_KEY)
+    if (!raw) return false
+    const parsed = JSON.parse(raw) as { sessionId?: string; at?: number }
+    return Boolean(parsed.sessionId && String(parsed.sessionId).startsWith('cs_'))
+  } catch {
+    return false
+  }
+}
 
 async function readEntitlement(): Promise<{
   isPro: boolean
@@ -33,11 +49,14 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(async () => {
     try {
       const data = await readEntitlement()
-      setIsPro(Boolean(data.isPro))
+      const soft = !data.isPro && data.configured === false ? readSoftPro() : readSoftPro()
+      // Prefer hard (cookie) entitlement; allow soft unlock while Stripe secrets are missing
+      // or as a device-local fallback after Payment Link checkout.
+      setIsPro(Boolean(data.isPro) || soft)
       setConfigured(data.configured !== false)
       setCustomerId(data.customerId)
     } catch {
-      setIsPro(false)
+      setIsPro(readSoftPro())
     } finally {
       setLoading(false)
     }
@@ -46,6 +65,15 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     void refresh()
   }, [refresh])
+
+  const grantSoftPro = useCallback((sessionId: string) => {
+    if (!sessionId.startsWith('cs_')) return
+    localStorage.setItem(
+      SOFT_PRO_KEY,
+      JSON.stringify({ sessionId, at: Date.now() }),
+    )
+    setIsPro(true)
+  }, [])
 
   const startCheckout = useCallback(async (plan: 'monthly' | 'yearly') => {
     const res = await fetch('/api/checkout', {
@@ -71,7 +99,16 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
 
   return (
     <EntitlementContext.Provider
-      value={{ isPro, configured, loading, customerId, refresh, startCheckout, openPortal }}
+      value={{
+        isPro,
+        configured,
+        loading,
+        customerId,
+        refresh,
+        startCheckout,
+        openPortal,
+        grantSoftPro,
+      }}
     >
       {children}
     </EntitlementContext.Provider>
