@@ -64,15 +64,9 @@ export type BillingInterval = PaidPlan
  * Used when server-side Checkout Sessions are not configured yet.
  */
 export const STRIPE_PAYMENT_LINKS: Record<PaidPlan, string> = {
-  monthly:
-    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY ||
-    'https://buy.stripe.com/test_4gMcN766ie6A4AF0K7cZa02',
-  yearly:
-    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY ||
-    'https://buy.stripe.com/test_cNibJ30LYbYs9UZ8czcZa03',
-  lifetime:
-    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME ||
-    'https://buy.stripe.com/test_28E8wRfGS4w06IN9gDcZa04',
+  monthly: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY || '',
+  yearly: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY || '',
+  lifetime: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME || '',
 }
 
 /** Routes that require Core/Lifetime (speaking trainer). Quizzes use level gating. */

@@ -65,12 +65,66 @@ Use card `4242 4242 4242 4242`:
 
 ## 6. Switch to live payments (when ready for real cards)
 
-1. Stripe Dashboard → toggle **Live mode**
-2. Recreate product/prices ($5.99, $59, $129) + Payment Links in live mode  
-   (or activate live prices on the claimed account)
-3. Replace Vercel env vars with `pk_live_…`, `rk_live_…` / `sk_live_…`, live price IDs & Payment Links
-4. Add a **live** webhook to the same `/api/webhook` URL
-5. Redeploy and buy once with a real card for $5.99 (then refund if testing)
+### A. Stripe Dashboard (Live mode)
+
+Toggle **Live** in the top-right of [Stripe Dashboard](https://dashboard.stripe.com).
+
+1. **Activate live payments** if prompted (business details, bank account).
+2. **Product + prices** — create **LibertyIQ Core** in live mode:
+   - Monthly recurring: **$5.99**
+   - Yearly recurring: **$59**
+   - One-time lifetime: **$129**
+3. **API keys** — Developers → API keys → copy:
+   - `pk_live_…` → `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+   - `rk_live_…` (restricted, recommended) or `sk_live_…` → `STRIPE_SECRET_KEY`
+4. **Customer portal** — Settings → Billing → Customer portal (enable cancel/update). Copy live `bpc_…` if you use a custom configuration.
+5. **Live webhook** — Developers → Webhooks → Add endpoint:
+   - URL: `https://libertyiq.org/api/webhook`
+   - Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `charge.refunded`
+   - Copy signing secret → `STRIPE_WEBHOOK_SECRET` (live `whsec_…`, different from test)
+
+### B. Update `.env.local` with live values
+
+```bash
+STRIPE_SECRET_KEY=rk_live_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_PRICE_ID_MONTHLY=price_...    # live $5.99/mo
+STRIPE_PRICE_ID_YEARLY=price_...     # live $59/yr
+STRIPE_PRICE_ID_LIFETIME=price_...   # live $129 one-time
+STRIPE_WEBHOOK_SECRET=whsec_...      # from LIVE webhook endpoint
+STRIPE_PORTAL_CONFIGURATION_ID=bpc_...  # optional, live portal config
+ENTITLEMENT_SECRET=...               # keep the same value you already set
+NEXT_PUBLIC_APP_URL=https://libertyiq.org
+```
+
+Payment Links are optional when Checkout Sessions are configured (recommended). If you create live Payment Links, set `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_*` to `https://buy.stripe.com/...` URLs **without** `/test_` in the path.
+
+### C. Push to Vercel and redeploy
+
+```bash
+vercel login
+vercel link    # select libertyiq
+./scripts/go-live-stripe.sh
+```
+
+Or manually: paste live values in **Vercel → Settings → Environment Variables → Production**, then **Redeploy**.
+
+### D. Verify live mode
+
+```bash
+./scripts/verify-stripe-production.sh
+```
+
+You should see `cs_live_` in checkout URLs (not `cs_test_`).
+
+### E. First real charge
+
+1. https://libertyiq.org/pricing → Core monthly ($5.99)
+2. Pay with a real card
+3. Confirm success page unlocks Pro + speaking trainer
+4. Refund the test charge in Stripe Dashboard if desired
+
+**Important:** Test-mode customers and subscriptions do not carry over to live mode. Existing `li_pro` cookies from test checkouts will stop working after you switch keys (expected).
 
 ## Current pricing (already in the app)
 
@@ -91,7 +145,7 @@ Use card `4242 4242 4242 4242`:
 - [ ] Claim sandbox (needs your browser login)  
 - [ ] Vercel env secrets (needs your Vercel login + Stripe keys in `.env.local`)  
 - [ ] Webhook signing secret (needs claim + dashboard or `stripe listen`)  
-- [ ] Live-mode keys (needs Stripe live onboarding)
+- [ ] Live-mode keys (needs Stripe live onboarding) — see section 6 + `./scripts/go-live-stripe.sh`
 
 Quick setup after copying keys to `.env.local`:
 
