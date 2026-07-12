@@ -119,9 +119,7 @@ async function findOrCreateWebhook() {
 }
 
 async function main() {
-  const account = await stripe.accounts.retrieve()
-  console.log(`Stripe account: ${account.id} (${account.business_profile?.name || 'LibertyIQ'})`)
-  console.log(`Mode: LIVE`)
+  console.log('Mode: LIVE')
   console.log()
 
   const product = await findOrCreateProduct()
