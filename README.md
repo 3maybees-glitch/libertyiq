@@ -20,7 +20,7 @@ Progress is stored locally in your browser (`localStorage`). LibertyIQ Pro (quiz
 |------|---------------------------|----------------------------|
 | Library + easy quizzes | Medium/hard, ranks, speaking trainer | Everything in Core, pay once |
 
-See [docs/STRIPE.md](docs/STRIPE.md) for Stripe setup.
+See [docs/GO_LIVE.md](docs/GO_LIVE.md) for the production checklist and [docs/STRIPE.md](docs/STRIPE.md) for Stripe setup.
 
 ## Topics
 

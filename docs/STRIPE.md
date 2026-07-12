@@ -1,3 +1,5 @@
+**Going to production?** Follow [GO_LIVE.md](./GO_LIVE.md) first.
+
 # LibertyIQ pricing / Stripe
 
 ## Tiers

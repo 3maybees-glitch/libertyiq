@@ -58,7 +58,8 @@ Last updated: July 2026
 
 ## Deployment
 
-- [ ] Stripe env vars required for Pro checkout (see `.env.example`)
+- [ ] Stripe env vars on Vercel for hard unlock + portal (see `docs/GO_LIVE.md`)
+- [x] Test-mode Payment Links live on libertyiq.org
 - [x] Vercel auto-deploy on push to `main`
 - [x] Production build verified
 
