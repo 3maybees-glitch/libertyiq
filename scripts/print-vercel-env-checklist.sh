@@ -19,7 +19,7 @@ source "$ENV_FILE"
 set +a
 
 missing=()
-for key in STRIPE_SECRET_KEY NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ENTITLEMENT_SECRET; do
+for key in STRIPE_SECRET_KEY NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY; do
   if [[ -z "${!key:-}" ]]; then
     missing+=("$key")
   fi
@@ -47,15 +47,23 @@ vars=(
   STRIPE_PRICE_ID_YEARLY
   STRIPE_PRICE_ID_LIFETIME
   STRIPE_PORTAL_CONFIGURATION_ID
-  ENTITLEMENT_SECRET
   NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY
   NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY
   NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME
 )
 
 for name in "${vars[@]}"; do
-  printf '%-42s %s\n' "$name" "${!name}"
+  if [[ -n "${!name:-}" ]]; then
+    printf '%-42s %s\n' "$name" "${!name}"
+  fi
 done
+
+if [[ -n "${ENTITLEMENT_SECRET:-}" ]]; then
+  printf '%-42s %s\n' "ENTITLEMENT_SECRET" "$ENTITLEMENT_SECRET"
+else
+  echo
+  echo "ENTITLEMENT_SECRET — skipped (keep existing value on Vercel)"
+fi
 
 if [[ -n "${STRIPE_WEBHOOK_SECRET:-}" && "$STRIPE_WEBHOOK_SECRET" != "whsec_placeholder" ]]; then
   printf '%-42s %s\n' "STRIPE_WEBHOOK_SECRET" "$STRIPE_WEBHOOK_SECRET"

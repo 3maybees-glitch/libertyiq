@@ -30,7 +30,6 @@ REQUIRED=(
   STRIPE_PRICE_ID_MONTHLY
   STRIPE_PRICE_ID_YEARLY
   STRIPE_PRICE_ID_LIFETIME
-  ENTITLEMENT_SECRET
   NEXT_PUBLIC_APP_URL
 )
 
@@ -40,6 +39,10 @@ for key in "${REQUIRED[@]}"; do
     exit 1
   fi
 done
+
+if [[ -z "${ENTITLEMENT_SECRET:-}" ]]; then
+  echo "Skipping ENTITLEMENT_SECRET — keeping existing value on Vercel."
+fi
 
 # Production site URL
 export NEXT_PUBLIC_APP_URL="${NEXT_PUBLIC_APP_URL:-https://libertyiq.org}"
@@ -63,7 +66,9 @@ for env_name in "${ENVIRONMENTS[@]}"; do
   add_env STRIPE_PRICE_ID_MONTHLY "$STRIPE_PRICE_ID_MONTHLY" "$env_name"
   add_env STRIPE_PRICE_ID_YEARLY "$STRIPE_PRICE_ID_YEARLY" "$env_name"
   add_env STRIPE_PRICE_ID_LIFETIME "$STRIPE_PRICE_ID_LIFETIME" "$env_name"
-  add_env ENTITLEMENT_SECRET "$ENTITLEMENT_SECRET" "$env_name"
+  if [[ -n "${ENTITLEMENT_SECRET:-}" ]]; then
+    add_env ENTITLEMENT_SECRET "$ENTITLEMENT_SECRET" "$env_name"
+  fi
   add_env NEXT_PUBLIC_APP_URL "$NEXT_PUBLIC_APP_URL" "$env_name"
   if [[ -n "${STRIPE_PORTAL_CONFIGURATION_ID:-}" ]]; then
     add_env STRIPE_PORTAL_CONFIGURATION_ID "$STRIPE_PORTAL_CONFIGURATION_ID" "$env_name"

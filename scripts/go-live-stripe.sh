@@ -31,12 +31,16 @@ if [[ "${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-}" != *"_live_"* ]]; then
   exit 1
 fi
 
-for key in STRIPE_PRICE_ID_MONTHLY STRIPE_PRICE_ID_YEARLY STRIPE_PRICE_ID_LIFETIME ENTITLEMENT_SECRET; do
+for key in STRIPE_PRICE_ID_MONTHLY STRIPE_PRICE_ID_YEARLY STRIPE_PRICE_ID_LIFETIME; do
   if [[ -z "${!key:-}" ]]; then
     echo "Missing $key in $ENV_FILE"
     exit 1
   fi
 done
+
+if [[ -z "${ENTITLEMENT_SECRET:-}" ]]; then
+  echo "ENTITLEMENT_SECRET not in $ENV_FILE — keeping existing value on Vercel."
+fi
 
 if [[ -z "${STRIPE_WEBHOOK_SECRET:-}" || "$STRIPE_WEBHOOK_SECRET" == "whsec_placeholder" ]]; then
   echo "Missing live STRIPE_WEBHOOK_SECRET."
