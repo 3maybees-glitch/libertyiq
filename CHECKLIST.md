@@ -22,13 +22,14 @@ Last updated: July 2026
 - [x] Rank system: Intern Analyst → Senior Fellow → Chief Strategist
 - [x] Hydration-safe client rendering for progress-dependent UI
 
-### Payments (LibertyIQ Pro)
-- [x] Stripe Checkout for monthly ($9.99) and yearly ($79) Pro subscriptions
-- [x] Pricing page (`/pricing`) + success confirmation
-- [x] Pro gating for quizzes and speaking trainer
+### Payments (LibertyIQ Core)
+- [x] Stripe Checkout for Core monthly ($5.99), yearly ($59), and Lifetime ($129)
+- [x] Pricing page (`/pricing`) with Free / Core / Lifetime
+- [x] Generous free teaser: library + easy quizzes
+- [x] Core gating for medium/hard quizzes and speaking trainer
 - [x] Customer Portal for manage/cancel
-- [x] Signed entitlement cookie (`li_pro`) after successful checkout
-- [ ] Full user accounts / cross-device Pro sync (future)
+- [x] Signed entitlement cookie after successful checkout
+- [ ] Full user accounts / cross-device sync (future)
 
 ### Design & UX
 - [x] Patriotic branding with LibertyIQ logo

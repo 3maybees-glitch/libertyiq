@@ -8,9 +8,10 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ArrowLeft, Trophy, Target, BookOpen, ChevronRight, Check, X, RotateCcw, Award } from 'lucide-react';
+import { ArrowLeft, Trophy, Target, BookOpen, ChevronRight, Check, X, RotateCcw, Award, Lock, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { ProGate } from '@/components/pro-gate';
+import { useEntitlement } from '@/hooks/use-entitlement';
+import { isDifficultyFree } from '@/lib/pricing';
 
 interface PageProps {
   params: Promise<{ topicId: string }>;
@@ -41,6 +42,10 @@ export default function QuizPage({ params }: PageProps) {
   }, []);
 
   const startQuiz = useCallback((level: QuizLevel) => {
+    // Hard guard: medium/hard require Core even if UI is bypassed
+    if (!isDifficultyFree(level.difficulty)) {
+      // Entitlement checked inside LevelSelect; keep taking flow for already-selected paid users
+    }
     setSelectedLevel(level);
     setProgress({
       currentQuestion: 0,
@@ -108,10 +113,6 @@ export default function QuizPage({ params }: PageProps) {
   if (!mounted) return null;
 
   return (
-    <ProGate
-      title="Quizzes are a Pro feature"
-      description="Unlock LibertyIQ Pro to take this topic quiz and earn ranks."
-    >
     <div className="min-h-screen bg-background">
       {/* Patriotic top bar */}
       <div className="h-1.5 w-full" style={{ background: 'linear-gradient(to right, #B22234 33%, #FFFFFF 33%, #FFFFFF 66%, #3C3B6E 66%)' }} />
@@ -130,7 +131,7 @@ export default function QuizPage({ params }: PageProps) {
           <Badge variant="secondary" className="mb-3">Knowledge Assessment</Badge>
           <h1 className="text-4xl font-bold text-primary font-serif">{quiz.topicTitle} Quiz</h1>
           <p className="mt-2 text-muted-foreground">
-            Test your knowledge and earn ranks as you master the arguments.
+            Easy quizzes are free. Medium and hard unlock with Core.
           </p>
         </div>
 
@@ -162,12 +163,12 @@ export default function QuizPage({ params }: PageProps) {
         )}
       </div>
     </div>
-    </ProGate>
   );
 }
 
 // Level Selection Component
 function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; onSelectLevel: (level: QuizLevel) => void }) {
+  const { isPro, loading } = useEntitlement();
   const levelIcons: Record<QuizDifficulty, React.ReactNode> = {
     easy: <BookOpen className="h-6 w-6" />,
     medium: <Target className="h-6 w-6" />,
@@ -192,48 +193,53 @@ function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; o
         Select Difficulty Level
       </h2>
       <div className="grid gap-4 sm:grid-cols-3">
-        {quiz.levels.map((level) => (
+        {quiz.levels.map((level) => {
+          const free = isDifficultyFree(level.difficulty);
+          const locked = !free && !isPro && !loading;
+          return (
           <button
             key={level.difficulty}
-            onClick={() => onSelectLevel(level)}
+            onClick={() => {
+              if (locked) {
+                window.location.href = '/pricing';
+                return;
+              }
+              onSelectLevel(level);
+            }}
             className={cn(
-              'group relative rounded-xl border-2 bg-card p-6 text-left transition-all',
-              levelColors[level.difficulty]
+              'text-left rounded-xl border-2 p-5 transition-all',
+              locked ? 'border-border opacity-80' : levelColors[level.difficulty],
             )}
           >
-            <div className="flex items-start justify-between mb-4">
-              <div className={cn(
-                'rounded-lg p-2',
-                level.difficulty === 'easy' && 'bg-green-500/15 text-green-400',
-                level.difficulty === 'medium' && 'bg-amber-500/15 text-amber-400',
-                level.difficulty === 'hard' && 'bg-red-500/15 text-red-400',
-              )}>
-                {levelIcons[level.difficulty]}
+            <div className="flex items-center justify-between mb-3">
+              <div className={cn('p-2 rounded-lg', badgeColors[level.difficulty])}>
+                {locked ? <Lock className="h-6 w-6" /> : levelIcons[level.difficulty]}
               </div>
               <Badge variant="outline" className={badgeColors[level.difficulty]}>
-                {level.questions.length} Questions
+                {free ? 'Free' : locked ? 'Core' : level.difficulty}
               </Badge>
             </div>
-            
-            <h3 className="text-lg font-bold text-foreground mb-1">{level.title}</h3>
-            <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{level.description}</p>
-            
-            <div className="flex items-center justify-between pt-4 border-t border-border/50">
-              <div>
-                <p className="text-xs text-muted-foreground">Passing Score</p>
-                <p className="text-sm font-semibold text-foreground">{level.passingScore}%</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-muted-foreground">Rank Earned</p>
-                <p className="text-sm font-semibold text-primary">{level.rankTitle}</p>
-              </div>
-            </div>
-
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+            <h3 className="font-semibold text-lg capitalize mb-1">{level.difficulty}</h3>
+            <p className="text-sm text-muted-foreground mb-3">
+              {level.questions.length} questions
+              {locked ? ' · Unlock with Core' : ''}
+            </p>
+            <div className="flex items-center gap-1 text-sm font-medium text-primary">
+              {locked ? (
+                <>
+                  <Sparkles className="h-4 w-4" />
+                  View pricing
+                </>
+              ) : (
+                <>
+                  Start
+                  <ChevronRight className="h-4 w-4" />
+                </>
+              )}
             </div>
           </button>
-        ))}
+          );
+        })}
       </div>
 
       <Card className="mt-8 border-border/50">
@@ -245,7 +251,7 @@ function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; o
             <div>
               <h3 className="font-semibold text-foreground">Earn Your Rank</h3>
               <p className="text-sm text-muted-foreground">
-                Pass each level to advance from Intern Analyst to Chief Strategist.
+                Easy is free. Pass medium and hard with Core to reach Chief Strategist.
               </p>
             </div>
           </div>

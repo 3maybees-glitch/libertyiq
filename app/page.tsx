@@ -58,20 +58,19 @@ export default function Home() {
                 <div className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
                   <GraduationCap className="h-4 w-4 shrink-0" />
                   Test Your LibertyIQ
-                  <span className="text-[10px] uppercase tracking-wide opacity-90 ml-1">Pro</span>
                 </div>
               </Link>
               <Link href="/speaking-trainer" className="block w-full">
                 <div className="w-full flex items-center justify-center gap-2 bg-secondary text-secondary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
                   <Mic className="h-4 w-4 shrink-0" />
                   Speaking Trainer
-                  <span className="text-[10px] uppercase tracking-wide opacity-90 ml-1">Pro</span>
+                  <span className="text-[10px] uppercase tracking-wide opacity-90 ml-1">Core</span>
                 </div>
               </Link>
               <Link href="/pricing" className="block w-full">
                 <div className="w-full flex items-center justify-center gap-2 border border-primary/40 text-primary rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
                   <Sparkles className="h-4 w-4 shrink-0" />
-                  Unlock Pro
+                  Pricing
                 </div>
               </Link>
               <ReferencesButton fullWidth />
@@ -105,7 +104,7 @@ export default function Home() {
               <Link href="/pricing">
                 <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
                   <Sparkles className="h-5 w-5" />
-                  Pro
+                  Pricing
                 </Button>
               </Link>
               <Link href="/speaking-trainer">

@@ -14,7 +14,11 @@ export async function GET() {
   try {
     const checkoutAvailable =
       isStripeConfigured() ||
-      Boolean(STRIPE_PAYMENT_LINKS.monthly || STRIPE_PAYMENT_LINKS.yearly)
+      Boolean(
+        STRIPE_PAYMENT_LINKS.monthly ||
+          STRIPE_PAYMENT_LINKS.yearly ||
+          STRIPE_PAYMENT_LINKS.lifetime,
+      )
 
     if (!isStripeConfigured()) {
       return NextResponse.json({
@@ -31,6 +35,7 @@ export async function GET() {
         configured: true,
         customerId: existing.customerId,
         status: existing.status,
+        plan: existing.plan,
       })
     }
 
@@ -44,7 +49,7 @@ export async function GET() {
   }
 }
 
-/** Confirm a completed Checkout Session and set the Pro cookie. */
+/** Confirm a completed Checkout Session and set the Core/Lifetime cookie. */
 export async function POST(request: Request) {
   try {
     if (!isStripeConfigured()) {
@@ -66,6 +71,7 @@ export async function POST(request: Request) {
         isPro: true,
         customerId: result.payload.customerId,
         status: result.payload.status,
+        plan: result.payload.plan,
       })
       response.cookies.set(
         ENTITLEMENT_COOKIE,

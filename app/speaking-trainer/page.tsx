@@ -4,8 +4,8 @@ import { ProFeature } from "@/components/pro-feature"
 export default function Page() {
   return (
     <ProFeature
-      title="Speaking trainer is Pro"
-      description="Practice speeches with filler-word analysis and coaching tips after unlocking LibertyIQ Pro."
+      title="Speaking trainer is Core"
+      description="Practice speeches with filler-word analysis and coaching tips with LibertyIQ Core or Lifetime."
     >
       <LibertyIQPublicSpeakingTrainer />
     </ProFeature>

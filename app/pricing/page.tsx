@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 import PricingPage from './pricing-client'
 
 export const metadata: Metadata = {
-  title: 'Pricing — LibertyIQ Pro',
+  title: 'Pricing — LibertyIQ Core & Lifetime',
   description:
-    'Unlock LibertyIQ Pro for unlimited quizzes, rank progression, and the public speaking trainer. The argument library stays free.',
+    'Free teaser with easy quizzes, Core at $5.99/mo or $59/yr, and a $129 early-bird lifetime unlock.',
 }
 
 export default function Page() {
