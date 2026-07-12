@@ -25,6 +25,7 @@ export async function GET() {
       return NextResponse.json({
         isPro: false,
         configured: checkoutAvailable,
+        mode: checkoutAvailable ? 'payment_links' : 'none',
         reason: checkoutAvailable ? 'payment_links' : 'stripe_not_configured',
       })
     }
@@ -34,6 +35,7 @@ export async function GET() {
       return NextResponse.json({
         isPro: false,
         configured: true,
+        mode: 'checkout_session',
       })
     }
 
@@ -41,6 +43,7 @@ export async function GET() {
     const response = NextResponse.json({
       isPro: validated.isPro,
       configured: true,
+      mode: 'checkout_session',
       customerId: validated.payload?.customerId,
       status: validated.payload?.status,
       plan: validated.payload?.plan,

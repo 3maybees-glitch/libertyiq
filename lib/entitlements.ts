@@ -2,6 +2,7 @@ import { createHmac, timingSafeEqual } from 'crypto'
 import { cookies } from 'next/headers'
 import type Stripe from 'stripe'
 import { getStripe } from '@/lib/stripe'
+import { isStripeConfigured } from '@/lib/stripe'
 
 export const ENTITLEMENT_COOKIE = 'li_pro'
 
@@ -53,6 +54,11 @@ function encode(payload: EntitlementPayload): string {
   const body = Buffer.from(JSON.stringify(payload)).toString('base64url')
   const sig = createHmac('sha256', getSecret()).update(body).digest('base64url')
   return `${body}.${sig}`
+}
+
+/** Parse a signed entitlement cookie without calling Stripe. */
+export function parseEntitlementCookie(token: string): EntitlementPayload | null {
+  return decode(token)
 }
 
 function decode(token: string): EntitlementPayload | null {
@@ -162,12 +168,32 @@ export type RevalidatedEntitlement = {
   cookie: { value: string; maxAge: number } | null
 }
 
-/** Re-check a signed cookie against Stripe (subscriptions only; lifetime is trusted). */
+async function revalidateLifetimeEntitlement(
+  payload: EntitlementPayload,
+): Promise<RevalidatedEntitlement> {
+  if (payload.customerId.startsWith('guest_')) {
+    return { isPro: false, payload: null, cookie: null }
+  }
+
+  const stripe = getStripe()
+  try {
+    const session = await stripe.checkout.sessions.retrieve(payload.subscriptionId)
+    if (session.status === 'complete' && session.payment_status === 'paid') {
+      return { isPro: true, payload, cookie: null }
+    }
+  } catch {
+    // Fall through — treat as revoked.
+  }
+
+  return { isPro: false, payload: null, cookie: null }
+}
+
+/** Re-check a signed cookie against Stripe (subscriptions and lifetime purchases). */
 export async function revalidateEntitlement(
   payload: EntitlementPayload,
 ): Promise<RevalidatedEntitlement> {
   if (payload.status === 'lifetime') {
-    return { isPro: true, payload, cookie: null }
+    return revalidateLifetimeEntitlement(payload)
   }
 
   if (payload.customerId.startsWith('guest_')) {
@@ -270,4 +296,17 @@ export function clearEntitlementCookie(
   response: { cookies: { set: (name: string, value: string, options: ReturnType<typeof entitlementCookieOptions>) => void } },
 ): void {
   response.cookies.set(ENTITLEMENT_COOKIE, '', entitlementCookieOptions(0))
+}
+
+/** Server-side Pro check with Stripe revalidation when configured. */
+export async function hasProAccess(): Promise<boolean> {
+  const existing = await getEntitlementFromCookies()
+  if (!existing) return false
+
+  if (!isStripeConfigured()) {
+    return true
+  }
+
+  const validated = await revalidateEntitlement(existing)
+  return validated.isPro
 }

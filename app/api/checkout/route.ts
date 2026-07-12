@@ -31,6 +31,7 @@ export async function POST(request: Request) {
         cancel_url: `${appUrl}/pricing?canceled=1`,
         allow_promotion_codes: true,
         billing_address_collection: 'auto',
+        ...(mode === 'payment' ? { customer_creation: 'always' as const } : {}),
         metadata: {
           app: 'libertyiq',
           plan,

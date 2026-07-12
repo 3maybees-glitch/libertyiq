@@ -13,9 +13,18 @@ export async function POST() {
     }
 
     const entitlement = await getEntitlementFromCookies()
-    if (!entitlement?.customerId) {
+    if (
+      !entitlement?.customerId ||
+      entitlement.customerId.startsWith('guest_') ||
+      entitlement.status === 'lifetime'
+    ) {
       return NextResponse.json(
-        { error: 'No active Pro subscription found on this device.' },
+        {
+          error:
+            entitlement?.status === 'lifetime'
+              ? 'Lifetime purchases do not use the billing portal. Contact support for billing help.'
+              : 'No active Core subscription found on this device.',
+        },
         { status: 401 },
       )
     }

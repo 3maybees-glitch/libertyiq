@@ -44,10 +44,13 @@ Until secret keys are on Vercel, checkout uses **Payment Links** and unlocks on 
 
 Endpoint: `POST /api/webhook`
 
+Webhooks are **server-to-server** — they do not set browser cookies. After payment, the success page calls `POST /api/entitlement` with the Checkout Session id to set the signed `li_pro` cookie.
+
 | Event | Behavior |
 |-------|----------|
-| `checkout.session.completed` | Sets entitlement cookie for **Lifetime** (`mode: payment`) and **Core** subscriptions |
-| `customer.subscription.updated` | Refreshes cookie while subscription is active, trialing, or past_due |
-| `customer.subscription.deleted` | Next `GET /api/entitlement` revalidates with Stripe and clears the cookie |
+| `checkout.session.completed` | Acknowledged (entitlement set on success page) |
+| `customer.subscription.updated` | Acknowledged; `GET /api/entitlement` revalidates subscription cookies |
+| `customer.subscription.deleted` | Acknowledged; next `GET /api/entitlement` clears expired subscriptions |
+| `charge.refunded` | Acknowledged; lifetime revalidation fails on next `GET /api/entitlement` |
 
-`GET /api/entitlement` always revalidates subscription cookies against Stripe (no database required). Lifetime cookies are trusted for ~10 years.
+`GET /api/entitlement` revalidates **subscription and lifetime** cookies against Stripe (no database required).

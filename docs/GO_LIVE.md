@@ -44,7 +44,7 @@ vercel --prod --yes
 Stripe Dashboard → Developers → Webhooks → Add endpoint:
 
 - URL: `https://libertyiq.org/api/webhook`
-- Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
+- Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `charge.refunded`
 - Copy signing secret → Vercel `STRIPE_WEBHOOK_SECRET` → redeploy
 
 After deploy, canceled subscriptions lose Pro access on the next page load (`GET /api/entitlement` revalidates with Stripe).
@@ -86,7 +86,15 @@ Use card `4242 4242 4242 4242`:
 - [x] Stripe Core/Lifetime prices + Payment Links (test mode)  
 - [x] Old $9.99/$79 prices and links deactivated  
 - [x] Customer portal return URL → libertyiq.org/pricing  
+- [x] Secure entitlement flow (server layout gate on speaking trainer, lifetime Stripe revalidation)  
+- [x] Payment Link soft-unlock only when Stripe secrets are not configured  
 - [ ] Claim sandbox (needs your browser login)  
-- [ ] Vercel env secrets (needs your Vercel login)  
-- [ ] Webhook signing secret (needs claim + dashboard)  
+- [ ] Vercel env secrets (needs your Vercel login + Stripe keys in `.env.local`)  
+- [ ] Webhook signing secret (needs claim + dashboard or `stripe listen`)  
 - [ ] Live-mode keys (needs Stripe live onboarding)
+
+Quick setup after copying keys to `.env.local`:
+
+```powershell
+./scripts/setup-stripe.ps1
+```

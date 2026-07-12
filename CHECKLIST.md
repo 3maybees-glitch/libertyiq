@@ -58,6 +58,7 @@ Last updated: July 2026
 
 ## Deployment
 
+- [x] Secure entitlement flow (server layout gate on speaking trainer, lifetime Stripe revalidation)
 - [ ] Stripe env vars on Vercel for hard unlock + portal (see `docs/GO_LIVE.md`)
 - [x] Test-mode Payment Links live on libertyiq.org
 - [x] Vercel auto-deploy on push to `main`

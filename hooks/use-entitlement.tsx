@@ -34,6 +34,7 @@ async function readEntitlement(): Promise<{
   isPro: boolean
   configured: boolean
   customerId?: string
+  mode?: 'checkout_session' | 'payment_links' | 'none'
 }> {
   const res = await fetch('/api/entitlement', { credentials: 'include' })
   if (!res.ok) return { isPro: false, configured: true }
@@ -49,12 +50,12 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(async () => {
     try {
       const data = await readEntitlement()
-      const soft = readSoftPro()
+      const soft = data.mode === 'payment_links' && readSoftPro()
       setIsPro(Boolean(data.isPro) || soft)
       setConfigured(data.configured !== false)
       setCustomerId(data.customerId)
     } catch {
-      setIsPro(readSoftPro())
+      setIsPro(false)
     } finally {
       setLoading(false)
     }

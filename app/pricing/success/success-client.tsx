@@ -7,6 +7,8 @@ import { CheckCircle2, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useEntitlement } from '@/hooks/use-entitlement'
 
+type EntitlementMode = 'checkout_session' | 'payment_links' | 'none'
+
 export default function PricingSuccessClient() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
@@ -41,27 +43,23 @@ export default function PricingSuccessClient() {
           return
         }
 
-        // Payment Links work without server secrets — soft-unlock after Stripe redirect.
-        if (sessionId.startsWith('cs_')) {
-          grantSoftPro(sessionId)
-          await refresh()
-          if (!cancelled) {
-            setStatus('ok')
-            setMessage('LibertyIQ Pro is unlocked on this device.')
+        // Payment Links only — no server-side Stripe secrets on this deployment.
+        if (res.status === 503) {
+          const statusRes = await fetch('/api/entitlement', { credentials: 'include' })
+          const statusData = (await statusRes.json()) as { mode?: EntitlementMode }
+          if (statusData.mode === 'payment_links' && sessionId.startsWith('cs_')) {
+            grantSoftPro(sessionId)
+            await refresh()
+            if (!cancelled) {
+              setStatus('ok')
+              setMessage('LibertyIQ Pro is unlocked on this device.')
+            }
+            return
           }
-          return
         }
 
         throw new Error(data.error || 'Unable to confirm Pro access')
       } catch (err) {
-        if (sessionId.startsWith('cs_')) {
-          grantSoftPro(sessionId)
-          if (!cancelled) {
-            setStatus('ok')
-            setMessage('LibertyIQ Pro is unlocked on this device.')
-          }
-          return
-        }
         if (!cancelled) {
           setStatus('error')
           setMessage(err instanceof Error ? err.message : 'Confirmation failed')
