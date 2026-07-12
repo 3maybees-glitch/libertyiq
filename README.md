@@ -12,7 +12,16 @@ A [Next.js](https://nextjs.org) conservative worldviews library and quiz app. Br
 - **Quizzes** (`/quiz/[topicId]`) — easy, medium, and hard levels per topic
 - **Speaking trainer** (`/speaking-trainer`) — browser-based speech practice with filler-word analysis
 
-Progress is stored locally in your browser (`localStorage`). No backend required.
+Progress is stored locally in your browser (`localStorage`). LibertyIQ Pro (quizzes + speaking trainer) uses Stripe Checkout.
+
+## Paid features (LibertyIQ Pro)
+
+| Free | Pro ($9.99/mo or $79/yr) |
+|------|--------------------------|
+| Argument library | Quizzes + ranks |
+| Topic deep dives | Speaking trainer |
+
+See [docs/STRIPE.md](docs/STRIPE.md) for Stripe setup.
 
 ## Topics
 
@@ -38,7 +47,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deployment
 
-This project deploys automatically to [Vercel](https://vercel.com) when changes are pushed to `main`. No environment variables or database setup is required.
+This project deploys automatically to [Vercel](https://vercel.com) when changes are pushed to `main`.
+
+For the free library only, no environment variables are required. For LibertyIQ Pro checkout, configure the Stripe variables listed in `.env.example` and [docs/STRIPE.md](docs/STRIPE.md).
 
 **Local development** — clone the repo and run `pnpm install && pnpm dev`. Works fully in [Cursor](https://cursor.com) or any editor.
 

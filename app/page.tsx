@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { GraduationCap, Mic } from 'lucide-react';
+import { GraduationCap, Mic, Sparkles } from 'lucide-react';
 import ReferencesButton from '@/components/references-button';
 import Image from 'next/image';
 
@@ -58,12 +58,20 @@ export default function Home() {
                 <div className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
                   <GraduationCap className="h-4 w-4 shrink-0" />
                   Test Your LibertyIQ
+                  <span className="text-[10px] uppercase tracking-wide opacity-90 ml-1">Pro</span>
                 </div>
               </Link>
               <Link href="/speaking-trainer" className="block w-full">
                 <div className="w-full flex items-center justify-center gap-2 bg-secondary text-secondary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
                   <Mic className="h-4 w-4 shrink-0" />
                   Speaking Trainer
+                  <span className="text-[10px] uppercase tracking-wide opacity-90 ml-1">Pro</span>
+                </div>
+              </Link>
+              <Link href="/pricing" className="block w-full">
+                <div className="w-full flex items-center justify-center gap-2 border border-primary/40 text-primary rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
+                  <Sparkles className="h-4 w-4 shrink-0" />
+                  Unlock Pro
                 </div>
               </Link>
               <ReferencesButton fullWidth />
@@ -94,6 +102,12 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2 shrink-0 pt-1">
               <ReferencesButton />
+              <Link href="/pricing">
+                <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
+                  <Sparkles className="h-5 w-5" />
+                  Pro
+                </Button>
+              </Link>
               <Link href="/speaking-trainer">
                 <Button variant="secondary" size="default" className="gap-2 whitespace-nowrap font-semibold">
                   <Mic className="h-5 w-5" />

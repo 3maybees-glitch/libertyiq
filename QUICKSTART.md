@@ -38,9 +38,10 @@ Visit `http://localhost:3000` in your browser.
 |-------|---------|
 | `/` | Argument library with topic selector |
 | `/topic/[slug]` | Full topic detail page |
-| `/libertyiq` | Quiz dashboard with rank tracking |
-| `/quiz/[topicId]` | Take a quiz for a specific topic |
-| `/speaking-trainer` | Public speaking practice |
+| `/libertyiq` | Quiz dashboard with rank tracking (**Pro**) |
+| `/quiz/[topicId]` | Take a quiz for a specific topic (**Pro**) |
+| `/speaking-trainer` | Public speaking practice (**Pro**) |
+| `/pricing` | LibertyIQ Pro checkout |
 
 ## Data Storage
 
