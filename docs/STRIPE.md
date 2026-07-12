@@ -31,7 +31,16 @@ Paste the printed `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
 6. On Vercel, add the same env vars (use live keys for production) and set
    `NEXT_PUBLIC_APP_URL=https://libertyiq.org`.
 
-## Flow
+## Production checklist
+
+1. Claim the Stripe sandbox (or connect your live Stripe account).
+2. Add env vars in **Vercel → Project → Settings → Environment Variables** (see `.env.example`),
+   or run `./scripts/push-stripe-env-to-vercel.sh` after `vercel login` + `vercel link`.
+3. Set `NEXT_PUBLIC_APP_URL=https://libertyiq.org`.
+4. Add webhook endpoint `https://libertyiq.org/api/webhook` in Stripe and paste `whsec_...`.
+5. Redeploy production.
+
+Until secret keys are on Vercel, checkout uses **Payment Links** (public Stripe URLs) and Pro unlocks on the success redirect.
 
 1. User opens `/pricing` and chooses Monthly or Yearly.
 2. `POST /api/checkout` creates a Stripe Checkout Session (`mode: subscription`).

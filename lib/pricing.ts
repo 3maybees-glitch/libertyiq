@@ -30,6 +30,20 @@ export const PRO_PLANS = {
   },
 } as const
 
+/**
+ * Public Stripe Payment Link URLs (safe to expose).
+ * Used when server-side Checkout Sessions are not configured yet.
+ * Replace with live-mode links after claiming your Stripe account.
+ */
+export const STRIPE_PAYMENT_LINKS: Record<BillingInterval, string> = {
+  monthly:
+    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY ||
+    'https://buy.stripe.com/test_3cIaEZ3Yae6A7MR64rcZa00',
+  yearly:
+    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY ||
+    'https://buy.stripe.com/test_5kQ3cx2U66E87MR9gDcZa01',
+}
+
 /** Features locked behind LibertyIQ Pro. */
 export const PRO_ROUTES = ['/libertyiq', '/quiz', '/speaking-trainer'] as const
 

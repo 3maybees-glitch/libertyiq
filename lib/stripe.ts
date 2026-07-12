@@ -17,11 +17,22 @@ export function getStripe(): Stripe {
 }
 
 export function getAppUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ||
-    process.env.VERCEL_PROJECT_PRODUCTION_URL?.replace(/\/$/, '') ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
-  )
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    return process.env.NEXT_PUBLIC_APP_URL.replace(/\/$/, '')
+  }
+  if (process.env.VERCEL_ENV === 'production') {
+    return 'https://libertyiq.org'
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`.replace(
+      /\/$/,
+      '',
+    )
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`
+  }
+  return 'http://localhost:3000'
 }
 
 export function getPriceId(plan: 'monthly' | 'yearly'): string {
@@ -45,5 +56,14 @@ export function isStripeConfigured(): boolean {
     process.env.STRIPE_SECRET_KEY &&
       process.env.STRIPE_PRICE_ID_MONTHLY &&
       process.env.STRIPE_PRICE_ID_YEARLY,
+  )
+}
+
+/** True when users can start checkout (Checkout Sessions or Payment Links). */
+export function isCheckoutAvailable(): boolean {
+  if (isStripeConfigured()) return true
+  return Boolean(
+    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY ||
+      process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY,
   )
 }

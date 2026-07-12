@@ -8,14 +8,19 @@ import {
   getEntitlementFromCookies,
 } from '@/lib/entitlements'
 import { isStripeConfigured } from '@/lib/stripe'
+import { STRIPE_PAYMENT_LINKS } from '@/lib/pricing'
 
 export async function GET() {
   try {
+    const checkoutAvailable =
+      isStripeConfigured() ||
+      Boolean(STRIPE_PAYMENT_LINKS.monthly || STRIPE_PAYMENT_LINKS.yearly)
+
     if (!isStripeConfigured()) {
       return NextResponse.json({
         isPro: false,
-        configured: false,
-        reason: 'stripe_not_configured',
+        configured: checkoutAvailable,
+        reason: checkoutAvailable ? 'payment_links' : 'stripe_not_configured',
       })
     }
 

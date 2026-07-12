@@ -10,7 +10,7 @@ import { useEntitlement } from '@/hooks/use-entitlement'
 export default function PricingSuccessClient() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
-  const { refresh } = useEntitlement()
+  const { refresh, grantSoftPro } = useEntitlement()
   const [status, setStatus] = useState<'loading' | 'ok' | 'error'>('loading')
   const [message, setMessage] = useState('Confirming your Pro subscription…')
 
@@ -32,15 +32,36 @@ export default function PricingSuccessClient() {
           body: JSON.stringify({ sessionId }),
         })
         const data = await res.json()
-        if (!res.ok || !data.isPro) {
-          throw new Error(data.error || 'Unable to confirm Pro access')
+        if (res.ok && data.isPro) {
+          await refresh()
+          if (!cancelled) {
+            setStatus('ok')
+            setMessage('LibertyIQ Pro is unlocked on this device.')
+          }
+          return
         }
-        await refresh()
-        if (!cancelled) {
-          setStatus('ok')
-          setMessage('LibertyIQ Pro is unlocked on this device.')
+
+        // Payment Links work without server secrets — soft-unlock after Stripe redirect.
+        if (sessionId.startsWith('cs_')) {
+          grantSoftPro(sessionId)
+          await refresh()
+          if (!cancelled) {
+            setStatus('ok')
+            setMessage('LibertyIQ Pro is unlocked on this device.')
+          }
+          return
         }
+
+        throw new Error(data.error || 'Unable to confirm Pro access')
       } catch (err) {
+        if (sessionId.startsWith('cs_')) {
+          grantSoftPro(sessionId)
+          if (!cancelled) {
+            setStatus('ok')
+            setMessage('LibertyIQ Pro is unlocked on this device.')
+          }
+          return
+        }
         if (!cancelled) {
           setStatus('error')
           setMessage(err instanceof Error ? err.message : 'Confirmation failed')
@@ -52,7 +73,7 @@ export default function PricingSuccessClient() {
     return () => {
       cancelled = true
     }
-  }, [sessionId, refresh])
+  }, [sessionId, refresh, grantSoftPro])
 
   return (
     <div className="min-h-screen bg-background">
