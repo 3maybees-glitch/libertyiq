@@ -48,7 +48,7 @@ export default function Home() {
                 <span style={{ color: '#ffffff', WebkitTextStroke: '1px rgba(0,0,0,0.25)', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>Liberty</span>
                 <span style={{ color: 'var(--color-primary)', WebkitTextStroke: '1px rgba(255,255,255,0.35)', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>IQ</span>
               </h1>
-              <p className="text-base text-accent font-semibold mt-1">Conservative Arguments Library</p>
+              <p className="text-base text-accent font-semibold mt-1">Conservative Worldviews Library</p>
               <p className="text-xs text-muted-foreground leading-relaxed mt-1 px-2">
                 Structured arguments, biblical foundations, scientific evidence, and defense tips.
               </p>
@@ -86,7 +86,7 @@ export default function Home() {
                   <span style={{ color: '#ffffff', WebkitTextStroke: '1px rgba(0,0,0,0.25)', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>Liberty</span>
                   <span style={{ color: 'var(--color-primary)', WebkitTextStroke: '1px rgba(255,255,255,0.35)', textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>IQ</span>
                 </h1>
-                <p className="text-lg text-accent font-semibold">Conservative Arguments Library</p>
+                <p className="text-lg text-accent font-semibold">Conservative Worldviews Library</p>
                 <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed pt-1">
                   Select a topic to explore structured arguments, biblical foundations, scientific evidence, and defense tips.
                 </p>

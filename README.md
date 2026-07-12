@@ -1,6 +1,8 @@
 # LibertyIQ
 
-A [Next.js](https://nextjs.org) conservative arguments library and quiz app. Browse debate topics, study evidence, test your knowledge, and practice public speaking.
+A [Next.js](https://nextjs.org) conservative worldviews library and quiz app. Browse debate topics, study evidence, test your knowledge, and practice public speaking.
+
+**Live site:** [https://libertyiq.org](https://libertyiq.org)
 
 ## Features
 
