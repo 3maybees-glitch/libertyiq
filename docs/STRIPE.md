@@ -39,3 +39,15 @@ Until secret keys are on Vercel, checkout uses **Payment Links** and unlocks on 
 3. Lifetime uses Checkout `mode: "payment"`; Core uses `mode: "subscription"`
 4. Success page confirms session and sets the entitlement cookie
 5. Easy quizzes stay free; medium/hard + speaking trainer require Core/Lifetime
+
+## Webhooks
+
+Endpoint: `POST /api/webhook`
+
+| Event | Behavior |
+|-------|----------|
+| `checkout.session.completed` | Sets entitlement cookie for **Lifetime** (`mode: payment`) and **Core** subscriptions |
+| `customer.subscription.updated` | Refreshes cookie while subscription is active, trialing, or past_due |
+| `customer.subscription.deleted` | Next `GET /api/entitlement` revalidates with Stripe and clears the cookie |
+
+`GET /api/entitlement` always revalidates subscription cookies against Stripe (no database required). Lifetime cookies are trusted for ~10 years.

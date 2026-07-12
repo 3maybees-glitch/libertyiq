@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
 import {
+  applyEntitlementCookie,
   buildEntitlementCookie,
-  entitlementCookieOptions,
+  clearEntitlementCookie,
   entitlementFromCheckoutSession,
-  ENTITLEMENT_COOKIE,
   fetchActiveSubscription,
   getEntitlementFromCookies,
+  revalidateEntitlement,
 } from '@/lib/entitlements'
 import { isStripeConfigured } from '@/lib/stripe'
 import { STRIPE_PAYMENT_LINKS } from '@/lib/pricing'
@@ -29,20 +30,32 @@ export async function GET() {
     }
 
     const existing = await getEntitlementFromCookies()
-    if (existing) {
+    if (!existing) {
       return NextResponse.json({
-        isPro: true,
+        isPro: false,
         configured: true,
-        customerId: existing.customerId,
-        status: existing.status,
-        plan: existing.plan,
       })
     }
 
-    return NextResponse.json({
-      isPro: false,
+    const validated = await revalidateEntitlement(existing)
+    const response = NextResponse.json({
+      isPro: validated.isPro,
       configured: true,
+      customerId: validated.payload?.customerId,
+      status: validated.payload?.status,
+      plan: validated.payload?.plan,
     })
+
+    if (!validated.isPro) {
+      clearEntitlementCookie(response)
+      return response
+    }
+
+    if (validated.cookie) {
+      applyEntitlementCookie(response, validated.cookie)
+    }
+
+    return response
   } catch (error) {
     console.error('entitlement get error', error)
     return NextResponse.json({ isPro: false, configured: true }, { status: 200 })
@@ -73,11 +86,7 @@ export async function POST(request: Request) {
         status: result.payload.status,
         plan: result.payload.plan,
       })
-      response.cookies.set(
-        ENTITLEMENT_COOKIE,
-        result.cookie.value,
-        entitlementCookieOptions(result.cookie.maxAge),
-      )
+      applyEntitlementCookie(response, result.cookie)
       return response
     }
 
@@ -93,13 +102,10 @@ export async function POST(request: Request) {
       const response = NextResponse.json({
         isPro: true,
         customerId: body.customerId,
-        status: subscription.status,
+        status: cookie.payload.status,
+        plan: cookie.payload.plan,
       })
-      response.cookies.set(
-        ENTITLEMENT_COOKIE,
-        cookie.value,
-        entitlementCookieOptions(cookie.maxAge),
-      )
+      applyEntitlementCookie(response, { value: cookie.value, maxAge: cookie.maxAge })
       return response
     }
 

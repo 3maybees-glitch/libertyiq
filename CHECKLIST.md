@@ -82,3 +82,4 @@ Last updated: July 2026
 - [ ] Split monolithic `lib/types.ts` into per-topic modules
 - [ ] Auth + cross-device Pro entitlements
 - [ ] Live Stripe webhook wiring in production
+- [x] Webhook + entitlement revalidation (lifetime + subscription cancel)

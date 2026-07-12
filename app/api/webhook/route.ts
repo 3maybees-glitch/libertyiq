@@ -1,13 +1,30 @@
 import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 import {
+  applyEntitlementCookie,
   buildEntitlementCookie,
-  entitlementCookieOptions,
-  ENTITLEMENT_COOKIE,
+  buildLifetimeEntitlementCookie,
 } from '@/lib/entitlements'
 import { getStripe, isStripeConfigured } from '@/lib/stripe'
 
 export const runtime = 'nodejs'
+
+function customerIdFrom(
+  customer: string | Stripe.Customer | Stripe.DeletedCustomer | null,
+): string | null {
+  if (!customer) return null
+  if (typeof customer === 'string') return customer
+  if ('deleted' in customer && customer.deleted) return null
+  return customer.id
+}
+
+function setEntitlementCookieOnResponse(
+  response: NextResponse,
+  cookie: { value: string; maxAge: number },
+): NextResponse {
+  applyEntitlementCookie(response, cookie)
+  return response
+}
 
 export async function POST(request: Request) {
   if (!isStripeConfigured()) {
@@ -39,9 +56,18 @@ export async function POST(request: Request) {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
-        if (session.mode === 'subscription' && session.subscription && session.customer) {
-          const customerId =
-            typeof session.customer === 'string' ? session.customer : session.customer.id
+        const customerId = customerIdFrom(session.customer)
+        const effectiveCustomerId = customerId || `guest_${session.id}`
+
+        if (session.mode === 'payment' && session.payment_status === 'paid') {
+          const built = buildLifetimeEntitlementCookie(effectiveCustomerId, session.id)
+          return setEntitlementCookieOnResponse(NextResponse.json({ received: true }), {
+            value: built.value,
+            maxAge: built.maxAge,
+          })
+        }
+
+        if (session.mode === 'subscription' && session.subscription && customerId) {
           const subscriptionId =
             typeof session.subscription === 'string'
               ? session.subscription
@@ -49,22 +75,30 @@ export async function POST(request: Request) {
           const subscription = await stripe.subscriptions.retrieve(subscriptionId)
           const cookie = buildEntitlementCookie(subscription, customerId)
           if (cookie) {
-            const response = NextResponse.json({ received: true })
-            // Cookie set is best-effort for browser-triggered webhooks; primary unlock is /pricing/success
-            response.cookies.set(
-              ENTITLEMENT_COOKIE,
-              cookie.value,
-              entitlementCookieOptions(cookie.maxAge),
-            )
-            return response
+            return setEntitlementCookieOnResponse(NextResponse.json({ received: true }), {
+              value: cookie.value,
+              maxAge: cookie.maxAge,
+            })
           }
         }
         break
       }
-      case 'customer.subscription.updated':
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object as Stripe.Subscription
+        const customerId = customerIdFrom(subscription.customer)
+        if (!customerId) break
+
+        const cookie = buildEntitlementCookie(subscription, customerId)
+        if (cookie) {
+          return setEntitlementCookieOnResponse(NextResponse.json({ received: true }), {
+            value: cookie.value,
+            maxAge: cookie.maxAge,
+          })
+        }
+        break
+      }
       case 'customer.subscription.deleted': {
-        // Browser cookie refresh happens on next entitlement check / portal visit.
-        // No server-side user store in this app yet.
+        // Cookie revocation happens on the next /api/entitlement GET (Stripe revalidation).
         break
       }
       default:

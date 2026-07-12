@@ -47,6 +47,8 @@ Stripe Dashboard → Developers → Webhooks → Add endpoint:
 - Events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`
 - Copy signing secret → Vercel `STRIPE_WEBHOOK_SECRET` → redeploy
 
+After deploy, canceled subscriptions lose Pro access on the next page load (`GET /api/entitlement` revalidates with Stripe).
+
 ## 4. Confirm Customer Portal
 
 Stripe → Settings → Billing → Customer portal  

@@ -5,14 +5,40 @@ import { getStripe } from '@/lib/stripe'
 
 export const ENTITLEMENT_COOKIE = 'li_pro'
 
+export type EntitlementStatus = 'active' | 'trialing' | 'past_due' | 'lifetime'
+
 export type EntitlementPayload = {
   customerId: string
-  /** Subscription id, or payment intent / session id for lifetime */
+  /** Subscription id, or checkout session id for lifetime */
   subscriptionId: string
-  status: 'active' | 'trialing' | 'lifetime'
+  status: EntitlementStatus
   plan?: 'monthly' | 'yearly' | 'lifetime'
   /** Unix seconds when this entitlement cookie should expire */
   exp: number
+}
+
+const PRO_SUBSCRIPTION_STATUSES = new Set<Stripe.Subscription.Status>([
+  'active',
+  'trialing',
+  'past_due',
+])
+
+function planFromSubscription(subscription: Stripe.Subscription): 'monthly' | 'yearly' | undefined {
+  const meta = subscription.metadata?.plan
+  if (meta === 'monthly' || meta === 'yearly') return meta
+  const interval = subscription.items.data[0]?.price?.recurring?.interval
+  if (interval === 'month') return 'monthly'
+  if (interval === 'year') return 'yearly'
+  return undefined
+}
+
+function entitlementStatusFromSubscription(
+  status: Stripe.Subscription.Status,
+): EntitlementStatus | null {
+  if (status === 'active') return 'active'
+  if (status === 'trialing') return 'trialing'
+  if (status === 'past_due') return 'past_due'
+  return null
 }
 
 function getSecret(): string {
@@ -45,6 +71,7 @@ function decode(token: string): EntitlementPayload | null {
     if (
       payload.status !== 'active' &&
       payload.status !== 'trialing' &&
+      payload.status !== 'past_due' &&
       payload.status !== 'lifetime'
     ) {
       return null
@@ -58,9 +85,9 @@ function decode(token: string): EntitlementPayload | null {
 export function buildEntitlementCookie(
   subscription: Stripe.Subscription,
   customerId: string,
-): { value: string; maxAge: number } | null {
-  const status = subscription.status
-  if (status !== 'active' && status !== 'trialing') return null
+): { value: string; maxAge: number; payload: EntitlementPayload } | null {
+  const status = entitlementStatusFromSubscription(subscription.status)
+  if (!status) return null
 
   const itemPeriodEnd = subscription.items?.data
     ?.map((item) => item.current_period_end)
@@ -76,10 +103,11 @@ export function buildEntitlementCookie(
     customerId,
     subscriptionId: subscription.id,
     status,
+    plan: planFromSubscription(subscription),
     exp: Math.floor(Date.now() / 1000) + maxAge,
   }
 
-  return { value: encode(payload), maxAge }
+  return { value: encode(payload), maxAge, payload }
 }
 
 /** Lifetime purchase — cookie lasts ~10 years. */
@@ -125,9 +153,60 @@ export async function fetchActiveSubscription(
     limit: 10,
   })
 
-  return (
-    list.data.find((sub) => sub.status === 'active' || sub.status === 'trialing') ?? null
-  )
+  return list.data.find((sub) => PRO_SUBSCRIPTION_STATUSES.has(sub.status)) ?? null
+}
+
+export type RevalidatedEntitlement = {
+  isPro: boolean
+  payload: EntitlementPayload | null
+  cookie: { value: string; maxAge: number } | null
+}
+
+/** Re-check a signed cookie against Stripe (subscriptions only; lifetime is trusted). */
+export async function revalidateEntitlement(
+  payload: EntitlementPayload,
+): Promise<RevalidatedEntitlement> {
+  if (payload.status === 'lifetime') {
+    return { isPro: true, payload, cookie: null }
+  }
+
+  if (payload.customerId.startsWith('guest_')) {
+    return { isPro: false, payload: null, cookie: null }
+  }
+
+  const stripe = getStripe()
+  try {
+    const subscription = await stripe.subscriptions.retrieve(payload.subscriptionId)
+    if (!PRO_SUBSCRIPTION_STATUSES.has(subscription.status)) {
+      return { isPro: false, payload: null, cookie: null }
+    }
+
+    const cookie = buildEntitlementCookie(subscription, payload.customerId)
+    if (!cookie) {
+      return { isPro: false, payload: null, cookie: null }
+    }
+
+    return { isPro: true, payload: cookie.payload, cookie: { value: cookie.value, maxAge: cookie.maxAge } }
+  } catch {
+    const fallback = await fetchActiveSubscription(payload.customerId)
+    if (!fallback) {
+      return { isPro: false, payload: null, cookie: null }
+    }
+    const cookie = buildEntitlementCookie(fallback, payload.customerId)
+    if (!cookie) {
+      return { isPro: false, payload: null, cookie: null }
+    }
+    return { isPro: true, payload: cookie.payload, cookie: { value: cookie.value, maxAge: cookie.maxAge } }
+  }
+}
+
+export function entitlementFromCheckoutSessionMetadata(
+  session: Stripe.Checkout.Session,
+): 'monthly' | 'yearly' | 'lifetime' | undefined {
+  const plan = session.metadata?.plan
+  if (plan === 'monthly' || plan === 'yearly' || plan === 'lifetime') return plan
+  if (session.mode === 'payment') return 'lifetime'
+  return undefined
 }
 
 export async function entitlementFromCheckoutSession(
@@ -169,8 +248,26 @@ export async function entitlementFromCheckoutSession(
   const cookie = buildEntitlementCookie(subscription, customerId)
   if (!cookie) return null
 
-  const payload = decode(cookie.value)
-  if (!payload) return null
+  const plan = entitlementFromCheckoutSessionMetadata(session)
+  const payload: EntitlementPayload = plan
+    ? { ...cookie.payload, plan: plan === 'lifetime' ? 'lifetime' : plan }
+    : cookie.payload
 
-  return { payload, cookie }
+  return {
+    payload,
+    cookie: { value: encode(payload), maxAge: cookie.maxAge },
+  }
+}
+
+export function applyEntitlementCookie(
+  response: { cookies: { set: (name: string, value: string, options: ReturnType<typeof entitlementCookieOptions>) => void } },
+  cookie: { value: string; maxAge: number },
+): void {
+  response.cookies.set(ENTITLEMENT_COOKIE, cookie.value, entitlementCookieOptions(cookie.maxAge))
+}
+
+export function clearEntitlementCookie(
+  response: { cookies: { set: (name: string, value: string, options: ReturnType<typeof entitlementCookieOptions>) => void } },
+): void {
+  response.cookies.set(ENTITLEMENT_COOKIE, '', entitlementCookieOptions(0))
 }
