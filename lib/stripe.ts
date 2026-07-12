@@ -1,4 +1,5 @@
 import Stripe from 'stripe'
+import type { PaidPlan } from '@/lib/pricing'
 
 let stripeClient: Stripe | null = null
 
@@ -35,18 +36,15 @@ export function getAppUrl(): string {
   return 'http://localhost:3000'
 }
 
-export function getPriceId(plan: 'monthly' | 'yearly'): string {
-  const priceId =
-    plan === 'yearly'
-      ? process.env.STRIPE_PRICE_ID_YEARLY
-      : process.env.STRIPE_PRICE_ID_MONTHLY
-
+export function getPriceId(plan: PaidPlan): string {
+  const map: Record<PaidPlan, string | undefined> = {
+    monthly: process.env.STRIPE_PRICE_ID_MONTHLY,
+    yearly: process.env.STRIPE_PRICE_ID_YEARLY,
+    lifetime: process.env.STRIPE_PRICE_ID_LIFETIME,
+  }
+  const priceId = map[plan]
   if (!priceId) {
-    throw new Error(
-      plan === 'yearly'
-        ? 'STRIPE_PRICE_ID_YEARLY is not configured'
-        : 'STRIPE_PRICE_ID_MONTHLY is not configured',
-    )
+    throw new Error(`Stripe price for plan "${plan}" is not configured`)
   }
   return priceId
 }
@@ -55,7 +53,8 @@ export function isStripeConfigured(): boolean {
   return Boolean(
     process.env.STRIPE_SECRET_KEY &&
       process.env.STRIPE_PRICE_ID_MONTHLY &&
-      process.env.STRIPE_PRICE_ID_YEARLY,
+      process.env.STRIPE_PRICE_ID_YEARLY &&
+      process.env.STRIPE_PRICE_ID_LIFETIME,
   )
 }
 
@@ -64,6 +63,7 @@ export function isCheckoutAvailable(): boolean {
   if (isStripeConfigured()) return true
   return Boolean(
     process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY ||
-      process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY,
+      process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY ||
+      process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME,
   )
 }

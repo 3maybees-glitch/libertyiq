@@ -7,8 +7,10 @@ export const ENTITLEMENT_COOKIE = 'li_pro'
 
 export type EntitlementPayload = {
   customerId: string
+  /** Subscription id, or payment intent / session id for lifetime */
   subscriptionId: string
-  status: 'active' | 'trialing'
+  status: 'active' | 'trialing' | 'lifetime'
+  plan?: 'monthly' | 'yearly' | 'lifetime'
   /** Unix seconds when this entitlement cookie should expire */
   exp: number
 }
@@ -40,7 +42,13 @@ function decode(token: string): EntitlementPayload | null {
     const payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf8')) as EntitlementPayload
     if (!payload.customerId || !payload.subscriptionId || !payload.exp) return null
     if (payload.exp * 1000 < Date.now()) return null
-    if (payload.status !== 'active' && payload.status !== 'trialing') return null
+    if (
+      payload.status !== 'active' &&
+      payload.status !== 'trialing' &&
+      payload.status !== 'lifetime'
+    ) {
+      return null
+    }
     return payload
   } catch {
     return null
@@ -62,7 +70,6 @@ export function buildEntitlementCookie(
   const periodEnd =
     itemPeriodEnd ?? Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 32
 
-  // Cookie lasts until period end, capped at 45 days
   const maxAge = Math.max(60, Math.min(periodEnd - Math.floor(Date.now() / 1000), 60 * 60 * 24 * 45))
 
   const payload: EntitlementPayload = {
@@ -73,6 +80,22 @@ export function buildEntitlementCookie(
   }
 
   return { value: encode(payload), maxAge }
+}
+
+/** Lifetime purchase — cookie lasts ~10 years. */
+export function buildLifetimeEntitlementCookie(
+  customerId: string,
+  referenceId: string,
+): { value: string; maxAge: number; payload: EntitlementPayload } {
+  const maxAge = 60 * 60 * 24 * 365 * 10
+  const payload: EntitlementPayload = {
+    customerId,
+    subscriptionId: referenceId,
+    status: 'lifetime',
+    plan: 'lifetime',
+    exp: Math.floor(Date.now() / 1000) + maxAge,
+  }
+  return { value: encode(payload), maxAge, payload }
 }
 
 export async function getEntitlementFromCookies(): Promise<EntitlementPayload | null> {
@@ -92,7 +115,6 @@ export function entitlementCookieOptions(maxAge: number) {
   }
 }
 
-/** Live-check Stripe for an active Pro subscription on this customer. */
 export async function fetchActiveSubscription(
   customerId: string,
 ): Promise<Stripe.Subscription | null> {
@@ -116,13 +138,23 @@ export async function entitlementFromCheckoutSession(
     expand: ['subscription'],
   })
 
-  if (session.mode !== 'subscription' || session.status !== 'complete') return null
+  if (session.status !== 'complete') return null
 
   const customerId =
     typeof session.customer === 'string'
       ? session.customer
       : session.customer?.id
 
+  // Guest checkout may omit customer for one-time payments — use session id as fallback key.
+  const effectiveCustomerId = customerId || `guest_${session.id}`
+
+  if (session.mode === 'payment') {
+    if (session.payment_status !== 'paid') return null
+    const built = buildLifetimeEntitlementCookie(effectiveCustomerId, session.id)
+    return { payload: built.payload, cookie: { value: built.value, maxAge: built.maxAge } }
+  }
+
+  if (session.mode !== 'subscription') return null
   if (!customerId) return null
 
   let subscription: Stripe.Subscription | null = null

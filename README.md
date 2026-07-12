@@ -14,12 +14,11 @@ A [Next.js](https://nextjs.org) conservative worldviews library and quiz app. Br
 
 Progress is stored locally in your browser (`localStorage`). LibertyIQ Pro (quizzes + speaking trainer) uses Stripe Checkout.
 
-## Paid features (LibertyIQ Pro)
+## Paid features (LibertyIQ Core)
 
-| Free | Pro ($9.99/mo or $79/yr) |
-|------|--------------------------|
-| Argument library | Quizzes + ranks |
-| Topic deep dives | Speaking trainer |
+| Free | Core ($5.99/mo or $59/yr) | Lifetime ($129 early-bird) |
+|------|---------------------------|----------------------------|
+| Library + easy quizzes | Medium/hard, ranks, speaking trainer | Everything in Core, pay once |
 
 See [docs/STRIPE.md](docs/STRIPE.md) for Stripe setup.
 

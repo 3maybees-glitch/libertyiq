@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
+import type { PaidPlan } from '@/lib/pricing'
 
 const SOFT_PRO_KEY = 'li_pro_soft'
 
@@ -10,9 +11,8 @@ type EntitlementState = {
   loading: boolean
   customerId?: string
   refresh: () => Promise<void>
-  startCheckout: (plan: 'monthly' | 'yearly') => Promise<void>
+  startCheckout: (plan: PaidPlan) => Promise<void>
   openPortal: () => Promise<void>
-  /** Soft-unlock used when Stripe secret keys are not yet on the server. */
   grantSoftPro: (sessionId: string) => void
 }
 
@@ -49,9 +49,7 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(async () => {
     try {
       const data = await readEntitlement()
-      const soft = !data.isPro && data.configured === false ? readSoftPro() : readSoftPro()
-      // Prefer hard (cookie) entitlement; allow soft unlock while Stripe secrets are missing
-      // or as a device-local fallback after Payment Link checkout.
+      const soft = readSoftPro()
       setIsPro(Boolean(data.isPro) || soft)
       setConfigured(data.configured !== false)
       setCustomerId(data.customerId)
@@ -75,7 +73,7 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
     setIsPro(true)
   }, [])
 
-  const startCheckout = useCallback(async (plan: 'monthly' | 'yearly') => {
+  const startCheckout = useCallback(async (plan: PaidPlan) => {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

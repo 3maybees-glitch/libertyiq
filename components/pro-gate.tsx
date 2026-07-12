@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Lock, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useEntitlement } from '@/hooks/use-entitlement'
-import { PRO_FEATURES } from '@/lib/pricing'
+import { CORE_FEATURES } from '@/lib/pricing'
 
 type ProGateProps = {
   title: string
@@ -48,7 +48,7 @@ export function ProGate({ title, description, children }: ProGateProps) {
         </p>
 
         <ul className="mt-8 text-left space-y-2 max-w-md mx-auto">
-          {PRO_FEATURES.map((feature) => (
+          {CORE_FEATURES.map((feature) => (
             <li key={feature} className="flex gap-2 text-sm text-foreground/90">
               <Sparkles className="size-4 text-primary shrink-0 mt-0.5" aria-hidden />
               <span>{feature}</span>
@@ -60,7 +60,7 @@ export function ProGate({ title, description, children }: ProGateProps) {
           <Link href="/pricing" className="w-full sm:w-auto">
             <Button size="lg" className="w-full font-semibold gap-2">
               <Sparkles className="size-4" />
-              Unlock LibertyIQ Pro
+              Unlock LibertyIQ Core
             </Button>
           </Link>
           <Link href="/" className="w-full sm:w-auto">

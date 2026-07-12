@@ -1,54 +1,39 @@
-# LibertyIQ Pro / Stripe
+# LibertyIQ pricing / Stripe
 
-LibertyIQ uses a freemium model:
+## Tiers
 
 | Tier | Price | Includes |
 |------|-------|----------|
-| Free | $0 | Full argument library (11 topics), evidence, defense tips |
-| Pro | $9.99/mo or $79/yr | Quizzes, ranks, speaking trainer |
+| **Free** | $0 | Full library, topic pages, **easy quizzes** on every topic |
+| **Core** | **$5.99/mo** or **$59/yr** | Medium/hard quizzes, ranks, speaking trainer |
+| **Lifetime** | **$129** once (early-bird) | Everything in Core, no renewals |
 
 ## Setup
 
-1. Create a Stripe account (or claim the sandbox created during development).
-2. Create a Product **LibertyIQ Pro** with two recurring Prices:
-   - Monthly: `$9.99` USD
-   - Yearly: `$79` USD
-3. Copy values into `.env.local` from `.env.example`:
+1. Create Stripe Product **LibertyIQ Core** with Prices:
+   - Monthly recurring: `$5.99`
+   - Yearly recurring: `$59`
+   - One-time lifetime: `$129`
+2. Copy values into `.env.local` from `.env.example`
+3. Enable the [Customer Portal](https://dashboard.stripe.com/settings/billing/portal)
+4. For local webhooks: `stripe listen --forward-to localhost:3000/api/webhook`
+5. On Vercel, set the same env vars and `NEXT_PUBLIC_APP_URL=https://libertyiq.org`
 
-```bash
-cp .env.example .env.local
-```
-
-4. Enable the [Customer Portal](https://dashboard.stripe.com/settings/billing/portal) (cancel, payment method update, invoices).
-5. For local webhooks:
-
-```bash
-stripe listen --forward-to localhost:3000/api/webhook
-```
-
-Paste the printed `whsec_...` into `STRIPE_WEBHOOK_SECRET`.
-
-6. On Vercel, add the same env vars (use live keys for production) and set
-   `NEXT_PUBLIC_APP_URL=https://libertyiq.org`.
+Or run `./scripts/push-stripe-env-to-vercel.sh` after `vercel login` + `vercel link`.
 
 ## Production checklist
 
 1. Claim the Stripe sandbox (or connect your live Stripe account).
-2. Add env vars in **Vercel → Project → Settings → Environment Variables** (see `.env.example`),
-   or run `./scripts/push-stripe-env-to-vercel.sh` after `vercel login` + `vercel link`.
-3. Set `NEXT_PUBLIC_APP_URL=https://libertyiq.org`.
-4. Add webhook endpoint `https://libertyiq.org/api/webhook` in Stripe and paste `whsec_...`.
-5. Redeploy production.
+2. Add env vars in Vercel (including `STRIPE_PRICE_ID_LIFETIME`).
+3. Add webhook endpoint `https://libertyiq.org/api/webhook`.
+4. Redeploy.
 
-Until secret keys are on Vercel, checkout uses **Payment Links** (public Stripe URLs) and Pro unlocks on the success redirect.
+Until secret keys are on Vercel, checkout uses **Payment Links** and unlocks on the success redirect.
 
-1. User opens `/pricing` and chooses Monthly or Yearly.
-2. `POST /api/checkout` creates a Stripe Checkout Session (`mode: subscription`).
-3. After payment, Stripe redirects to `/pricing/success?session_id=...`.
-4. The success page calls `POST /api/entitlement` which verifies the session and
-   sets an httpOnly signed `li_pro` cookie.
-5. `/libertyiq`, `/quiz/*`, and `/speaking-trainer` are gated behind Pro.
-6. `POST /api/portal` opens the Stripe Customer Portal to manage/cancel.
+## Flow
 
-Progress remains in `localStorage`. Pro access is device/browser cookie–based until
-a full auth + account system is added.
+1. `/pricing` — Free / Core (monthly|yearly) / Lifetime
+2. `POST /api/checkout` with `{ plan: "monthly" | "yearly" | "lifetime" }`
+3. Lifetime uses Checkout `mode: "payment"`; Core uses `mode: "subscription"`
+4. Success page confirms session and sets the entitlement cookie
+5. Easy quizzes stay free; medium/hard + speaking trainer require Core/Lifetime

@@ -6,38 +6,35 @@ import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, Check, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useEntitlement } from '@/hooks/use-entitlement'
-import { FREE_FEATURES, PRO_FEATURES, PRO_PLANS, type BillingInterval } from '@/lib/pricing'
+import { CORE_FEATURES, FREE_FEATURES, PAID_PLANS, type PaidPlan } from '@/lib/pricing'
 import { cn } from '@/lib/utils'
 
 export default function PricingPage() {
   const searchParams = useSearchParams()
   const canceled = searchParams.get('canceled') === '1'
   const { isPro, loading, startCheckout, openPortal, configured } = useEntitlement()
-  const [plan, setPlan] = useState<BillingInterval>('yearly')
-  const [busy, setBusy] = useState(false)
+  const [busyPlan, setBusyPlan] = useState<PaidPlan | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const selected = PRO_PLANS[plan]
-
-  async function onCheckout() {
-    setBusy(true)
+  async function onCheckout(plan: PaidPlan) {
+    setBusyPlan(plan)
     setError(null)
     try {
       await startCheckout(plan)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Checkout failed')
-      setBusy(false)
+      setBusyPlan(null)
     }
   }
 
   async function onManage() {
-    setBusy(true)
+    setBusyPlan('monthly')
     setError(null)
     try {
       await openPortal()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to open billing portal')
-      setBusy(false)
+      setBusyPlan(null)
     }
   }
 
@@ -51,7 +48,7 @@ export default function PricingPage() {
         }}
       />
 
-      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground text-sm mb-8 transition-colors"
@@ -62,13 +59,13 @@ export default function PricingPage() {
 
         <div className="text-center max-w-2xl mx-auto mb-12">
           <p className="text-accent font-semibold tracking-wide uppercase text-xs mb-3">
-            LibertyIQ Pro
+            Pricing
           </p>
           <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
-            Master every argument.
+            Start free. Go Core when you&apos;re ready.
           </h1>
           <p className="mt-3 text-muted-foreground text-base sm:text-lg leading-relaxed">
-            The library stays free. Pro unlocks quizzes, ranks, and the speaking trainer.
+            A generous free teaser, affordable Core subscription, and a limited early-bird lifetime unlock.
           </p>
         </div>
 
@@ -81,9 +78,9 @@ export default function PricingPage() {
         {isPro && !loading ? (
           <div className="mx-auto max-w-lg text-center rounded-2xl border border-primary/30 bg-primary/10 px-6 py-10 mb-12">
             <Sparkles className="mx-auto size-8 text-primary mb-3" />
-            <h2 className="font-serif text-2xl font-bold">You&apos;re on LibertyIQ Pro</h2>
+            <h2 className="font-serif text-2xl font-bold">You&apos;re unlocked</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Quizzes, ranks, and the speaking trainer are unlocked on this device.
+              Medium/hard quizzes, ranks, and the speaking trainer are available on this device.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/libertyiq">
@@ -92,7 +89,7 @@ export default function PricingPage() {
               <Button
                 variant="secondary"
                 className="font-semibold w-full sm:w-auto"
-                disabled={busy}
+                disabled={busyPlan !== null}
                 onClick={() => void onManage()}
               >
                 Manage billing
@@ -100,97 +97,126 @@ export default function PricingPage() {
             </div>
           </div>
         ) : (
-          <>
-            <div className="flex justify-center mb-8">
-              <div
-                role="tablist"
-                aria-label="Billing interval"
-                className="inline-flex rounded-xl border border-border bg-card/60 p-1"
-              >
-                {(Object.keys(PRO_PLANS) as BillingInterval[]).map((key) => (
-                  <button
-                    key={key}
-                    type="button"
-                    role="tab"
-                    aria-selected={plan === key}
-                    onClick={() => setPlan(key)}
-                    className={cn(
-                      'px-4 py-2 text-sm font-semibold rounded-lg transition-colors',
-                      plan === key
-                        ? 'bg-primary text-primary-foreground'
-                        : 'text-muted-foreground hover:text-foreground',
-                    )}
-                  >
-                    {PRO_PLANS[key].label}
-                    {key === 'yearly' ? (
-                      <span className="ml-1.5 text-[10px] uppercase tracking-wide opacity-90">
-                        Best value
-                      </span>
-                    ) : null}
-                  </button>
+          <div className="grid gap-10 lg:grid-cols-3 lg:gap-8 items-start">
+            {/* Free */}
+            <section className="text-left">
+              <h2 className="font-serif text-2xl font-bold mb-1">Free</h2>
+              <p className="text-muted-foreground text-sm mb-5">Generous teaser — no account required.</p>
+              <p className="font-serif text-4xl font-bold mb-6">
+                $0
+                <span className="text-base font-sans font-medium text-muted-foreground"> forever</span>
+              </p>
+              <ul className="space-y-2.5 mb-8">
+                {FREE_FEATURES.map((feature) => (
+                  <li key={feature} className="flex gap-2 text-sm">
+                    <Check className="size-4 text-accent shrink-0 mt-0.5" aria-hidden />
+                    <span>{feature}</span>
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+              <Link href="/libertyiq">
+                <Button variant="secondary" className="w-full font-semibold">
+                  Start free
+                </Button>
+              </Link>
+            </section>
 
-            <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-start max-w-4xl mx-auto">
-              <section className="text-left">
-                <h2 className="font-serif text-2xl font-bold mb-1">Free</h2>
-                <p className="text-muted-foreground text-sm mb-5">Browse the full library.</p>
-                <p className="font-serif text-4xl font-bold mb-6">
-                  $0<span className="text-base font-sans font-medium text-muted-foreground"> forever</span>
-                </p>
-                <ul className="space-y-2.5 mb-8">
-                  {FREE_FEATURES.map((feature) => (
-                    <li key={feature} className="flex gap-2 text-sm">
-                      <Check className="size-4 text-accent shrink-0 mt-0.5" aria-hidden />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/">
-                  <Button variant="secondary" className="w-full font-semibold">
-                    Continue free
-                  </Button>
-                </Link>
-              </section>
-
-              <section className="text-left md:pl-8 md:border-l border-border">
-                <h2 className="font-serif text-2xl font-bold mb-1 flex items-center gap-2">
-                  Pro
-                  <Sparkles className="size-5 text-primary" aria-hidden />
-                </h2>
-                <p className="text-muted-foreground text-sm mb-5">{selected.blurb}</p>
-                <p className="font-serif text-4xl font-bold mb-6">
-                  {selected.priceLabel}
+            {/* Core */}
+            <section className="text-left lg:px-6 lg:border-x border-border">
+              <h2 className="font-serif text-2xl font-bold mb-1 flex items-center gap-2">
+                Core
+                <Sparkles className="size-5 text-primary" aria-hidden />
+              </h2>
+              <p className="text-muted-foreground text-sm mb-5">Full training suite.</p>
+              <div className="mb-6 space-y-1">
+                <p className="font-serif text-4xl font-bold">
+                  {PAID_PLANS.monthly.priceLabel}
                   <span className="text-base font-sans font-medium text-muted-foreground">
-                    {selected.period}
+                    {PAID_PLANS.monthly.period}
                   </span>
                 </p>
-                <ul className="space-y-2.5 mb-8">
-                  {PRO_FEATURES.map((feature) => (
-                    <li key={feature} className="flex gap-2 text-sm">
-                      <Check className="size-4 text-primary shrink-0 mt-0.5" aria-hidden />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-sm text-muted-foreground">
+                  or {PAID_PLANS.yearly.priceLabel}
+                  {PAID_PLANS.yearly.period}
+                </p>
+              </div>
+              <ul className="space-y-2.5 mb-8">
+                {CORE_FEATURES.map((feature) => (
+                  <li key={feature} className="flex gap-2 text-sm">
+                    <Check className="size-4 text-primary shrink-0 mt-0.5" aria-hidden />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="space-y-2">
                 <Button
                   className="w-full font-semibold gap-2"
                   size="lg"
-                  disabled={busy || loading || !configured}
-                  onClick={() => void onCheckout()}
+                  disabled={busyPlan !== null || loading || !configured}
+                  onClick={() => void onCheckout('yearly')}
                 >
-                  <Sparkles className="size-4" />
-                  {busy ? 'Redirecting…' : `Get Pro — ${selected.priceLabel}${selected.period}`}
+                  {busyPlan === 'yearly'
+                    ? 'Redirecting…'
+                    : `Core yearly — ${PAID_PLANS.yearly.priceLabel}`}
                 </Button>
-                {!configured && (
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    Stripe keys are missing in this environment.
-                  </p>
-                )}
-              </section>
-            </div>
-          </>
+                <Button
+                  variant="secondary"
+                  className="w-full font-semibold"
+                  disabled={busyPlan !== null || loading || !configured}
+                  onClick={() => void onCheckout('monthly')}
+                >
+                  {busyPlan === 'monthly'
+                    ? 'Redirecting…'
+                    : `Core monthly — ${PAID_PLANS.monthly.priceLabel}`}
+                </Button>
+              </div>
+            </section>
+
+            {/* Lifetime */}
+            <section className="text-left">
+              <div className="flex items-center gap-2 mb-1">
+                <h2 className="font-serif text-2xl font-bold">Lifetime</h2>
+                <span
+                  className={cn(
+                    'text-[10px] uppercase tracking-wide font-semibold px-2 py-0.5 rounded-md',
+                    'bg-primary/15 text-primary',
+                  )}
+                >
+                  Early bird
+                </span>
+              </div>
+              <p className="text-muted-foreground text-sm mb-5">{PAID_PLANS.lifetime.blurb}</p>
+              <p className="font-serif text-4xl font-bold mb-6">
+                {PAID_PLANS.lifetime.priceLabel}
+                <span className="text-base font-sans font-medium text-muted-foreground">
+                  {PAID_PLANS.lifetime.period}
+                </span>
+              </p>
+              <ul className="space-y-2.5 mb-8">
+                {CORE_FEATURES.map((feature) => (
+                  <li key={feature} className="flex gap-2 text-sm">
+                    <Check className="size-4 text-primary shrink-0 mt-0.5" aria-hidden />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+                <li className="flex gap-2 text-sm">
+                  <Check className="size-4 text-primary shrink-0 mt-0.5" aria-hidden />
+                  <span>Pay once — no renewals</span>
+                </li>
+              </ul>
+              <Button
+                className="w-full font-semibold gap-2"
+                size="lg"
+                disabled={busyPlan !== null || loading || !configured}
+                onClick={() => void onCheckout('lifetime')}
+              >
+                <Sparkles className="size-4" />
+                {busyPlan === 'lifetime'
+                  ? 'Redirecting…'
+                  : `Get lifetime — ${PAID_PLANS.lifetime.priceLabel}`}
+              </Button>
+            </section>
+          </div>
         )}
 
         {error && (
@@ -199,9 +225,9 @@ export default function PricingPage() {
           </p>
         )}
 
-        <p className="mt-12 text-center text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
-          Secure checkout powered by Stripe. Subscriptions renew automatically until canceled.
-          Manage or cancel anytime from the billing portal.
+        <p className="mt-12 text-center text-xs text-muted-foreground max-w-lg mx-auto leading-relaxed">
+          Secure checkout powered by Stripe. Core subscriptions renew until canceled.
+          Lifetime is a one-time early-bird purchase. Manage subscriptions anytime from the billing portal.
         </p>
       </div>
     </div>
