@@ -1,0 +1,62 @@
+# LibertyIQ
+
+> Free conservative arguments library and quiz platform at https://libertyiq.org
+
+LibertyIQ helps users study structured conservative debate topics with biblical foundations, scientific evidence, defense tips, knowledge quizzes, and a public speaking trainer.
+
+## About
+
+- **Site:** https://libertyiq.org
+- **Purpose:** Educational resource for conservative arguments and debate preparation
+- **Cost:** Free — no account required
+- **Progress storage:** Browser localStorage only
+
+## Key Pages
+
+- [Home — Argument Library](https://libertyiq.org/)
+- [Quiz Dashboard](https://libertyiq.org/libertyiq)
+- [Speaking Trainer](https://libertyiq.org/speaking-trainer)
+
+## Topics (11)
+
+Each topic includes structured arguments, evidence, defense tips, a full topic page, and a quiz with three difficulty levels.
+
+1. [Pro-Life Position](https://libertyiq.org/topic/pro-life) — [Quiz](https://libertyiq.org/quiz/pro-life)
+2. [Illegal Immigration](https://libertyiq.org/topic/immigration) — [Quiz](https://libertyiq.org/quiz/illegal-immigration)
+3. [Second Amendment](https://libertyiq.org/topic/second-amendment) — [Quiz](https://libertyiq.org/quiz/second-amendment)
+4. [Marriage](https://libertyiq.org/topic/marriage) — [Quiz](https://libertyiq.org/quiz/marriage)
+5. [Two Sexes / Gender Reality](https://libertyiq.org/topic/two-sexes) — [Quiz](https://libertyiq.org/quiz/two-sexes)
+6. [Pro-Israel](https://libertyiq.org/topic/pro-israel) — [Quiz](https://libertyiq.org/quiz/pro-israel)
+7. [National Security](https://libertyiq.org/topic/national-security) — [Quiz](https://libertyiq.org/quiz/national-security)
+8. [Anti-Climate Alarmism](https://libertyiq.org/topic/anti-climate-alarmism) — [Quiz](https://libertyiq.org/quiz/anti-climate-alarmism)
+9. [Limited Government](https://libertyiq.org/topic/limited-government) — [Quiz](https://libertyiq.org/quiz/limited-government)
+10. [Anti-CRT](https://libertyiq.org/topic/anti-crt) — [Quiz](https://libertyiq.org/quiz/anti-crt)
+11. [Crime & Justice](https://libertyiq.org/topic/crime-and-justice) — [Quiz](https://libertyiq.org/quiz/crime-and-justice)
+
+## Quiz Rank System
+
+- **Intern Analyst** — Pass Easy quiz (70%+)
+- **Senior Fellow** — Pass Medium quiz (75%+)
+- **Chief Strategist** — Pass Hard quiz (80%+)
+
+## Frequently Asked Questions
+
+**What is LibertyIQ?**
+LibertyIQ is a free online conservative arguments library and quiz platform at LibertyIQ.org.
+
+**What topics does LibertyIQ cover?**
+Eleven debate topics: Pro-Life, Illegal Immigration, Second Amendment, Marriage, Two Sexes, Pro-Israel, National Security, Anti-Climate Alarmism, Limited Government, Anti-CRT, and Crime & Justice.
+
+**Is LibertyIQ free?**
+Yes. No account, subscription, or payment is required.
+
+**What is the speaking trainer?**
+A browser-based tool at /speaking-trainer that transcribes speech, counts filler words, and provides coaching tips.
+
+## Sitemap
+
+https://libertyiq.org/sitemap.xml
+
+## Contact
+
+Website: https://libertyiq.org

@@ -2,6 +2,8 @@
 
 A [Next.js](https://nextjs.org) conservative arguments library and quiz app. Browse debate topics, study evidence, test your knowledge, and practice public speaking.
 
+**Live site:** [https://libertyiq.org](https://libertyiq.org)
+
 ## Features
 
 - **Argument library** (`/`) — 11 topics with expandable arguments, evidence, and defense tips
@@ -36,24 +38,31 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deployment
 
-This project deploys automatically to [Vercel](https://vercel.com) when changes are pushed to `main`. No environment variables or database setup is required.
+This project deploys automatically to [Vercel](https://vercel.com) when changes are pushed to `main`. The production domain is **[LibertyIQ.org](https://libertyiq.org)** (registered via Namecheap, DNS pointed to Vercel). No environment variables or database setup is required.
 
 **Local development** — clone the repo and run `pnpm install && pnpm dev`. Works fully in [Cursor](https://cursor.com) or any editor.
 
 **CI** — GitHub Actions runs `pnpm lint` and `pnpm build` on every push and pull request to `main`.
+
+## SEO & AEO
+
+- Per-page metadata with Open Graph and Twitter cards
+- Dynamic `sitemap.xml` and `robots.txt`
+- JSON-LD structured data (Organization, WebSite, FAQ, Article, LearningResource)
+- `public/llms.txt` for AI/answer-engine discoverability
 
 ## Project Structure
 
 ```
 app/           # Next.js App Router pages
 components/    # UI and feature components
-lib/           # Topic data, quiz data, utilities
+lib/           # Topic data, quiz data, SEO helpers, site config
 hooks/         # React hooks (quiz progress)
-public/        # Static assets
+public/        # Static assets, llms.txt
 ```
 
 ## Built with
 
 - Next.js 16, React 19, TypeScript
 - Tailwind CSS 4, shadcn/ui
-- Originally scaffolded with [v0](https://v0.app)
+- Hosted on Vercel at [LibertyIQ.org](https://libertyiq.org)
