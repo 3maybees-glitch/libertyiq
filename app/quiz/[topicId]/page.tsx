@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { ArrowLeft, Trophy, Target, BookOpen, ChevronRight, Check, X, RotateCcw, Award } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ProGate } from '@/components/pro-gate';
 
 interface PageProps {
   params: Promise<{ topicId: string }>;
@@ -107,6 +108,10 @@ export default function QuizPage({ params }: PageProps) {
   if (!mounted) return null;
 
   return (
+    <ProGate
+      title="Quizzes are a Pro feature"
+      description="Unlock LibertyIQ Pro to take this topic quiz and earn ranks."
+    >
     <div className="min-h-screen bg-background">
       {/* Patriotic top bar */}
       <div className="h-1.5 w-full" style={{ background: 'linear-gradient(to right, #B22234 33%, #FFFFFF 33%, #FFFFFF 66%, #3C3B6E 66%)' }} />
@@ -157,6 +162,7 @@ export default function QuizPage({ params }: PageProps) {
         )}
       </div>
     </div>
+    </ProGate>
   );
 }
 

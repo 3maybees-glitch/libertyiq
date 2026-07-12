@@ -22,6 +22,14 @@ Last updated: July 2026
 - [x] Rank system: Intern Analyst → Senior Fellow → Chief Strategist
 - [x] Hydration-safe client rendering for progress-dependent UI
 
+### Payments (LibertyIQ Pro)
+- [x] Stripe Checkout for monthly ($9.99) and yearly ($79) Pro subscriptions
+- [x] Pricing page (`/pricing`) + success confirmation
+- [x] Pro gating for quizzes and speaking trainer
+- [x] Customer Portal for manage/cancel
+- [x] Signed entitlement cookie (`li_pro`) after successful checkout
+- [ ] Full user accounts / cross-device Pro sync (future)
+
 ### Design & UX
 - [x] Patriotic branding with LibertyIQ logo
 - [x] Topic illustration banners
@@ -49,7 +57,7 @@ Last updated: July 2026
 
 ## Deployment
 
-- [x] No environment variables or database required
+- [ ] Stripe env vars required for Pro checkout (see `.env.example`)
 - [x] Vercel auto-deploy on push to `main`
 - [x] Production build verified
 
@@ -60,6 +68,7 @@ Last updated: July 2026
 - [ ] Dark mode CSS variables exist; no theme toggle wired up
 - [ ] Many unused shadcn/ui components from initial scaffold remain in `components/ui/`
 - [ ] `images.unoptimized: true` in `next.config.mjs` — image optimization disabled
+- [ ] Pro entitlement is cookie/device–scoped until accounts are added
 
 ## Future Enhancements
 
@@ -69,3 +78,5 @@ Last updated: July 2026
 - [ ] Link topic detail pages from home
 - [ ] Prune unused UI components and dependencies
 - [ ] Split monolithic `lib/types.ts` into per-topic modules
+- [ ] Auth + cross-device Pro entitlements
+- [ ] Live Stripe webhook wiring in production
