@@ -12,9 +12,21 @@ export const metadata: Metadata = {
   title: 'LibertyIQ — Conservative Worldviews Library',
   description:
     'An interactive field guide to conservative worldviews on pro-life, immigration, constitutional rights, and more. Learn biblical foundations, scientific evidence, and debate strategies.',
+  applicationName: 'LibertyIQ',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'LibertyIQ',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
-    icon: '/libertyiq-logo.png',
-    apple: '/libertyiq-logo.png',
+    icon: [
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
     type: 'website',
@@ -45,6 +57,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#3C3B6E',
 }
 
 export default function RootLayout({

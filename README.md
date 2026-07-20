@@ -11,6 +11,7 @@ A [Next.js](https://nextjs.org) conservative worldviews library and quiz app. Br
 - **Quiz dashboard** (`/libertyiq`) — rank up through Intern Analyst → Senior Fellow → Chief Strategist
 - **Quizzes** (`/quiz/[topicId]`) — easy, medium, and hard levels per topic
 - **Speaking trainer** (`/speaking-trainer`) — browser-based speech practice with filler-word analysis
+- **Installable PWA** — Add to Home Screen; library and quizzes cache for offline use after first visit
 
 Progress is stored locally in your browser (`localStorage`). LibertyIQ Pro (quizzes + speaking trainer) uses Stripe Checkout.
 
@@ -40,7 +41,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Command | Description |
 |---------|-------------|
 | `pnpm dev` | Start development server |
-| `pnpm build` | Production build |
+| `pnpm build` | Production build (webpack + Serwist service worker) |
 | `pnpm start` | Run production server |
 | `pnpm lint` | Run ESLint |
 

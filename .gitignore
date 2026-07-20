@@ -9,3 +9,9 @@ node_modules
 .env*.local
 .DS_Store
 *.tsbuildinfo
+
+# Serwist-generated service worker (built on `next build`)
+public/sw.js
+public/sw.js.map
+public/swe-worker-*.js
+public/swe-worker-*.js.map

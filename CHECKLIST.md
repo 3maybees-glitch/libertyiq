@@ -36,6 +36,7 @@ Last updated: July 2026
 - [x] Topic illustration banners
 - [x] Responsive mobile-first layouts
 - [x] Expandable argument cards with typed evidence sections
+- [x] Lightweight PWA (manifest, install prompt, Serwist offline cache for library/quizzes)
 
 ### Accessibility
 - [x] Semantic HTML and ARIA on interactive components

@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, Check, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useEntitlement } from '@/hooks/use-entitlement'
+import { OnlineOnlyNote } from '@/components/online-only-note'
 import { CORE_FEATURES, FREE_FEATURES, PAID_PLANS, type PaidPlan } from '@/lib/pricing'
 import { cn } from '@/lib/utils'
 
@@ -225,10 +226,16 @@ export default function PricingPage() {
           </p>
         )}
 
-        <p className="mt-12 text-center text-xs text-muted-foreground max-w-lg mx-auto leading-relaxed">
-          Secure checkout powered by Stripe. Core subscriptions renew until canceled.
-          Lifetime is a one-time early-bird purchase. Manage subscriptions anytime from the billing portal.
-        </p>
+        <div className="mt-12 mx-auto max-w-lg space-y-2 text-center">
+          <OnlineOnlyNote>
+            Checkout and billing portal need a network connection. The library and quizzes still work offline
+            after you&apos;ve opened them once.
+          </OnlineOnlyNote>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Secure checkout powered by Stripe. Core subscriptions renew until canceled.
+            Lifetime is a one-time early-bird purchase. Manage subscriptions anytime from the billing portal.
+          </p>
+        </div>
       </div>
     </div>
   )
