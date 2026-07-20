@@ -10,6 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Mic, MicOff, Play, RotateCcw, Trophy, Volume2, AlertCircle, CheckCircle2, Brain, BarChart3, ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { OnlineOnlyNote } from "@/components/online-only-note"
 
 // Drop-in LibertyIQ feature for v0.app
 // Notes:
@@ -345,6 +346,11 @@ return (
               <p className="text-foreground mt-2 text-base md:text-lg">
                 Practice short spoken responses and get instant LibertyIQ-style coaching on clarity, filler words, and confidence.
               </p>
+              <div className="mt-3 max-w-xl">
+                <OnlineOnlyNote>
+                  Live transcription usually needs a network connection. You can still paste a transcript manually if you&apos;re offline.
+                </OnlineOnlyNote>
+              </div>
             </div>
             <div className="flex flex-wrap gap-2">
               <Badge variant="secondary" className="text-sm px-3 py-1.5">
