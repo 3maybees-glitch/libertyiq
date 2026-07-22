@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { GraduationCap, Mic, Sparkles } from 'lucide-react';
 import ReferencesButton from '@/components/references-button';
+import { InstallAppButton, InstallAppHomeLink } from '@/components/install-app';
 import Image from 'next/image';
 
 export default function Home() {
@@ -73,6 +74,7 @@ export default function Home() {
                   Pricing
                 </div>
               </Link>
+              <InstallAppHomeLink />
               <ReferencesButton fullWidth />
             </div>
           </div>
@@ -101,6 +103,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2 shrink-0 pt-1">
               <ReferencesButton />
+              <InstallAppButton variant="outline" size="default" />
               <Link href="/pricing">
                 <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
                   <Sparkles className="h-5 w-5" />
