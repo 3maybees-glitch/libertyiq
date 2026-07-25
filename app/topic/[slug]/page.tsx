@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { TopicIllustration } from '@/components/TopicIllustration';
 import ReferencesButton from '@/components/references-button';
+import { DebateOnePagerButton } from '@/components/debate-onepager-button';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -53,7 +54,10 @@ export default function TopicPage({ params }: PageProps) {
             <ArrowLeft className="h-4 w-4" />
             Back to all topics
           </Link>
-          <ReferencesButton />
+          <div className="flex items-center gap-2">
+            <DebateOnePagerButton topicId={topic.id} />
+            <ReferencesButton />
+          </div>
         </div>
 
         {/* Topic header with illustration */}
