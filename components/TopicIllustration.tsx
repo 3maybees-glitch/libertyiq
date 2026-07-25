@@ -17,6 +17,9 @@ const TOPIC_IMAGES: Record<string, string> = {
   'limited-government':    '/images/topics/limited-government.jpg',
   'anti-crt':              '/images/topics/anti-crt.jpg',
   'crime-and-justice':     '/images/topics/crime-and-justice.jpg',
+  'role-of-the-military':  '/images/topics/role-of-the-military.jpg',
+  'universal-healthcare':  '/images/topics/universal-healthcare.jpg',
+  'ai-governance':         '/images/topics/ai-governance.jpg',
 };
 
 export function TopicIllustration({ slug, title }: Props) {

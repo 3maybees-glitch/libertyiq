@@ -6,7 +6,7 @@ A [Next.js](https://nextjs.org) conservative worldviews library and quiz app. Br
 
 ## Features
 
-- **Argument library** (`/`) — 11 topics with expandable arguments, evidence, and defense tips
+- **Argument library** (`/`) — 14 topics with expandable arguments, evidence, and defense tips
 - **Topic pages** (`/topic/[slug]`) — deep dives on each issue
 - **Quiz dashboard** (`/libertyiq`) — rank up through Intern Analyst → Senior Fellow → Chief Strategist
 - **Quizzes** (`/quiz/[topicId]`) — easy, medium, and hard levels per topic
@@ -25,7 +25,7 @@ See [docs/GO_LIVE.md](docs/GO_LIVE.md) for the production checklist and [docs/ST
 
 ## Topics
 
-Pro-Life, Illegal Immigration, Second Amendment, Marriage, Two Sexes, Pro-Israel, National Security, Anti-Climate Alarmism, Limited Government, Anti-CRT, and Crime & Justice.
+Pro-Life, Illegal Immigration, Second Amendment, Marriage, Two Sexes, Pro-Israel, National Security, Anti-Climate Alarmism, Limited Government, Anti-CRT, Crime & Justice, Role of the Military, Against Universal Government Healthcare, and AI Governance.
 
 ## Debate one-pagers
 
