@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "debate-onepagers": "node scripts/generate-debate-onepagers.mjs",
+    "debate-onepagers:html": "HTML_ONLY=1 node scripts/generate-debate-onepagers.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

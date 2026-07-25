@@ -27,6 +27,10 @@ See [docs/GO_LIVE.md](docs/GO_LIVE.md) for the production checklist and [docs/ST
 
 Pro-Life, Illegal Immigration, Second Amendment, Marriage, Two Sexes, Pro-Israel, National Security, Anti-Climate Alarmism, Limited Government, Anti-CRT, and Crime & Justice.
 
+## Debate one-pagers
+
+Printable one-page talking-point PDFs for each issue (debate path ↓ plus They say → You say counters) live in [`docs/debate-onepagers/`](docs/debate-onepagers/). Regenerate with `pnpm debate-onepagers`.
+
 ## Getting Started
 
 ```bash

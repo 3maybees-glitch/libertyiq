@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Crime &amp; Justice — Debate One-Pager | LibertyIQ</title>
+<style>
+  @page { size: letter portrait; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    width: 8.5in;
+    height: 11in;
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    color: #1a2332;
+    background: #f7f3ea;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    width: 8.5in;
+    height: 11in;
+    padding: 0.42in 0.48in 0.38in;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 80% at 100% 0%, rgba(184, 138, 58, 0.14), transparent 55%),
+      radial-gradient(90% 70% at 0% 100%, rgba(26, 58, 92, 0.10), transparent 50%),
+      linear-gradient(180deg, #fbf8f1 0%, #f3eee3 100%);
+  }
+  .page::before {
+    content: "";
+    position: absolute;
+    inset: 0.22in;
+    border: 1.5px solid rgba(26, 58, 92, 0.22);
+    pointer-events: none;
+  }
+  .page::after {
+    content: "";
+    position: absolute;
+    inset: 0.28in;
+    border: 0.5px solid rgba(184, 138, 58, 0.35);
+    pointer-events: none;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 0.3in;
+    margin-bottom: 0.16in;
+    padding-bottom: 0.1in;
+    border-bottom: 2px solid #1a3a5c;
+    position: relative;
+    z-index: 1;
+  }
+  .brand {
+    font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #b88a3a;
+    font-weight: 700;
+  }
+  h1 {
+    font-size: 26px;
+    line-height: 1.05;
+    color: #1a3a5c;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .meta {
+    text-align: right;
+    font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    font-size: 9px;
+    color: #5a6570;
+    line-height: 1.35;
+  }
+  .frame {
+    margin: 0.12in 0 0.14in;
+    padding: 0.1in 0.14in;
+    background: #1a3a5c;
+    color: #f7f3ea;
+    position: relative;
+    z-index: 1;
+  }
+  .frame .tag {
+    font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #e2c27a;
+    display: block;
+    margin-bottom: 0.04in;
+  }
+  .frame p {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 0.18in;
+    position: relative;
+    z-index: 1;
+  }
+  .col h2 {
+    font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #b88a3a;
+    margin-bottom: 0.08in;
+    display: flex;
+    align-items: center;
+    gap: 0.08in;
+  }
+  .col h2 .bar {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #b88a3a, transparent);
+  }
+  .path {
+    display: flex;
+    flex-direction: column;
+  }
+  .step {
+    display: flex;
+    gap: 0.08in;
+    align-items: flex-start;
+    background: rgba(255,255,255,0.55);
+    border-left: 3px solid #1a3a5c;
+    padding: 0.07in 0.09in;
+  }
+  .num {
+    flex: 0 0 0.22in;
+    width: 0.22in;
+    height: 0.22in;
+    border-radius: 50%;
+    background: #1a3a5c;
+    color: #f7f3ea;
+    font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.01in;
+  }
+  .step p {
+    font-size: 10.5px;
+    line-height: 1.28;
+  }
+  .v-arrow {
+    text-align: center;
+    color: #b88a3a;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0.02in 0;
+    font-weight: 700;
+  }
+  .exchanges {
+    display: flex;
+    flex-direction: column;
+    gap: 0.08in;
+  }
+  .exchange {
+    display: grid;
+    grid-template-columns: 1fr 0.28in 1.15fr;
+    align-items: stretch;
+    gap: 0.04in;
+  }
+  .they, .you {
+    padding: 0.07in 0.08in;
+    min-height: 0.62in;
+  }
+  .they {
+    background: rgba(140, 48, 48, 0.08);
+    border: 1px solid rgba(140, 48, 48, 0.25);
+  }
+  .you {
+    background: rgba(26, 90, 58, 0.08);
+    border: 1px solid rgba(26, 90, 58, 0.28);
+  }
+  .label {
+    font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    font-size: 7.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.03in;
+  }
+  .they .label { color: #8c3030; }
+  .you .label { color: #1a5a3a; }
+  .they p, .you p {
+    font-size: 9.5px;
+    line-height: 1.28;
+  }
+  .h-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b88a3a;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .close {
+    margin-top: 0.14in;
+    padding: 0.1in 0.12in;
+    border: 1.5px solid #b88a3a;
+    background: rgba(184, 138, 58, 0.10);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.12in;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .close .arrow-badge {
+    font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1a3a5c;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .close .arrow-badge span {
+    display: inline-block;
+    margin-left: 0.06in;
+    color: #b88a3a;
+  }
+  .close p {
+    font-size: 11px;
+    line-height: 1.3;
+    color: #1a3a5c;
+  }
+  footer {
+    position: absolute;
+    left: 0.48in;
+    right: 0.48in;
+    bottom: 0.32in;
+    display: flex;
+    justify-content: space-between;
+    font-family: "Avenir Next", "Segoe UI", Helvetica, sans-serif;
+    font-size: 8px;
+    color: #6a7380;
+    z-index: 1;
+    border-top: 1px solid rgba(26,58,92,0.18);
+    padding-top: 0.06in;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div>
+        <div class="brand">LibertyIQ · Debate Card</div>
+        <h1>Crime &amp; Justice</h1>
+      </div>
+      <div class="meta">
+        One-page talking points<br />
+        Issue 11 of 11<br />
+        libertyiq.org
+      </div>
+    </header>
+
+    <section class="frame">
+      <span class="tag">Opening frame → start here</span>
+      <p>Government’s job is to punish evil and protect the innocent. Soft-on-crime politics abandons victims.</p>
+    </section>
+
+    <div class="grid">
+      <section class="col">
+        <h2>Debate path <span class="bar"></span></h2>
+        <div class="path">
+          <div class="step"><span class="num">1</span><p>Mandate: Romans 13 — bear the sword against wrongdoers.</p></div><div class="v-arrow" aria-hidden="true">↓</div>
+<div class="step"><span class="num">2</span><p>Safety: Catch-and-release and soft charging correlate with rising violence.</p></div><div class="v-arrow" aria-hidden="true">↓</div>
+<div class="step"><span class="num">3</span><p>Rule of law: Sanctuary nullification destroys equal justice and deterrence.</p></div><div class="v-arrow" aria-hidden="true">↓</div>
+<div class="step"><span class="num">4</span><p>Borders: Sovereignty includes keeping violent criminal aliens out — and removing them.</p></div><div class="v-arrow" aria-hidden="true">↓</div>
+<div class="step"><span class="num">5</span><p>Victims first: Speak for those who can’t (Prov 31). Name the forgotten dead.</p></div>
+        </div>
+      </section>
+      <section class="col">
+        <h2>Counters <span class="bar"></span></h2>
+        <div class="exchanges">
+          
+      <div class="exchange">
+        <div class="they"><span class="label">They say</span><p>“No human is illegal”</p></div>
+        <div class="h-arrow" aria-hidden="true">→</div>
+        <div class="you"><span class="label">You say</span><p>People aren’t illegal; illegal entry and overstay are. Words describe actions.</p></div>
+      </div>
+
+      <div class="exchange">
+        <div class="they"><span class="label">They say</span><p>“Most aren’t violent”</p></div>
+        <div class="h-arrow" aria-hidden="true">→</div>
+        <div class="you"><span class="label">You say</span><p>Then deport the violent subset without apology. Even small percentages are many victims.</p></div>
+      </div>
+
+      <div class="exchange">
+        <div class="they"><span class="label">They say</span><p>“Deportation is cruel”</p></div>
+        <div class="h-arrow" aria-hidden="true">→</div>
+        <div class="you"><span class="label">You say</span><p>Cruelty is releasing predators onto Kate Steinle’s neighbors. Justice is not optional.</p></div>
+      </div>
+
+      <div class="exchange">
+        <div class="they"><span class="label">They say</span><p>“The system is broken”</p></div>
+        <div class="h-arrow" aria-hidden="true">→</div>
+        <div class="you"><span class="label">You say</span><p>Reform laws — don’t ignore them. Chaos isn’t compassion.</p></div>
+      </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="close">
+      <div class="arrow-badge">Close → <span>⟶</span></div>
+      <p>Put victims’ names at the center. Deterrence is love for the next potential victim.</p>
+    </section>
+
+    <footer>
+      <span>Use the left column to lead; answer objections on the right.</span>
+      <span>© LibertyIQ · For study &amp; debate practice</span>
+    </footer>
+  </div>
+</body>
+</html>
