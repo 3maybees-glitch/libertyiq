@@ -1,6 +1,11 @@
 // Quiz data types and questions for all topics
 
 import { illegalImmigrationQuiz, secondAmendmentQuiz } from '@/lib/quizzes/immigration-second-amendment';
+import {
+  roleOfTheMilitaryQuiz,
+  universalHealthcareQuiz,
+  aiGovernanceQuiz,
+} from '@/lib/quizzes/military-healthcare-ai';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type QuizLevel = DifficultyLevel;
@@ -3623,6 +3628,9 @@ export const allQuizzes: TopicQuiz[] = [
   limitedGovernmentQuiz,
   antiCRTQuiz,
   crimeJusticeQuiz,
+  roleOfTheMilitaryQuiz,
+  universalHealthcareQuiz,
+  aiGovernanceQuiz,
 ];
 
 export function getQuizByTopicId(topicId: string): Quiz | undefined {

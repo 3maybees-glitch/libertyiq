@@ -55,6 +55,18 @@ const IMAGES = [
     slug: 'crime-and-justice',
     url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/US_Navy_040910-N-8157F-001_Sailors_aboard_the_guided_missile_cruiser_USS_Antietam_%28CG_54%29_man_the_rails_as_the_ship_pulls_into_Naval_Station_Pearl_Harbor%2C_Hawaii.jpg/640px-thumbnail.jpg',
   },
+  {
+    slug: 'role-of-the-military',
+    url: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800&q=80',
+  },
+  {
+    slug: 'universal-healthcare',
+    url: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
+  },
+  {
+    slug: 'ai-governance',
+    url: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
+  },
 ];
 
 async function download(url, dest) {

@@ -1,5 +1,5 @@
 // LibertyIQ topic data — conservative arguments library
-// topics: illegal-immigration | second-amendment | marriage | two-sexes | pro-israel | national-security | anti-climate-alarmism | limited-government | anti-crt | crime-and-justice
+// topics: illegal-immigration | second-amendment | marriage | two-sexes | pro-israel | national-security | anti-climate-alarmism | limited-government | anti-crt | crime-and-justice | role-of-the-military | universal-healthcare | ai-governance
 export type EvidenceType =
   | 'scripture'
   | 'quote'
@@ -3635,5 +3635,436 @@ export const topics: TopicItem[] = [
       'We will not do nothing. We will demand justice, enforce laws, secure borders, and protect our communities. This is not only constitutional and practical—it\'s Biblical.',
     ],
   },
-];
 
+  // ─── ROLE OF THE MILITARY ────────────────────────────────────────────────────
+  {
+    id: 'role-of-the-military',
+    slug: 'role-of-the-military',
+    title: 'Role of the Military',
+    shortDescription: 'Biblical and constitutional arguments for a strong, lethal, apolitical military focused on defending the nation — not social experimentation.',
+    overview: 'The military exists to fight and win wars, deter enemies, and protect the American people. That is a sacred, limited vocation. Turning the armed forces into a social laboratory, climate agency, or political brand weakens deterrence and betrays those who serve. Peace through strength requires readiness, warrior ethos, and clear mission focus.',
+    arguments: [
+      {
+        id: 'arg-1',
+        title: 'The Biblical Mandate: The Sword Exists to Restrain Evil',
+        summary: 'Romans 13 gives government the sword for a reason. A military that cannot or will not fight abandons its God-ordained duty to protect the innocent.',
+        outlinePoints: [
+          'Romans 13:4: Rulers "do not bear the sword for no reason" — force is legitimate to restrain evil',
+          'Nehemiah 4: Armed builders defended families and homes while rebuilding',
+          'Ecclesiastes 3:8: There is "a time for war and a time for peace"',
+          'Just-war tradition (Augustine, Aquinas): Defense of the innocent can be righteous',
+        ],
+        evidence: [
+          {
+            type: 'scripture',
+            title: 'Romans 13:3-4',
+            content: '"For rulers hold no terror for those who do right, but for those who do wrong... For the one in authority is God\'s servant for your good. But if you do wrong, be afraid, for rulers do not bear the sword for no reason."',
+          },
+          {
+            type: 'philosophical',
+            title: 'Augustine / Aquinas — Just War',
+            content: 'Christian just-war teaching requires legitimate authority, just cause, and right intention. It rejects both pacifist abdication and crusading aggression — the military serves limited, moral ends.',
+          },
+        ],
+        application: 'Support a military capable of deterrence and defense. Weakness that invites aggression is not compassion; it is negligence.',
+        counterarguments: [
+          'Doesn\'t Christianity require pacifism?',
+          'Isn\'t a strong military inherently militaristic?',
+        ],
+      },
+      {
+        id: 'arg-2',
+        title: 'The Constitutional Argument: Defend the Nation, Not Remake Society',
+        summary: 'The Constitution authorizes raising and supporting armies to provide for the common defense — not to engineer culture or police every social disagreement.',
+        outlinePoints: [
+          'Preamble / Article I: "provide for the common defence"',
+          'Civilian control of the military is a founding safeguard against praetorian politics',
+          'Mission creep into domestic politics erodes trust and readiness',
+          'The military\'s legitimacy depends on being seen as the nation\'s shield, not a faction\'s tool',
+        ],
+        evidence: [
+          {
+            type: 'constitutional',
+            title: 'U.S. Constitution — Common Defense',
+            content: 'Congress is empowered to raise armies and maintain a navy to provide for the common defense. That is a focused national purpose, not an open-ended social portfolio.',
+          },
+          {
+            type: 'quote',
+            title: 'George Washington',
+            content: 'Washington\'s Farewell Address warned against partisan factions and foreign entanglements that distract a republic from sober self-defense and unity.',
+          },
+        ],
+        application: 'Demand that civilian leaders keep the force focused on warfighting requirements and keep the military out of partisan culture wars.',
+      },
+      {
+        id: 'arg-3',
+        title: 'The Readiness Argument: Lethality Over Distraction',
+        summary: 'Recruiting shortfalls, lowered standards, and politicized training degrade combat power. Enemies do not grade on diversity metrics.',
+        outlinePoints: [
+          'Primary metrics: recruitment, retention, training hours, maintenance, munitions, and war plans',
+          'Standards exist because war is unforgiving — lowering them risks lives',
+          'China, Russia, Iran, and terror networks optimize for power, not messaging',
+          'A distracted force is a deterred force — for the wrong side',
+        ],
+        evidence: [
+          {
+            type: 'practical',
+            title: 'Readiness Reality',
+            content: 'Aircraft mission-capable rates, ship maintenance backlogs, munitions stockpiles, and recruiting trends are leading indicators of whether a military can fight tonight — not press releases.',
+          },
+          {
+            type: 'quote',
+            title: 'James Mattis',
+            content: 'Warfighting guidance associated with Mattis emphasizes being ready when called: the enemy gets a vote, and lethality is the point of the profession.',
+          },
+        ],
+        application: 'Judge defense policy by whether it makes America harder to attack and more able to win — not by whether it flatters domestic political fashions.',
+      },
+      {
+        id: 'arg-4',
+        title: 'The Warrior Ethos Argument: Character Wins Wars',
+        summary: 'Courage, discipline, sacrifice, and unit cohesion are not optional extras. Undermining them for ideology hollows out the profession of arms.',
+        outlinePoints: [
+          'Unit cohesion depends on shared mission and trust under fire',
+          'Honor culture and moral formation matter more than slogans',
+          'Using the ranks for social experimentation treats soldiers as props',
+          'Veterans and families deserve a force worthy of their sacrifice',
+        ],
+        evidence: [
+          {
+            type: 'scripture',
+            title: 'John 15:13',
+            content: '"Greater love has no one than this: to lay down one\'s life for one\'s friends." Military service at its best institutionalizes sacrificial love for neighbors and nation.',
+          },
+          {
+            type: 'historical',
+            title: 'Cohesion Under Fire',
+            content: 'Military history repeatedly shows that small-unit trust and shared standards matter more than equipment alone. Fracture those, and hardware cannot save you.',
+          },
+        ],
+        application: 'Defend high standards, chaplaincy and moral formation, and a culture that honors courage rather than grievance.',
+      },
+      {
+        id: 'arg-5',
+        title: 'The Limits Argument: Strong Force, Constrained Ends',
+        summary: 'A powerful military needs moral and strategic limits: clear objectives, exit criteria, and refusal of endless nation-building fantasies.',
+        outlinePoints: [
+          'Strength without prudence becomes forever war',
+          'Clear authorization, objectives, and end states are moral requirements',
+          'Allies matter; America is not the world\'s permanent police beat for every crisis',
+          'Peace through strength is not peace through endless occupation',
+        ],
+        evidence: [
+          {
+            type: 'philosophical',
+            title: 'Just-War Limits',
+            content: 'Just cause and right intention also imply probability of success and proportionality. Open-ended missions with shifting goals fail those tests.',
+          },
+          {
+            type: 'practical',
+            title: 'Strategic Clarity',
+            content: 'Deterrence works when adversaries believe you will fight for vital interests — and when you refuse to bleed for undefined ones.',
+          },
+        ],
+        application: 'Argue for a lethal military that knows what it is for: defend America, deter enemies, win wars — then come home.',
+      },
+    ],
+    defenseTips: [
+      'Distinguish Role of the Military from National Security: this topic is about what the force is for (mission, ethos, limits), not only which threats exist.',
+      'Addressing Common Counterarguments:',
+      '"A strong military causes wars": Weakness invites aggression. Deterrence prevents wars by raising the cost of attack. Reagan\'s buildup helped end the Cold War without WWIII.',
+      '"The military should reflect every social trend": The military is not a campus. Its job is lethality and cohesion under fire. Standards serve survival.',
+      '"Civilian control means politicians can politicize the ranks": Civilian control sets strategy and budgets; it does not require turning service members into partisan spokespeople.',
+      '"America spends too much on defense": Security is the first duty of government (Romans 13). Waste should be cut; capability should not. Dead citizens cannot enjoy other spending.',
+      '"Christians should oppose all force": Personal forgiveness is not national abdication. Just war tradition distinguishes murder from rightful defense of the innocent.',
+    ],
+  },
+
+  // ─── UNIVERSAL HEALTHCARE ────────────────────────────────────────────────────
+  {
+    id: 'universal-healthcare',
+    slug: 'universal-healthcare',
+    title: 'Against Universal Government Healthcare',
+    shortDescription: 'Arguments against single-payer / government-run universal healthcare and for choice, competition, transparency, and targeted help for the vulnerable.',
+    overview: 'Healthcare is a moral good — and that is why monopoly government medicine is a bad idea. Centralized systems ration by waiting list, blunt innovation, and trap patients and doctors in politics. A free people should expand access through competition, price transparency, portable coverage, and charity — not by putting bureaucrats between patients and care.',
+    arguments: [
+      {
+        id: 'arg-1',
+        title: 'The Liberty Argument: Care Is Too Personal for a Monopoly',
+        summary: 'Medicine involves conscience, risk, and intimate tradeoffs. A single government payer turns those into political commands.',
+        outlinePoints: [
+          'Patients and doctors need freedom to choose treatments, insurers, and tradeoffs',
+          'Government monopoly means political rationing of what care is "allowed"',
+          'Conscience rights for doctors, nurses, and hospitals are crushed under one payer',
+          'Exit options discipline bad systems — monopoly removes exit',
+        ],
+        evidence: [
+          {
+            type: 'philosophical',
+            title: 'Freedom of Association in Medicine',
+            content: 'When the state becomes the only payer, it becomes the only real customer. Clinical judgment and conscience yield to reimbursement codes and political priorities.',
+          },
+          {
+            type: 'scripture',
+            title: 'Matthew 22:21',
+            content: '"Give back to Caesar what is Caesar\'s, and to God what is God\'s." Not every sphere of life belongs under Caesar\'s administration — including the healing arts.',
+          },
+        ],
+        application: 'Defend patient choice and doctor independence as moral goods, not luxuries.',
+        counterarguments: [
+          'Isn\'t healthcare a right that government must guarantee?',
+          'Don\'t other countries prove monopoly care works?',
+        ],
+      },
+      {
+        id: 'arg-2',
+        title: 'The Economics Argument: Incentives Drive Access and Cost',
+        summary: 'Third-party payment, opaque pricing, and mandates inflate costs. More government monopoly doubles down on the disease.',
+        outlinePoints: [
+          'What you subsidize without price signals, you make scarce or expensive',
+          'Competition and transparency lower prices in markets that allow them (LASIK, cosmetic care)',
+          'Single-payer does not abolish scarcity — it hides it in queues and denials',
+          'Innovation follows reward; price controls starve the pipeline',
+        ],
+        evidence: [
+          {
+            type: 'practical',
+            title: 'Price-Transparent Markets',
+            content: 'Procedures paid largely out-of-pocket (LASIK, many dental and cosmetic surgeries) have seen falling real prices and rising quality — evidence that competition works when patients can see and choose.',
+          },
+          {
+            type: 'quote',
+            title: 'Milton Friedman',
+            content: 'Friedman warned that when somebody else pays the bill, neither patient nor provider faces full cost discipline — a core driver of medical inflation under heavy third-party payment.',
+          },
+        ],
+        application: 'Push HSAs, catastrophic coverage, site-of-service competition, and transparent cash prices — not another layer of central planning.',
+      },
+      {
+        id: 'arg-3',
+        title: 'The Rationing Argument: Waiting Lists Are a Denial of Care',
+        summary: 'Universal government systems ration. The currency is time, politics, and age — not honesty about tradeoffs.',
+        outlinePoints: [
+          'Waits for specialists, imaging, and surgery are a form of denial',
+          'Government boards decide whose pain counts',
+          'The wealthy and connected still buy their way out — often abroad',
+          'Americans already taste rationing wherever bureaucracy owns the queue',
+        ],
+        evidence: [
+          {
+            type: 'practical',
+            title: 'Queue Rationing Abroad',
+            content: 'Nationalized systems commonly report long waits for elective and even serious care. Rationing is not avoided; it is rebranded as equity.',
+          },
+          {
+            type: 'scripture',
+            title: 'Proverbs 3:27-28',
+            content: '"Do not withhold good from those to whom it is due, when it is in your power to act. Do not say to your neighbor, \'Come back tomorrow\'..." Delay can be injustice when help is available.',
+          },
+        ],
+        application: 'Name waiting lists as rationing. Ask: who dies on the list, and who decides?',
+      },
+      {
+        id: 'arg-4',
+        title: 'The Innovation Argument: America\'s Edge Saves Lives Worldwide',
+        summary: 'U.S. biomedical innovation, trials, and new therapies disproportionately serve the world. Smothering that engine is a global moral cost.',
+        outlinePoints: [
+          'New drugs and devices require massive risk capital',
+          'Price controls and monopsony buyers shrink the reward for breakthroughs',
+          'The world free-rides on American innovation — do not kill the host',
+          'Tomorrow\'s cures are not guaranteed if today\'s incentives die',
+        ],
+        evidence: [
+          {
+            type: 'scientific',
+            title: 'Innovation Concentration',
+            content: 'A large share of new molecular entities and medical-device breakthroughs originate in the U.S. ecosystem of research universities, startups, and private capital — an ecosystem sensitive to reimbursement politics.',
+          },
+          {
+            type: 'practical',
+            title: 'Dynamic vs Static Care',
+            content: 'Debates that freeze today\'s treatments ignore that the greatest compassion may be inventing tomorrow\'s. Static "free care" can mean permanently older medicine.',
+          },
+        ],
+        application: 'Frame innovation as pro-life and pro-poor across generations — not as industry greed alone.',
+      },
+      {
+        id: 'arg-5',
+        title: 'The Compassion Argument: Targeted Help Beats Uniform Bureaucracy',
+        summary: 'A just society helps the vulnerable without nationalizing everyone\'s care. Charity, churches, safety-net hospitals, and focused subsidies beat one-size monopoly.',
+        outlinePoints: [
+          'Moral duty to the poor is real — the means matter',
+          'Civil society and local care know names; bureaucracies know codes',
+          'High-risk pools, charity care, and portable coverage can cover gaps',
+          'Universal monopoly crowds out voluntary compassion',
+        ],
+        evidence: [
+          {
+            type: 'scripture',
+            title: 'Luke 10:33-34 — The Good Samaritan',
+            content: 'Compassion is personal and costly. It is not the same as voting for a bureaucracy to manage your neighbor\'s body.',
+          },
+          {
+            type: 'practical',
+            title: 'Plural Safety Net',
+            content: 'Religious hospitals, clinics, and mutual aid historically expanded access. Policy should empower them, not replace every relationship with a federal portal.',
+          },
+        ],
+        application: 'Affirm care for the poor while rejecting the false choice: either single-payer or indifference.',
+      },
+    ],
+    defenseTips: [
+      'Lead with compassion for the sick — then show why monopoly care fails them.',
+      'Addressing Common Counterarguments:',
+      '"Healthcare is a human right": Rights against violence and theft differ from positive entitlements that conscript other people\'s labor and money. A right to care does not imply a right to a government monopoly.',
+      '"Other countries cover everyone": They ration by waiting and limit access to new therapies. Coverage on paper ≠ timely care. Many still buy private options or travel for treatment.',
+      '"Medicare for All would be simpler": Centralizing complexity does not erase it — it relocates it into politics, queues, and black markets of influence.',
+      '"Markets leave people behind": Markets plus targeted aid and charity beat monopoly. The uninsured problem is real; the cure is not destroying choice and innovation.',
+      '"Hospitals price-gouge; only government can fix it": Opaque third-party payment enables opacity. Force transparent prices and competition before nationalizing the bill.',
+    ],
+  },
+
+  // ─── AI GOVERNANCE ───────────────────────────────────────────────────────────
+  {
+    id: 'ai-governance',
+    slug: 'ai-governance',
+    title: 'AI Governance',
+    shortDescription: 'Arguments for governing AI with human dignity, free speech, and American innovation leadership — not smothering central control or machine worship.',
+    overview: 'AI is a powerful tool, not a god and not a person. Good governance protects human dignity, truth-seeking, and national security while refusing both panic bans and unaccountable technocracy. America should lead in innovation under the rule of law — not outsource moral agency to models or outsource AI supremacy to the CCP.',
+    arguments: [
+      {
+        id: 'arg-1',
+        title: 'The Imago Dei Argument: Humans Rule Tools — Tools Do Not Rule Humans',
+        summary: 'People bear God\'s image; algorithms do not. AI must remain a tool under human moral agency, never a substitute for persons or conscience.',
+        outlinePoints: [
+          'Genesis 1:26-28: Humans exercise dominion; artifacts do not become souls',
+          'Moral praise and blame attach to persons, not weights and biases',
+          'Treating AI as an authority invites abdication of responsibility',
+          'Human dignity sets hard limits on how AI may be used against people',
+        ],
+        evidence: [
+          {
+            type: 'scripture',
+            title: 'Genesis 1:27',
+            content: '"So God created mankind in his own image..." Personhood is not an engineering milestone; it is a theological and moral given.',
+          },
+          {
+            type: 'philosophical',
+            title: 'Agency and Responsibility',
+            content: 'If a model errs, humans who deployed it remain accountable. "The AI decided" is not a moral defense — it is evasion.',
+          },
+        ],
+        application: 'Reject both AI worship and AI scapegoating. Keep human decision-makers on the hook.',
+        counterarguments: [
+          'What if AI becomes conscious?',
+          'Isn\'t AI too complex for humans to govern?',
+        ],
+      },
+      {
+        id: 'arg-2',
+        title: 'The Free Speech Argument: Do Not Build a Censorship Machine',
+        summary: 'AI systems that mediate search, news, and research can become the most powerful speech filters in history. Bias and government pressure are constitutional stakes.',
+        outlinePoints: [
+          'Viewpoint discrimination at AI scale is soft censorship with hard effects',
+          'Government jawboning of model outputs threatens the First Amendment',
+          'Truth-seeking requires contestability — not one "safe" orthodoxy',
+          'Open competition among models disciplines propaganda',
+        ],
+        evidence: [
+          {
+            type: 'constitutional',
+            title: 'First Amendment Logic',
+            content: 'If government may not muzzle the press directly, it should not launder censorship through privileged AI intermediaries it pressures or captively regulates.',
+          },
+          {
+            type: 'practical',
+            title: 'Alignment as Ideology Risk',
+            content: '"Safety" layers can encode partisan taboos. Without transparency and competition, "aligned" becomes a euphemism for enforced narrative.',
+          },
+        ],
+        application: 'Demand transparency, auditability, and pluralism in AI information systems — especially when government is involved.',
+      },
+      {
+        id: 'arg-3',
+        title: 'The Innovation Argument: Lead or Be Ruled',
+        summary: 'AI will shape military, economic, and scientific power. Smothering U.S. builders while adversaries sprint is strategic self-harm.',
+        outlinePoints: [
+          'China treats AI as a civil-military power project',
+          'Overbroad regulation entrenches incumbents and slows startups',
+          'Export controls and security reviews can be wise; blanket permission cultures that punish building are not',
+          'The free world needs capable AI under law more than paper rules with no frontier models',
+        ],
+        evidence: [
+          {
+            type: 'practical',
+            title: 'Strategic Competition',
+            content: 'Authoritarian regimes will not pause for Western academic fear. Leadership in compute, talent, and open research ecosystems is a national-security variable.',
+          },
+          {
+            type: 'historical',
+            title: 'Technology and Power',
+            content: 'From aviation to nuclear to cyber, nations that lead in general-purpose tech set the terms for those who follow.',
+          },
+        ],
+        application: 'Favor precise security measures over vague "AI pause" politics that gift the advantage to unfree rivals.',
+      },
+      {
+        id: 'arg-4',
+        title: 'The Accountability Argument: Narrow Rules Beat Vague Super-Regulators',
+        summary: 'Govern concrete harms — fraud, weapons misuse, child exploitation, critical-infrastructure risk — rather than creating an unaccountable AI politburo.',
+        outlinePoints: [
+          'Existing law already covers many harms (fraud, product liability, discrimination in covered contexts)',
+          'Vague "risk" licensing invites capture and arbitrary enforcement',
+          'Sector rules (aviation, medicine, finance) beat one mega-agency for all cognition tools',
+          'Sunlight and liability often outperform pre-crime permission regimes',
+        ],
+        evidence: [
+          {
+            type: 'practical',
+            title: 'Use-Case Governance',
+            content: 'An AI that schedules restaurant staff and an AI that targets missiles are not the same moral object. Regulate uses and consequences, not the abstract idea of prediction.',
+          },
+          {
+            type: 'philosophical',
+            title: 'Rule of Law',
+            content: 'People deserve clear rules published in advance. "The regulator knows safety when it sees it" is not law; it is discretion.',
+          },
+        ],
+        application: 'Ask every AI bill: What specific harm? What clear duty? What limits on the regulator?',
+      },
+      {
+        id: 'arg-5',
+        title: 'The Formation Argument: Train Humans, Don\'t Outsource the Soul',
+        summary: 'The deepest AI risk may be human: students who cannot think, workers who cannot judge, and citizens who outsource conscience to autocomplete.',
+        outlinePoints: [
+          'Education should form judgment — not dependence on black-box answers',
+          'Parents and teachers remain responsible for formation',
+          'Workplace AI needs human review where stakes are high',
+          'A civilization that stops practicing wisdom will not be saved by smarter tools',
+        ],
+        evidence: [
+          {
+            type: 'scripture',
+            title: 'Proverbs 2:6',
+            content: '"For the LORD gives wisdom; from his mouth come knowledge and understanding." Wisdom is personal and moral — not a subscription feature.',
+          },
+          {
+            type: 'practical',
+            title: 'Deskilling Risk',
+            content: 'Over-reliance on generative tools can atrophy writing, coding judgment, and non-delegable professional responsibility unless institutions deliberately train against that.',
+          },
+        ],
+        application: 'Pair AI tools with human formation: teach people to verify, doubt, and decide.',
+      },
+    ],
+    defenseTips: [
+      'Hold two truths: AI is powerful AND humans remain morally central.',
+      'Addressing Common Counterarguments:',
+      '"AI will kill us all unless we pause": Speculative extinction risk does not justify handing veto power to a small regulator class while adversaries continue. Focus on concrete misuse and security.',
+      '"We need one global AI authority": Global bodies often launder the values of unfree states and unaccountable NGOs. Prefer democratic law and alliances of free nations.',
+      '"Bias proves we must tightly control models": All institutions have bias. Competition, transparency, and user choice beat a single sanctioned orthodoxy.',
+      '"Open models are too dangerous": Openness aids science and defense research; some capabilities need controls. Blanket bans entrench the largest closed players and foreign rivals.',
+      '"AI should have rights": Rights attach to persons. Tools get rules for use — not citizenship.',
+    ],
+  },
+];

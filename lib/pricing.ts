@@ -1,7 +1,7 @@
 export type PaidPlan = 'monthly' | 'yearly' | 'lifetime'
 
 export const FREE_FEATURES = [
-  'Full argument library (all 11 topics)',
+  'Full argument library (all 14 topics)',
   'Evidence, biblical foundations, and defense tips',
   'Topic deep-dive pages',
   'Easy quizzes on every topic (practice teaser)',
