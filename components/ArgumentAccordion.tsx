@@ -23,20 +23,20 @@ const EVIDENCE_LABELS: Record<EvidenceType, string> = {
 
 const EVIDENCE_STYLES: Record<EvidenceType, string> = {
   scripture: 'border-l-4 border-primary bg-primary/10',
-  scientific: 'border-l-4 border-blue-400 bg-blue-400/10',
-  historical: 'border-l-4 border-amber-400 bg-amber-400/10',
-  philosophical: 'border-l-4 border-purple-400 bg-purple-400/10',
-  practical: 'border-l-4 border-green-400 bg-green-400/10',
+  scientific: 'border-l-4 border-sky-400 bg-sky-400/10',
+  historical: 'border-l-4 border-slate-400 bg-slate-400/10',
+  philosophical: 'border-l-4 border-indigo-400 bg-indigo-400/10',
+  practical: 'border-l-4 border-[oklch(0.62_0.08_250)] bg-[oklch(0.62_0.08_250)]/10',
   constitutional: 'border-l-4 border-accent bg-accent/10',
   quote: 'border-l-4 border-muted-foreground bg-muted-foreground/10',
 };
 
 const EVIDENCE_LABEL_STYLES: Record<EvidenceType, string> = {
   scripture: 'text-primary',
-  scientific: 'text-blue-300',
-  historical: 'text-amber-300',
-  philosophical: 'text-purple-300',
-  practical: 'text-green-300',
+  scientific: 'text-sky-300',
+  historical: 'text-slate-300',
+  philosophical: 'text-indigo-300',
+  practical: 'text-[oklch(0.78_0.06_250)]',
   constitutional: 'text-accent',
   quote: 'text-muted-foreground',
 };
@@ -62,21 +62,21 @@ function EvidenceBlock({ item }: { item: EvidenceItem }) {
   );
 }
 
-// Subtle tinted header backgrounds cycling across 5 professional accent tones
+// Subtle tinted header backgrounds cycling across cool civic tones
 const ARG_ACCENT_HEADER: string[] = [
-  'bg-[oklch(0.38_0.08_25)]  border-l-4 border-[oklch(0.65_0.22_25)]',   // warm red-orange (primary)
-  'bg-[oklch(0.38_0.07_240)] border-l-4 border-[oklch(0.60_0.16_240)]',  // steel blue
-  'bg-[oklch(0.37_0.07_160)] border-l-4 border-[oklch(0.58_0.14_160)]',  // teal-green
-  'bg-[oklch(0.38_0.07_55)]  border-l-4 border-[oklch(0.65_0.16_55)]',   // amber-gold
-  'bg-[oklch(0.37_0.07_285)] border-l-4 border-[oklch(0.58_0.15_285)]',  // soft violet
+  'bg-[oklch(0.38_0.08_25)]  border-l-4 border-[oklch(0.65_0.22_25)]',   // warm red (primary)
+  'bg-[oklch(0.36_0.06_250)] border-l-4 border-[oklch(0.62_0.12_250)]',  // light steel blue
+  'bg-[oklch(0.32_0.05_265)] border-l-4 border-[oklch(0.48_0.08_265)]',  // darker navy
+  'bg-[oklch(0.34_0.02_260)] border-l-4 border-[oklch(0.58_0.03_260)]',  // cool slate gray
+  'bg-[oklch(0.36_0.05_230)] border-l-4 border-[oklch(0.68_0.08_230)]',  // soft light blue
 ];
 
 const ARG_ACCENT_NUMBER: string[] = [
-  'bg-[oklch(0.65_0.22_25)]  text-white',   // orange-red
-  'bg-[oklch(0.60_0.16_240)] text-white',   // steel blue
-  'bg-[oklch(0.58_0.14_160)] text-white',   // teal-green
-  'bg-[oklch(0.65_0.16_55)]  text-white',   // amber-gold
-  'bg-[oklch(0.58_0.15_285)] text-white',   // soft violet
+  'bg-[oklch(0.65_0.22_25)]  text-white',   // warm red
+  'bg-[oklch(0.62_0.12_250)] text-white',   // light steel blue
+  'bg-[oklch(0.48_0.08_265)] text-white',   // darker navy
+  'bg-[oklch(0.58_0.03_260)] text-white',   // cool slate gray
+  'bg-[oklch(0.68_0.08_230)] text-white',   // soft light blue
 ];
 
 export function ArgumentAccordion({ argument, index }: ArgumentAccordionProps) {
