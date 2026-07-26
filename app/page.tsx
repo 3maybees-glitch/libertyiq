@@ -15,8 +15,9 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { GraduationCap, Mic, Sparkles } from 'lucide-react';
+import { FileText, GraduationCap, Mic, Sparkles } from 'lucide-react';
 import ReferencesButton from '@/components/references-button';
+import { DebateOnePagerButton } from '@/components/debate-onepager-button';
 import { InstallAppButton, InstallAppHomeLink } from '@/components/install-app';
 import Image from 'next/image';
 
@@ -74,6 +75,12 @@ export default function Home() {
                   Pricing
                 </div>
               </Link>
+              <Link href="/debate-onepagers" className="block w-full">
+                <div className="w-full flex items-center justify-center gap-2 border border-border text-foreground rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
+                  <FileText className="h-4 w-4 shrink-0" />
+                  Debate One-Pagers
+                </div>
+              </Link>
               <InstallAppHomeLink />
               <ReferencesButton fullWidth />
             </div>
@@ -103,6 +110,12 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-2 shrink-0 pt-1">
               <ReferencesButton />
+              <Link href="/debate-onepagers">
+                <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
+                  <FileText className="h-5 w-5" />
+                  One-Pagers
+                </Button>
+              </Link>
               <InstallAppButton variant="outline" size="default" />
               <Link href="/pricing">
                 <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
@@ -199,17 +212,19 @@ export default function Home() {
 
               {/* Stats row */}
               <div className="bg-card px-5 py-4 flex items-center gap-4 justify-between overflow-x-auto">
-                <div className="shrink-0">
-                  <span className="text-2xl font-bold text-primary">{selected.arguments.length}</span>
-                  <span className="ml-1.5 text-sm text-muted-foreground">argument{selected.arguments.length !== 1 ? 's' : ''}</span>
-                </div>
-                {selected.defenseTips && selected.defenseTips.length > 0 && (
+                <div className="flex items-center gap-4 min-w-0">
                   <div className="shrink-0">
-                    <span className="text-2xl font-bold text-primary">{selected.defenseTips.length}</span>
-                    <span className="ml-1.5 text-sm text-muted-foreground">defense &amp; counter arg{selected.defenseTips.length !== 1 ? 's' : ''}</span>
+                    <span className="text-2xl font-bold text-primary">{selected.arguments.length}</span>
+                    <span className="ml-1.5 text-sm text-muted-foreground">argument{selected.arguments.length !== 1 ? 's' : ''}</span>
                   </div>
-                )}
-
+                  {selected.defenseTips && selected.defenseTips.length > 0 && (
+                    <div className="shrink-0">
+                      <span className="text-2xl font-bold text-primary">{selected.defenseTips.length}</span>
+                      <span className="ml-1.5 text-sm text-muted-foreground">defense &amp; counter arg{selected.defenseTips.length !== 1 ? 's' : ''}</span>
+                    </div>
+                  )}
+                </div>
+                <DebateOnePagerButton topicId={selected.id} className="shrink-0" />
               </div>
 
               {/* Overview */}
