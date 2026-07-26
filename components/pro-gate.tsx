@@ -17,7 +17,7 @@ export function ProGate({ title, description, children }: ProGateProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <p className="text-muted-foreground text-sm">Checking Pro access…</p>
       </div>
     )
@@ -28,7 +28,7 @@ export function ProGate({ title, description, children }: ProGateProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div
         className="h-1.5 w-full"
         style={{

@@ -21,7 +21,7 @@ export default function TopicPage({ params }: PageProps) {
 
   if (!topic) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Card className="max-w-md w-full">
           <CardHeader>
             <CardTitle>Topic not found</CardTitle>
@@ -44,7 +44,7 @@ export default function TopicPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center justify-between gap-4">
           <Link

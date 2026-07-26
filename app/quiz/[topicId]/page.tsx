@@ -88,7 +88,7 @@ export default function QuizPage({ params }: PageProps) {
 
   if (!quiz) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <Card className="max-w-md w-full">
           <CardHeader>
             <CardTitle>Quiz not found</CardTitle>
@@ -113,7 +113,7 @@ export default function QuizPage({ params }: PageProps) {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Patriotic top bar */}
       <div className="h-1.5 w-full" style={{ background: 'linear-gradient(to right, #B22234 33%, #FFFFFF 33%, #FFFFFF 66%, #3C3B6E 66%)' }} />
 

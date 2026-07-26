@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Providers } from '@/components/providers'
+import { SiteAtmosphere } from '@/components/site-atmosphere'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
@@ -57,7 +58,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#3C3B6E',
+  themeColor: '#1a1a35',
 }
 
 export default function RootLayout({
@@ -68,6 +69,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
+        <SiteAtmosphere />
         <Providers>
           {children}
         </Providers>

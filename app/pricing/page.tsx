@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground text-sm">
+        <div className="min-h-screen flex items-center justify-center text-muted-foreground text-sm">
           Loading pricing…
         </div>
       }
