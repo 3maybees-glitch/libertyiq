@@ -15,7 +15,8 @@
   --secondary: oklch(0.48 0.18 270);
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.44 0.04 265);
-  --muted-foreground: oklch(0.78 0.03 270);
+  /* Pure white for readability on the dark civic atmosphere */
+  --muted-foreground: #ffffff;
   --accent: oklch(0.65 0.22 25);
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.62 0.22 25);
@@ -51,7 +52,7 @@
   --secondary: oklch(0.55 0.18 270);
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.28 0.04 265);
-  --muted-foreground: oklch(0.72 0.03 270);
+  --muted-foreground: #ffffff;
   --accent: oklch(0.70 0.22 25);
   --accent-foreground: oklch(0.15 0.01 270);
   --destructive: oklch(0.55 0.2 25);
@@ -129,115 +130,193 @@
 }
 
 /* ── LibertyIQ site atmosphere ─────────────────────────────────────────────
-   Civic twilight: deep navy field, soft crimson/indigo washes, fine stars,
-   and a quiet library grid. Motion is slow and atmospheric, not decorative noise.
+   Civic aurora: navy night sky with clearly visible crimson/indigo light
+   sheets, drifting orbs, a sweeping beam, and a living star field.
 */
 .site-atmosphere {
-  --atm-navy: #1a1a35;
-  --atm-navy-mid: #2a2a52;
+  --atm-navy: #16162e;
   --atm-indigo: #3c3b6e;
   --atm-crimson: #b22234;
-  --atm-star: rgba(255, 255, 255, 0.55);
+  --atm-star: rgba(255, 255, 255, 0.85);
 }
 
 .site-atmosphere__base {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(
-      165deg,
-      #242447 0%,
-      var(--atm-navy) 42%,
-      #151528 78%,
-      #1c1520 100%
-    );
+    radial-gradient(ellipse 90% 70% at 50% -10%, #3a3a6a 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 100% 100%, #2a1830 0%, transparent 50%),
+    linear-gradient(165deg, #2a2a52 0%, var(--atm-navy) 45%, #12121f 100%);
+  animation: atm-base-shift 18s ease-in-out infinite alternate;
 }
 
-.site-atmosphere__wash {
+/* Soft diagonal aurora ribbons — the signature motion (visible even at rest) */
+.site-atmosphere__aurora {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(72px);
+  width: 160%;
+  height: 38%;
+  left: -30%;
+  filter: blur(18px);
   will-change: transform, opacity;
 }
 
-.site-atmosphere__wash--crimson {
-  width: min(78vw, 820px);
-  height: min(78vw, 820px);
-  left: -14%;
-  bottom: -20%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--atm-crimson) 58%, transparent) 0%,
-    color-mix(in srgb, var(--atm-crimson) 18%, transparent) 42%,
-    transparent 72%
-  );
-  opacity: 0.72;
-  animation: atm-drift-a 28s ease-in-out infinite alternate;
-}
-
-.site-atmosphere__wash--indigo {
-  width: min(88vw, 960px);
-  height: min(88vw, 960px);
-  right: -20%;
-  top: -24%;
-  background: radial-gradient(
-    circle,
-    color-mix(in srgb, var(--atm-indigo) 70%, white 12%) 0%,
-    color-mix(in srgb, #4a4a8a 35%, transparent) 45%,
-    transparent 74%
-  );
-  opacity: 0.8;
-  animation: atm-drift-b 34s ease-in-out infinite alternate;
-}
-
-.site-atmosphere__beam {
-  position: absolute;
-  inset: -10% 0 auto 0;
-  height: 58%;
+.site-atmosphere__aurora--crimson {
+  top: 6%;
   background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.11) 0%,
-    rgba(255, 255, 255, 0.035) 40%,
-    transparent 100%
+    105deg,
+    transparent 8%,
+    rgba(178, 34, 52, 0.72) 38%,
+    rgba(232, 90, 74, 0.55) 52%,
+    transparent 78%
   );
-  animation: atm-beam 22s ease-in-out infinite alternate;
+  opacity: 0.85;
+  transform: rotate(-8deg);
+  animation: atm-aurora-a 10s ease-in-out infinite alternate;
+}
+
+.site-atmosphere__aurora--indigo {
+  top: 30%;
+  height: 44%;
+  background: linear-gradient(
+    100deg,
+    transparent 4%,
+    rgba(90, 90, 170, 0.75) 34%,
+    rgba(60, 59, 110, 0.55) 55%,
+    transparent 82%
+  );
+  opacity: 0.9;
+  transform: rotate(6deg);
+  animation: atm-aurora-b 13s ease-in-out infinite alternate;
+}
+
+.site-atmosphere__aurora--silver {
+  top: 55%;
+  height: 28%;
+  background: linear-gradient(
+    95deg,
+    transparent 12%,
+    rgba(255, 255, 255, 0.28) 44%,
+    rgba(200, 210, 255, 0.2) 58%,
+    transparent 80%
+  );
+  opacity: 0.7;
+  transform: rotate(-3deg);
+  animation: atm-aurora-c 11s ease-in-out infinite alternate;
+}
+
+.site-atmosphere__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(32px);
+  will-change: transform, opacity;
+}
+
+.site-atmosphere__orb--crimson {
+  width: min(80vw, 720px);
+  height: min(80vw, 720px);
+  left: -20%;
+  bottom: -24%;
+  background: radial-gradient(
+    circle,
+    rgba(178, 34, 52, 0.9) 0%,
+    rgba(178, 34, 52, 0.45) 42%,
+    transparent 68%
+  );
+  opacity: 1;
+  animation: atm-orb-a 9s ease-in-out infinite alternate;
+}
+
+.site-atmosphere__orb--indigo {
+  width: min(85vw, 780px);
+  height: min(85vw, 780px);
+  right: -24%;
+  top: -30%;
+  background: radial-gradient(
+    circle,
+    rgba(100, 100, 190, 0.85) 0%,
+    rgba(60, 59, 110, 0.5) 45%,
+    transparent 70%
+  );
+  opacity: 1;
+  animation: atm-orb-b 11s ease-in-out infinite alternate;
+}
+
+.site-atmosphere__orb--ember {
+  width: min(48vw, 420px);
+  height: min(48vw, 420px);
+  left: 40%;
+  top: 36%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 230, 190, 0.4) 0%,
+    rgba(178, 34, 52, 0.3) 40%,
+    transparent 68%
+  );
+  opacity: 0.9;
+  animation: atm-orb-c 7s ease-in-out infinite alternate;
+}
+
+/* Sweeping light band that crosses the field */
+.site-atmosphere__sweep {
+  position: absolute;
+  inset: -20% -40%;
+  background: linear-gradient(
+    115deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.12) 46%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.12) 54%,
+    transparent 68%
+  );
+  animation: atm-sweep 8s ease-in-out infinite;
 }
 
 .site-atmosphere__stars {
   position: absolute;
   inset: 0;
-  opacity: 0.75;
+  opacity: 0.95;
   background-image:
-    radial-gradient(1.2px 1.2px at 8% 12%, var(--atm-star), transparent),
-    radial-gradient(1px 1px at 22% 38%, rgba(255, 255, 255, 0.35), transparent),
-    radial-gradient(1.4px 1.4px at 41% 18%, rgba(255, 255, 255, 0.45), transparent),
-    radial-gradient(1px 1px at 63% 28%, rgba(255, 255, 255, 0.3), transparent),
-    radial-gradient(1.2px 1.2px at 78% 14%, var(--atm-star), transparent),
-    radial-gradient(1px 1px at 91% 42%, rgba(255, 255, 255, 0.28), transparent),
-    radial-gradient(1.3px 1.3px at 15% 72%, rgba(255, 255, 255, 0.32), transparent),
-    radial-gradient(1px 1px at 34% 84%, rgba(255, 255, 255, 0.22), transparent),
-    radial-gradient(1.2px 1.2px at 58% 66%, rgba(255, 255, 255, 0.38), transparent),
-    radial-gradient(1px 1px at 84% 78%, rgba(255, 255, 255, 0.26), transparent),
-    radial-gradient(1.1px 1.1px at 47% 48%, rgba(255, 255, 255, 0.2), transparent),
-    radial-gradient(1px 1px at 71% 91%, rgba(255, 255, 255, 0.24), transparent);
-  animation: atm-twinkle 10s ease-in-out infinite alternate;
+    radial-gradient(2px 2px at 8% 12%, var(--atm-star), transparent),
+    radial-gradient(1.5px 1.5px at 22% 38%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2.2px 2.2px at 41% 18%, #fff, transparent),
+    radial-gradient(1.4px 1.4px at 63% 28%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(2px 2px at 78% 14%, var(--atm-star), transparent),
+    radial-gradient(1.5px 1.5px at 91% 42%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(2px 2px at 15% 72%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(1.4px 1.4px at 34% 84%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2.2px 2.2px at 58% 66%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 84% 78%, rgba(255, 255, 255, 0.55), transparent),
+    radial-gradient(1.8px 1.8px at 47% 48%, rgba(255, 255, 255, 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 71% 91%, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(1.8px 1.8px at 5% 55%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(2px 2px at 95% 20%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 50% 8%, rgba(255, 255, 255, 0.65), transparent);
+  animation: atm-twinkle 4s ease-in-out infinite alternate;
+}
+
+.site-atmosphere__stars--far {
+  opacity: 0.55;
+  background-size: 120% 120%;
+  background-position: 10% 20%;
+  animation: atm-twinkle-far 6s ease-in-out infinite alternate-reverse;
 }
 
 .site-atmosphere__grid {
   position: absolute;
   inset: 0;
-  opacity: 0.34;
+  opacity: 0.28;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 85% 75% at 50% 38%, black 15%, transparent 88%);
+  animation: atm-grid-drift 20s linear infinite;
 }
 
 .site-atmosphere__grain {
   position: absolute;
   inset: 0;
-  opacity: 0.18;
+  opacity: 0.16;
   mix-blend-mode: soft-light;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 180px 180px;
@@ -247,56 +326,140 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    ellipse 75% 65% at 50% 35%,
+    ellipse 80% 70% at 50% 40%,
     transparent 0%,
-    rgba(8, 8, 18, 0.35) 70%,
-    rgba(8, 8, 18, 0.72) 100%
+    rgba(8, 8, 18, 0.2) 75%,
+    rgba(8, 8, 18, 0.45) 100%
   );
 }
 
-@keyframes atm-drift-a {
+@keyframes atm-base-shift {
   from {
-    transform: translate3d(0, 0, 0) scale(1);
+    filter: brightness(1) saturate(1);
   }
   to {
-    transform: translate3d(6%, -4%, 0) scale(1.08);
+    filter: brightness(1.12) saturate(1.15);
   }
 }
 
-@keyframes atm-drift-b {
+@keyframes atm-aurora-a {
   from {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: rotate(-10deg) translate3d(-8%, -2%, 0);
+    opacity: 0.65;
   }
   to {
-    transform: translate3d(-5%, 5%, 0) scale(1.06);
-  }
-}
-
-@keyframes atm-beam {
-  from {
-    opacity: 0.7;
-    transform: translateY(0);
-  }
-  to {
+    transform: rotate(-4deg) translate3d(12%, 6%, 0);
     opacity: 1;
-    transform: translateY(2%);
+  }
+}
+
+@keyframes atm-aurora-b {
+  from {
+    transform: rotate(8deg) translate3d(8%, -2%, 0);
+    opacity: 0.7;
+  }
+  to {
+    transform: rotate(2deg) translate3d(-12%, 5%, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes atm-aurora-c {
+  from {
+    transform: rotate(-4deg) translate3d(-10%, 3%, 0);
+    opacity: 0.5;
+  }
+  to {
+    transform: rotate(2deg) translate3d(10%, -4%, 0);
+    opacity: 0.85;
+  }
+}
+
+@keyframes atm-orb-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(18%, -14%, 0) scale(1.25);
+  }
+}
+
+@keyframes atm-orb-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-16%, 16%, 0) scale(1.22);
+  }
+}
+
+@keyframes atm-orb-c {
+  from {
+    transform: translate3d(-10%, 6%, 0) scale(0.85);
+    opacity: 0.65;
+  }
+  to {
+    transform: translate3d(12%, -10%, 0) scale(1.3);
+    opacity: 1;
+  }
+}
+
+@keyframes atm-sweep {
+  0% {
+    transform: translateX(-25%) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(25%) rotate(0deg);
+    opacity: 0;
   }
 }
 
 @keyframes atm-twinkle {
   from {
-    opacity: 0.4;
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes atm-twinkle-far {
+  from {
+    opacity: 0.3;
+    transform: translate3d(0, 0, 0);
   }
   to {
     opacity: 0.65;
+    transform: translate3d(-1.5%, 1%, 0);
+  }
+}
+
+@keyframes atm-grid-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 56px 56px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-atmosphere__wash--crimson,
-  .site-atmosphere__wash--indigo,
-  .site-atmosphere__beam,
-  .site-atmosphere__stars {
-    animation: none;
+  .site-atmosphere__base,
+  .site-atmosphere__aurora,
+  .site-atmosphere__orb,
+  .site-atmosphere__sweep,
+  .site-atmosphere__stars,
+  .site-atmosphere__grid {
+    animation: none !important;
   }
 }
