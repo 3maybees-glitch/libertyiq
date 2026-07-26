@@ -40,7 +40,7 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div
         className="h-1.5 w-full"
         style={{
