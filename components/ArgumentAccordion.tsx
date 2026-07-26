@@ -65,24 +65,15 @@ function EvidenceBlock({ item }: { item: EvidenceItem }) {
 // Subtle tinted header backgrounds cycling across cool civic tones
 const ARG_ACCENT_HEADER: string[] = [
   'bg-[oklch(0.38_0.08_25)]  border-l-4 border-[oklch(0.65_0.22_25)]',   // warm red (primary)
-  'bg-[oklch(0.36_0.06_250)] border-l-4 border-[oklch(0.62_0.12_250)]',  // light steel blue
+  'bg-[oklch(0.36_0.06_250)] border-l-4 border-[oklch(0.62_0.12_250)]',  // steel blue
   'bg-[oklch(0.32_0.05_265)] border-l-4 border-[oklch(0.48_0.08_265)]',  // darker navy
   'bg-[oklch(0.34_0.02_260)] border-l-4 border-[oklch(0.58_0.03_260)]',  // cool slate gray
-  'bg-[oklch(0.36_0.05_230)] border-l-4 border-[oklch(0.68_0.08_230)]',  // soft light blue
-];
-
-const ARG_ACCENT_NUMBER: string[] = [
-  'bg-[oklch(0.65_0.22_25)]  text-white',   // warm red
-  'bg-[oklch(0.62_0.12_250)] text-white',   // light steel blue
-  'bg-[oklch(0.48_0.08_265)] text-white',   // darker navy
-  'bg-[oklch(0.58_0.03_260)] text-white',   // cool slate gray
-  'bg-[oklch(0.68_0.08_230)] text-white',   // soft light blue
+  'bg-[oklch(0.40_0.08_340)] border-l-4 border-[oklch(0.70_0.10_340)]',  // rose-mauve (clearly distinct from blue)
 ];
 
 export function ArgumentAccordion({ argument, index }: ArgumentAccordionProps) {
   const [expanded, setExpanded] = useState(false);
   const accentHeader = ARG_ACCENT_HEADER[index % ARG_ACCENT_HEADER.length];
-  const accentNumber = ARG_ACCENT_NUMBER[index % ARG_ACCENT_NUMBER.length];
 
   return (
     <Card className="overflow-hidden border-border transition-shadow hover:shadow-md">
@@ -93,7 +84,8 @@ export function ArgumentAccordion({ argument, index }: ArgumentAccordionProps) {
       >
         <CardHeader className={cn('transition-opacity py-4 hover:opacity-90', accentHeader)}>
           <div className="flex items-start gap-4">
-            <span className={cn('flex-shrink-0 w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center mt-0.5', accentNumber)}>
+            {/* White disc + red numeral stays legible on dark red / navy headers */}
+            <span className="flex-shrink-0 w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 bg-white text-primary shadow-sm">
               {index + 1}
             </span>
             <div className="flex-1 min-w-0">
