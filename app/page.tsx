@@ -213,14 +213,18 @@ export default function Home() {
               {/* Stats row */}
               <div className="bg-card px-5 py-4 flex items-center gap-4 justify-between overflow-x-auto">
                 <div className="flex items-center gap-4 min-w-0">
-                  <div className="shrink-0">
-                    <span className="text-2xl font-bold text-primary">{selected.arguments.length}</span>
-                    <span className="ml-1.5 text-sm text-muted-foreground">argument{selected.arguments.length !== 1 ? 's' : ''}</span>
+                  <div className="shrink-0 flex items-center gap-2">
+                    <span className="inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-white px-2 text-xl font-bold text-primary shadow-sm">
+                      {selected.arguments.length}
+                    </span>
+                    <span className="text-sm text-muted-foreground">argument{selected.arguments.length !== 1 ? 's' : ''}</span>
                   </div>
                   {selected.defenseTips && selected.defenseTips.length > 0 && (
-                    <div className="shrink-0">
-                      <span className="text-2xl font-bold text-primary">{selected.defenseTips.length}</span>
-                      <span className="ml-1.5 text-sm text-muted-foreground">defense &amp; counter arg{selected.defenseTips.length !== 1 ? 's' : ''}</span>
+                    <div className="shrink-0 flex items-center gap-2">
+                      <span className="inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-white px-2 text-xl font-bold text-primary shadow-sm">
+                        {selected.defenseTips.length}
+                      </span>
+                      <span className="text-sm text-muted-foreground">defense &amp; counter arg{selected.defenseTips.length !== 1 ? 's' : ''}</span>
                     </div>
                   )}
                 </div>
