@@ -6,7 +6,7 @@ export function SiteAtmosphere() {
   return (
     <div
       aria-hidden="true"
-      className="site-atmosphere pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      className="site-atmosphere pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
       <div className="site-atmosphere__base" />
       <div className="site-atmosphere__wash site-atmosphere__wash--crimson" />

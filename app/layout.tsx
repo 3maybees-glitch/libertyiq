@@ -70,9 +70,11 @@ export default function RootLayout({
     <html lang="en">
       <body className="font-sans antialiased">
         <SiteAtmosphere />
-        <Providers>
-          {children}
-        </Providers>
+        <div className="relative z-[1]">
+          <Providers>
+            {children}
+          </Providers>
+        </div>
         <Analytics />
       </body>
     </html>
