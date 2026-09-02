@@ -453,6 +453,54 @@
   }
 }
 
+/* Committee roster — majority crimson rail, minority indigo rail */
+.committee-rail-majority {
+  box-shadow: inset 4px 0 0 #b22234;
+}
+
+.committee-rail-minority {
+  box-shadow: inset 4px 0 0 #3c3b6e;
+}
+
+@media print {
+  .site-atmosphere {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  .print\:hidden,
+  .print-hide {
+    display: none !important;
+  }
+
+  .committees-print-root {
+    background: #fff;
+    color: #111;
+  }
+
+  .committees-print-root a {
+    color: #111;
+    text-decoration: none;
+  }
+
+  .committee-roster,
+  .committees-nameplate {
+    break-inside: avoid;
+    border-color: #ccc !important;
+    background: #fff !important;
+  }
+
+  .committee-rail-majority,
+  .committee-rail-minority {
+    background: #fff !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .site-atmosphere__base,
   .site-atmosphere__aurora,

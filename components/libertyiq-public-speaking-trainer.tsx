@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Mic, MicOff, Play, RotateCcw, Trophy, Volume2, AlertCircle, CheckCircle2, Brain, BarChart3, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { OnlineOnlyNote } from "@/components/online-only-note"
+import { CommitteeDrill } from "@/components/committees/committee-drill"
 
 // Drop-in LibertyIQ feature for v0.app
 // Notes:
@@ -393,6 +394,7 @@ return (
                       <RotateCcw className="w-4 h-4 mr-2" /> New Prompt
                     </Button>
                   </div>
+                  <CommitteeDrill onUsePrompt={setSelectedPrompt} />
                   <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
                     {PRACTICE_PROMPTS.map((prompt) => (
                       <button

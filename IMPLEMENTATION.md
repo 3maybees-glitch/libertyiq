@@ -18,6 +18,7 @@ LibertyIQ is a fully functional Next.js app with 11 debate topics, quizzes, and 
 - **Quiz Dashboard** (`/libertyiq`): Rank tracking across all topics
 - **Quiz Pages** (`/quiz/[topicId]`): Multi-level quizzes with explanations
 - **Speaking Trainer** (`/speaking-trainer`): Speech recognition and analysis
+- **Committees** (`/committees`): 119th Congress roster by member, committee, and LibertyIQ issue
 
 ### 3. Design System
 - Tailwind CSS 4 with shadcn/ui components
@@ -34,6 +35,7 @@ LibertyIQ is a fully functional Next.js app with 11 debate topics, quizzes, and 
   topic/[slug]/page.tsx       # Topic detail
   quiz/[topicId]/page.tsx     # Quiz flow
   speaking-trainer/page.tsx   # Speaking practice
+  committees/                 # 119th Congress roster directory
 
 /components
   ArgumentAccordion.tsx       # Expandable argument cards
@@ -42,8 +44,11 @@ LibertyIQ is a fully functional Next.js app with 11 debate topics, quizzes, and 
   references-button.tsx       # Source citations dialog
   ui/*                        # shadcn/ui primitives
 
+  committees/                 # Roster UI, gavel block, speaking-trainer drill
+
 /lib
   types.ts                    # All topic content
+  committees/                 # Roster accessors, issue map, nicknames
   quiz-data.ts                # Quiz questions
   quizzes/                    # Additional quiz modules
   utils.ts                    # cn() helper

@@ -41,6 +41,7 @@ Visit `http://localhost:3000` in your browser.
 | `/libertyiq` | Quiz dashboard with rank tracking |
 | `/quiz/[topicId]` | Take a quiz (easy free; medium/hard need Core) |
 | `/speaking-trainer` | Public speaking practice (**Core**) |
+| `/committees` | 119th Congress committee roster + issue map |
 | `/pricing` | Free / Core / Lifetime checkout |
 
 ## Data Storage

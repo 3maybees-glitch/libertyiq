@@ -11,6 +11,7 @@ A [Next.js](https://nextjs.org) conservative worldviews library and quiz app. Br
 - **Quiz dashboard** (`/libertyiq`) — rank up through Intern Analyst → Senior Fellow → Chief Strategist
 - **Quizzes** (`/quiz/[topicId]`) — easy, medium, and hard levels per topic
 - **Speaking trainer** (`/speaking-trainer`) — browser-based speech practice with filler-word analysis
+- **Committees** (`/committees`) — 119th Congress roster by member, committee, or LibertyIQ issue
 - **Installable PWA** — Add to Home Screen; library and quizzes cache for offline use after first visit
 
 Progress is stored locally in your browser (`localStorage`). LibertyIQ Pro (quizzes + speaking trainer) uses Stripe Checkout.
@@ -48,6 +49,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | `pnpm build` | Production build (webpack + Serwist service worker) |
 | `pnpm start` | Run production server |
 | `pnpm lint` | Run ESLint |
+| `pnpm committees:refresh` | Rebuild the 119th Congress committee roster from congress-legislators |
+| `pnpm committees:validate` | Check roster files, nicknames, and issue map IDs |
 
 ## Deployment
 
@@ -64,9 +67,10 @@ For the free library only, no environment variables are required. For LibertyIQ 
 ```
 app/           # Next.js App Router pages
 components/    # UI and feature components
-lib/           # Topic data, quiz data, utilities
+lib/           # Topic data, quiz data, committee roster helpers
+data/          # Cached 119th Congress roster JSON
 hooks/         # React hooks (quiz progress)
-public/        # Static assets
+public/        # Static assets (includes /data/committees.json for CCCP)
 ```
 
 ## Built with

@@ -16,6 +16,7 @@ Last updated: July 2026
 - [x] Quiz dashboard (`/libertyiq`) — rank tracking across all topics
 - [x] Quiz flow (`/quiz/[topicId]`) — multi-level quizzes with explanations
 - [x] Speaking trainer (`/speaking-trainer`) — speech recognition and filler-word analysis
+- [x] Committees directory (`/committees`) — member / committee / issue views for the 119th Congress
 
 ### Progress & Storage
 - [x] Quiz progress persisted in `localStorage` via `hooks/use-quiz-progress.ts`
