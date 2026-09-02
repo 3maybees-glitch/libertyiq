@@ -152,7 +152,13 @@ export function CommitteesDirectory() {
             {query ? `${members.length} members` : 'Type a last name, state, or committee nickname'}
           </p>
           {members.length === 0 ? (
-            <EmptySearch label="No members match that search." />
+            <EmptySearch
+              label={
+                chamber !== 'all' || side !== 'all' || chairsOnly
+                  ? 'No members match. Clear the chamber or majority filters — a leftover House filter will hide senators like Cruz.'
+                  : 'No members match that search. Try a last name, state, or committee nickname.'
+              }
+            />
           ) : (
             <ul className="divide-y divide-border/40 rounded-xl border border-border/60 bg-card/60">
               {members.map((m) => (
