@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint .",
     "debate-onepagers": "node scripts/generate-debate-onepagers.mjs",
-    "debate-onepagers:html": "HTML_ONLY=1 node scripts/generate-debate-onepagers.mjs"
+    "debate-onepagers:html": "HTML_ONLY=1 node scripts/generate-debate-onepagers.mjs",
+    "committees:refresh": "node scripts/refresh-committees.mjs",
+    "committees:validate": "node scripts/validate-committees.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

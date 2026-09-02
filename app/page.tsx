@@ -15,9 +15,10 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { FileText, GraduationCap, Mic, Sparkles } from 'lucide-react';
+import { FileText, Gavel, GraduationCap, Mic, Sparkles } from 'lucide-react';
 import ReferencesButton from '@/components/references-button';
 import { DebateOnePagerButton } from '@/components/debate-onepager-button';
+import { WhoHoldsTheGavel } from '@/components/committees/who-holds-the-gavel';
 import { InstallAppButton, InstallAppHomeLink } from '@/components/install-app';
 import Image from 'next/image';
 
@@ -81,6 +82,12 @@ export default function Home() {
                   Debate One-Pagers
                 </div>
               </Link>
+              <Link href="/committees" className="block w-full">
+                <div className="w-full flex items-center justify-center gap-2 border border-border text-foreground rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
+                  <Gavel className="h-4 w-4 shrink-0" />
+                  Committees
+                </div>
+              </Link>
               <InstallAppHomeLink />
               <ReferencesButton fullWidth />
             </div>
@@ -114,6 +121,12 @@ export default function Home() {
                 <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
                   <FileText className="h-5 w-5" />
                   One-Pagers
+                </Button>
+              </Link>
+              <Link href="/committees">
+                <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
+                  <Gavel className="h-5 w-5" />
+                  Committees
                 </Button>
               </Link>
               <InstallAppButton variant="outline" size="default" />
@@ -238,6 +251,8 @@ export default function Home() {
                 </div>
               )}
             </div>
+
+            <WhoHoldsTheGavel topicId={selected.id} />
 
             {/* Arguments */}
             <div>

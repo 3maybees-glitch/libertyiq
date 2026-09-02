@@ -35,7 +35,12 @@ export default function DebateOnePagersPage() {
           </h1>
           <p className="mt-2 text-muted-foreground leading-relaxed max-w-2xl">
             One printable page per issue: memory-hook acronym, debate path with
-            arrows, and They say → You say counters.
+            arrows, and They say → You say counters. For the people who can
+            actually mark these bills up, see the{' '}
+            <Link href="/committees" className="text-accent font-semibold hover:underline">
+              committee roster
+            </Link>
+            .
           </p>
         </header>
 

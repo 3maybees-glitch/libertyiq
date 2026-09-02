@@ -1,0 +1,183 @@
+{
+  "congress": 119,
+  "topics": [
+    {
+      "topicId": "pro-life",
+      "headline": "Who actually holds the gavel on life",
+      "blurb": "House Judiciary writes the statutes. Energy & Commerce and Senate HELP oversee HHS and FDA. Appropriations LHHS and Senate Finance decide whether Medicaid and Title X dollars follow the policy.",
+      "committees": [
+        { "id": "HSJU", "why": "Abortion statutes, born-alive bills, and FACE Act enforcement." },
+        { "id": "HSIF", "why": "HHS, FDA, and Medicaid abortion policy — Health subcommittee does the markups.", "focusIds": ["HSIF14"] },
+        { "id": "HSAP07", "why": "Labor-HHS appropriations: the rider fight over Hyde, Title X, and HHS grants." },
+        { "id": "SSJU", "why": "Senate path for the same statutes and judicial nominees who will read them." },
+        { "id": "SSHR", "why": "HELP oversees CDC, FDA, and most HHS health programs." },
+        { "id": "SSFI", "why": "Finance writes Medicaid and Medicare — where most federal abortion-funding fights land." },
+        { "id": "SSAP18", "why": "Senate LHHS appropriations: same rider battlefield as the House." }
+      ]
+    },
+    {
+      "topicId": "illegal-immigration",
+      "headline": "Border policy is Homeland, Judiciary, and the money bills",
+      "blurb": "Homeland Security holds DHS and CBP. Judiciary writes immigration statute. Appropriations decides whether the agencies are staffed and fenced.",
+      "committees": [
+        { "id": "HSHM", "why": "DHS, CBP, and Border Patrol — Border Security subcommittee is the hearing room.", "focusIds": ["HSHM11"] },
+        { "id": "HSJU", "why": "Immigration statute, interior enforcement, and asylum law.", "focusIds": ["HSJU01"] },
+        { "id": "HSAP15", "why": "Homeland Security appropriations: walls, agents, detention beds." },
+        { "id": "SSGA", "why": "Senate Homeland Security and Governmental Affairs — DHS oversight and border management.", "focusIds": ["SSGA22"] },
+        { "id": "SSJU", "why": "Senate immigration statute and the Border Security subcommittee.", "focusIds": ["SSJU04"] },
+        { "id": "SSAP14", "why": "Senate DHS appropriations." }
+      ]
+    },
+    {
+      "topicId": "second-amendment",
+      "headline": "Guns move through Judiciary — and the ATF's budget",
+      "blurb": "House and Senate Judiciary write firearms law. Commerce-Justice-Science appropriations is where ATF and DOJ get fenced or funded.",
+      "committees": [
+        { "id": "HSJU", "why": "Firearms statutes, national reciprocity, and ATF oversight." },
+        { "id": "SSJU", "why": "Senate path for the same bills and judicial nominees on Second Amendment cases." },
+        { "id": "HSAP19", "why": "CJS appropriations: ATF, FBI, and DOJ grant conditions." },
+        { "id": "SSAP16", "why": "Senate CJS appropriations — the other ATF lever." }
+      ]
+    },
+    {
+      "topicId": "marriage",
+      "headline": "Statute, tax code, and religious-liberty oversight",
+      "blurb": "Judiciary owns the civil-rights and religious-liberty statutes. Ways and Means and Finance own the tax treatment of marriage. Education committees hear the school and college fights.",
+      "committees": [
+        { "id": "HSJU", "why": "Religious Freedom Restoration Act, civil-rights statutes, and the Constitution subcommittee.", "focusIds": ["HSJU10"] },
+        { "id": "SSJU", "why": "Senate Judiciary — same statutes and the nominees who will apply them." },
+        { "id": "HSWM", "why": "Tax treatment of marriage and family in the code." },
+        { "id": "SSFI", "why": "Senate Finance — joint filers, child tax credit, and family policy.", "focusIds": ["SSFI02"] },
+        { "id": "HSED", "why": "Campus and K-12 religious-liberty and curriculum fights." }
+      ]
+    },
+    {
+      "topicId": "two-sexes",
+      "headline": "Title IX, HHS rules, and the courts",
+      "blurb": "Education and Workforce is the Title IX committee. Energy & Commerce and HELP own the HHS/FDA medical rules. Judiciary is where definition-of-sex statutes and sports bills are marked up.",
+      "committees": [
+        { "id": "HSED", "why": "Title IX, school sports, and campus rules." },
+        { "id": "SSHR", "why": "HELP: HHS, pediatric gender medicine, and education statutes." },
+        { "id": "HSIF", "why": "FDA and public-health rules; Health subcommittee holds the medical hearings.", "focusIds": ["HSIF14"] },
+        { "id": "HSJU", "why": "Sex-definition statutes, Women's Bill of Rights, and prison/sports bills." },
+        { "id": "SSJU", "why": "Senate path for the same bills." }
+      ]
+    },
+    {
+      "topicId": "pro-israel",
+      "headline": "Aid, diplomacy, and the intel product",
+      "blurb": "Foreign Affairs and Foreign Relations write the policy. State-Foreign Operations appropriations writes the check. Intelligence committees see the threat picture.",
+      "committees": [
+        { "id": "HSFA", "why": "Israel aid, sanctions, and the Abraham Accords oversight." },
+        { "id": "SSFR", "why": "Senate Foreign Relations — treaties, nominations, and the same aid bills." },
+        { "id": "HSAP04", "why": "State and Foreign Operations appropriations: FMF and missile-defense dollars." },
+        { "id": "SSAP20", "why": "Senate SFOPS appropriations." },
+        { "id": "HLIG", "why": "House Intelligence — Iran, Hamas, and Hezbollah reporting." },
+        { "id": "SLIN", "why": "Senate Intelligence — the other half of that product." }
+      ]
+    },
+    {
+      "topicId": "national-security",
+      "headline": "Armed Services, Intelligence, and the China select",
+      "blurb": "HASC/SASC write the NDAA. Intelligence oversees the IC. Homeland covers the domestic edge. The China select is the 119th's dedicated CCP panel.",
+      "committees": [
+        { "id": "HSAS", "why": "NDAA, force design, and defense policy." },
+        { "id": "SSAS", "why": "Senate Armed Services — the other NDAA chamber." },
+        { "id": "HLIG", "why": "House Intelligence (HPSCI)." },
+        { "id": "SLIN", "why": "Senate Intelligence (SSCI)." },
+        { "id": "HSHM", "why": "Domestic terrorism, borders, and critical infrastructure." },
+        { "id": "HSFA", "why": "Alliances, AUKUS, and China policy on the diplomatic side." },
+        { "id": "HSZS", "why": "Select Committee on the CCP — the dedicated China panel." }
+      ]
+    },
+    {
+      "topicId": "anti-climate-alarmism",
+      "headline": "Energy policy is E&C, ENR, and the spending bills",
+      "blurb": "House Energy & Commerce and Senate Energy write the statutes. EPW and Natural Resources own EPA and public lands. Energy and Water appropriations is the purse.",
+      "committees": [
+        { "id": "HSIF", "why": "Energy statute, EPA rules, and the Environment subcommittee.", "focusIds": ["HSIF03", "HSIF18"] },
+        { "id": "SSEG", "why": "Senate Energy and Natural Resources — federal lands and energy markets." },
+        { "id": "SSEV", "why": "EPW: EPA, infrastructure, and climate bills." },
+        { "id": "HSII", "why": "Natural Resources — leasing, NEPA, and western lands." },
+        { "id": "HSAP10", "why": "Energy and Water appropriations: DOE and the labs." },
+        { "id": "HSSY", "why": "Science Committee — climate research budgets and NOAA/NSF oversight." }
+      ]
+    },
+    {
+      "topicId": "limited-government",
+      "headline": "Budget, tax, and the administrative state",
+      "blurb": "Budget sets the cap. Ways and Means and Finance write the code. Oversight and Judiciary's administrative-state subcommittee are where the agencies get cross-examined.",
+      "committees": [
+        { "id": "HSBU", "why": "House Budget Resolution — the spending ceiling." },
+        { "id": "SSBU", "why": "Senate Budget." },
+        { "id": "HSWM", "why": "Tax-writing committee. Article I, Section 7 starts here." },
+        { "id": "SSFI", "why": "Senate Finance — the other tax-writing committee." },
+        { "id": "HSGO", "why": "Oversight and Government Reform — agency waste and rulemaking." },
+        { "id": "HSJU", "why": "Administrative State, Regulatory Reform, and Antitrust subcommittee.", "focusIds": ["HSJU05"] },
+        { "id": "HSAP", "why": "House Appropriations — twelve bills that actually spend the money." }
+      ]
+    },
+    {
+      "topicId": "anti-crt",
+      "headline": "Curriculum is Education; civil-rights law is Judiciary",
+      "blurb": "Education and Workforce and Senate HELP own K-12 and college policy. Judiciary owns Title VI and the civil-rights statutes activists try to rewrite.",
+      "committees": [
+        { "id": "HSED", "why": "K-12 curriculum, college accreditation, and Department of Education rules." },
+        { "id": "SSHR", "why": "HELP — the Senate education committee, including the Education and the American Family subcommittee.", "focusIds": ["SSHR09"] },
+        { "id": "HSJU", "why": "Title VI, disparate-impact doctrine, and civil-rights statutes." },
+        { "id": "HSGO", "why": "Federal-agency DEI programs and contracting preferences." }
+      ]
+    },
+    {
+      "topicId": "crime-and-justice",
+      "headline": "Judiciary writes the code; CJS funds the cops",
+      "blurb": "House and Senate Judiciary own criminal law, sentencing, and DOJ oversight. Commerce-Justice-Science appropriations funds FBI, USMS, and Byrne JAG.",
+      "committees": [
+        { "id": "HSJU", "why": "Criminal code, sentencing, and the Crime subcommittee.", "focusIds": ["HSJU08"] },
+        { "id": "SSJU", "why": "Senate Judiciary — Crime and Counterterrorism subcommittee.", "focusIds": ["SSJU22"] },
+        { "id": "HSAP19", "why": "CJS appropriations: FBI, COPS, and Byrne grants." },
+        { "id": "SSAP16", "why": "Senate CJS appropriations." }
+      ]
+    },
+    {
+      "topicId": "role-of-the-military",
+      "headline": "NDAA, defense appropriations, and veterans",
+      "blurb": "Armed Services writes the NDAA. Defense appropriations writes the check. Veterans' Affairs is the after-service committee. MILCON-VA is the facilities bill.",
+      "committees": [
+        { "id": "HSAS", "why": "House Armed Services — NDAA and force policy." },
+        { "id": "SSAS", "why": "Senate Armed Services." },
+        { "id": "HSAP02", "why": "Defense appropriations — the largest discretionary bill." },
+        { "id": "SSAP02", "why": "Senate Defense appropriations." },
+        { "id": "HSVR", "why": "House Veterans' Affairs." },
+        { "id": "SSVA", "why": "Senate Veterans' Affairs." },
+        { "id": "HSAP18", "why": "Military Construction and VA appropriations." }
+      ]
+    },
+    {
+      "topicId": "universal-healthcare",
+      "headline": "Health markup is E&C, Ways and Means, HELP, and Finance",
+      "blurb": "House Energy & Commerce and Ways and Means split HHS and the tax side of health. Senate HELP and Finance are the matching pair. LHHS appropriations funds the agencies.",
+      "committees": [
+        { "id": "HSIF", "why": "Public health, FDA, Medicaid operations — Health subcommittee.", "focusIds": ["HSIF14"] },
+        { "id": "HSWM", "why": "Medicare, tax exclusion for employer coverage, and health tax credits.", "focusIds": ["HSWM02"] },
+        { "id": "SSHR", "why": "HELP — HHS agencies and private-insurance market rules." },
+        { "id": "SSFI", "why": "Senate Finance — Medicare, Medicaid, and CHIP.", "focusIds": ["SSFI10"] },
+        { "id": "HSAP07", "why": "LHHS appropriations: NIH, CDC, and HHS grant accounts." },
+        { "id": "SSAP18", "why": "Senate LHHS appropriations." }
+      ]
+    },
+    {
+      "topicId": "ai-governance",
+      "headline": "AI is split across Judiciary, Science, Commerce, and Intel",
+      "blurb": "House Judiciary's AI subcommittee and Senate Privacy/Technology are the statute rooms. Science and Commerce own research and industry. Intelligence owns the national-security stack.",
+      "committees": [
+        { "id": "HSJU", "why": "Courts, IP, Artificial Intelligence, and the Internet subcommittee.", "focusIds": ["HSJU03"] },
+        { "id": "SSJU", "why": "Privacy, Technology, and the Law — plus IP.", "focusIds": ["SSJU28", "SSJU26"] },
+        { "id": "HSSY", "why": "Science, Space, and Technology — federal AI research and NIST." },
+        { "id": "SSCM", "why": "Senate Commerce — industry, NTIA, and Section 230-adjacent fights." },
+        { "id": "HSIF", "why": "Communications and Technology subcommittee — the House telecom/AI overlap.", "focusIds": ["HSIF16"] },
+        { "id": "HLIG", "why": "NSA and Cyber subcommittee — the classified AI stack.", "focusIds": ["HLIG02"] }
+      ]
+    }
+  ]
+}

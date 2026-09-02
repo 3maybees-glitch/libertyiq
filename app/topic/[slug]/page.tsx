@@ -9,7 +9,8 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { TopicIllustration } from '@/components/TopicIllustration';
 import ReferencesButton from '@/components/references-button';
-import { DebateOnePagerButton } from '@/components/debate-onepager-button';
+import { DebateOnePagerButton } from '@/components/debate-onepager-button'
+import { WhoHoldsTheGavel } from '@/components/committees/who-holds-the-gavel';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -77,6 +78,8 @@ export default function TopicPage({ params }: PageProps) {
             </div>
           </div>
         </div>
+
+        <WhoHoldsTheGavel topicId={topic.id} variant="page" />
 
         <div className="mb-10">
           <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">
