@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Building2, Landmark, Search, UserRound } from 'lucide-react'
@@ -34,11 +34,12 @@ export function CommitteesDirectory() {
   const pathname = usePathname()
 
   const view = (params.get('view') as DirectoryView) || 'committee'
-  const query = params.get('q') || ''
+  const urlQuery = params.get('q') || ''
   const chamber = (params.get('chamber') as DirectoryFilters['chamber']) || 'all'
   const side = (params.get('side') as DirectoryFilters['side']) || 'all'
   const chairsOnly = params.get('chairs') === '1'
   const issue = params.get('issue') || ''
+  const [query, setQuery] = useState(urlQuery)
 
   const setParams = useCallback(
     (patch: Record<string, string | null>) => {
@@ -52,6 +53,15 @@ export function CommitteesDirectory() {
     },
     [params, pathname, router],
   )
+
+  useEffect(() => {
+    const handle = window.setTimeout(() => {
+      const next = query.trim()
+      if (next === urlQuery) return
+      setParams({ q: next || null })
+    }, 250)
+    return () => window.clearTimeout(handle)
+  }, [query, urlQuery, setParams])
 
   const filters: DirectoryFilters = useMemo(
     () => ({ query, chamber, side, chairsOnly }),
@@ -81,7 +91,7 @@ export function CommitteesDirectory() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={query}
-              onChange={(e) => setParams({ q: e.target.value || null })}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder='Search “Cruz”, “Ways and Means”, “HELP”, “HPSCI”, Texas…'
               className="pl-9 h-11 bg-card/80 text-base"
             />
