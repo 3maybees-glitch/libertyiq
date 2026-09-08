@@ -106,9 +106,9 @@ export default function Home() {
               Special opportunity
             </p>
             <p className="mt-1 text-sm leading-relaxed text-foreground/95 max-w-3xl">
-              Heritage asked families who know the Academy to share this official
-              flyer. A LibertyIQ family is doing that here — applications close
-              September 13.
+              LibertyIQ is announcing the Heritage Academy by the Heritage
+              Foundation. A wonderful opportunity to increase your knowledge in
+              every issue with like-minded students and patriots.
             </p>
           </div>
           <HeritageAcademyFeatured />
