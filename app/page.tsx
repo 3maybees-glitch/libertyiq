@@ -20,11 +20,14 @@ import ReferencesButton from '@/components/references-button';
 import { DebateOnePagerButton } from '@/components/debate-onepager-button';
 import { WhoHoldsTheGavel } from '@/components/committees/who-holds-the-gavel';
 import { InstallAppButton, InstallAppHomeLink } from '@/components/install-app';
+import { HeritageAcademyFeatured } from '@/components/heritage-academy-ad';
+import { isHeritageAcademyApplyOpen } from '@/lib/heritage-academy';
 import Image from 'next/image';
 
 export default function Home() {
   const [selectedId, setSelectedId] = useState(topics[0]?.id ?? '');
   const selected = topics.find((t) => t.id === selectedId) ?? topics[0];
+  const academyApplyOpen = isHeritageAcademyApplyOpen();
 
   return (
     <div className="min-h-screen">
@@ -57,6 +60,14 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-col gap-2 w-full pt-1">
+              <Link href="/heritage-academy" className="block w-full">
+                <div className="w-full flex items-center justify-center gap-2 border border-[#C9A227]/70 text-[#C9A227] rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
+                  <GraduationCap className="h-4 w-4 shrink-0" />
+                  {academyApplyOpen
+                    ? 'Heritage Academy · Apply by Sept 13'
+                    : 'Heritage Academy'}
+                </div>
+              </Link>
               <Link href="/libertyiq" className="block w-full">
                 <div className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
                   <GraduationCap className="h-4 w-4 shrink-0" />
@@ -116,6 +127,16 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0 pt-1">
+              <Link href="/heritage-academy">
+                <Button
+                  variant="outline"
+                  size="default"
+                  className="gap-2 whitespace-nowrap font-semibold border-[#C9A227]/70 text-[#C9A227] hover:bg-[#C9A227]/10 hover:text-[#C9A227]"
+                >
+                  <GraduationCap className="h-5 w-5" />
+                  Academy
+                </Button>
+              </Link>
               <ReferencesButton />
               <Link href="/debate-onepagers">
                 <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
@@ -151,6 +172,8 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        <HeritageAcademyFeatured className="mb-8" />
 
         {/* Mobile dropdown */}
         <div className="mb-6 md:hidden">
@@ -278,6 +301,11 @@ export default function Home() {
         <div className="mt-16 pt-8 border-t border-border/30">
           <p className="text-sm text-muted-foreground text-center leading-relaxed">
             Use these arguments thoughtfully and compassionately. The goal is to engage in meaningful dialogue, not to win arguments.
+          </p>
+          <p className="mt-3 text-center text-xs text-muted-foreground">
+            <Link href="/heritage-academy" className="font-semibold text-accent hover:underline">
+              Know a student for the Heritage Academy?
+            </Link>
           </p>
         </div>
       </div>
