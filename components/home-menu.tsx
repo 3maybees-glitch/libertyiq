@@ -65,7 +65,7 @@ export function SiteMenu({
   align = 'end',
   fullWidth = false,
 }: {
-  align?: 'start' | 'end'
+  align?: 'start' | 'center' | 'end'
   fullWidth?: boolean
 }) {
   return (
