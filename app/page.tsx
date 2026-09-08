@@ -13,14 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { FileText, Gavel, GraduationCap, Mic, Sparkles } from 'lucide-react';
-import ReferencesButton from '@/components/references-button';
+import { GraduationCap } from 'lucide-react';
 import { DebateOnePagerButton } from '@/components/debate-onepager-button';
 import { WhoHoldsTheGavel } from '@/components/committees/who-holds-the-gavel';
-import { InstallAppButton, InstallAppHomeLink } from '@/components/install-app';
 import { HeritageAcademyFeatured } from '@/components/heritage-academy-ad';
+import { HomeDesktopNav, HomeMobileNav } from '@/components/home-menu';
 import { isHeritageAcademyApplyOpen } from '@/lib/heritage-academy';
 import Image from 'next/image';
 
@@ -59,52 +57,21 @@ export default function Home() {
                 Structured arguments, biblical foundations, scientific evidence, and defense tips.
               </p>
             </div>
-            <div className="flex flex-col gap-2 w-full pt-1">
-              <Link href="/heritage-academy" className="block w-full">
-                <div
-                  className="w-full flex items-center justify-center gap-2 rounded-xl py-3 px-4 font-semibold text-sm text-white active:opacity-90 transition-opacity"
-                  style={{ backgroundColor: '#009CDE' }}
-                >
-                  <GraduationCap className="h-4 w-4 shrink-0" />
-                  {academyApplyOpen
-                    ? 'Heritage Academy · Apply by Sept 13'
-                    : 'Heritage Academy'}
-                </div>
-              </Link>
-              <Link href="/libertyiq" className="block w-full">
-                <div className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
-                  <GraduationCap className="h-4 w-4 shrink-0" />
-                  Test Your LibertyIQ
-                </div>
-              </Link>
-              <Link href="/speaking-trainer" className="block w-full">
-                <div className="w-full flex items-center justify-center gap-2 bg-secondary text-secondary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
-                  <Mic className="h-4 w-4 shrink-0" />
-                  Speaking Trainer
-                  <span className="text-[10px] uppercase tracking-wide opacity-90 ml-1">Core</span>
-                </div>
-              </Link>
-              <Link href="/pricing" className="block w-full">
-                <div className="w-full flex items-center justify-center gap-2 border border-primary/40 text-primary rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
-                  <Sparkles className="h-4 w-4 shrink-0" />
-                  Pricing
-                </div>
-              </Link>
-              <Link href="/debate-onepagers" className="block w-full">
-                <div className="w-full flex items-center justify-center gap-2 border border-border text-foreground rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
-                  <FileText className="h-4 w-4 shrink-0" />
-                  Debate One-Pagers
-                </div>
-              </Link>
-              <Link href="/committees" className="block w-full">
-                <div className="w-full flex items-center justify-center gap-2 border border-border text-foreground rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
-                  <Gavel className="h-4 w-4 shrink-0" />
-                  Committees
-                </div>
-              </Link>
-              <InstallAppHomeLink />
-              <ReferencesButton fullWidth />
-            </div>
+            <HomeMobileNav
+              academyCta={
+                <Link href="/heritage-academy" className="block w-full">
+                  <div
+                    className="w-full flex items-center justify-center gap-2 rounded-xl py-3 px-4 font-semibold text-sm text-white active:opacity-90 transition-opacity"
+                    style={{ backgroundColor: '#009CDE' }}
+                  >
+                    <GraduationCap className="h-4 w-4 shrink-0" />
+                    {academyApplyOpen
+                      ? 'Heritage Academy · Apply by Sept 13'
+                      : 'Heritage Academy'}
+                  </div>
+                </Link>
+              }
+            />
           </div>
 
           {/* Desktop layout: logo + text left, buttons right */}
@@ -129,45 +96,25 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 shrink-0 pt-1">
-              <ReferencesButton />
-              <Link href="/debate-onepagers">
-                <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
-                  <FileText className="h-5 w-5" />
-                  One-Pagers
-                </Button>
-              </Link>
-              <Link href="/committees">
-                <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
-                  <Gavel className="h-5 w-5" />
-                  Committees
-                </Button>
-              </Link>
-              <InstallAppButton variant="outline" size="default" />
-              <Link href="/pricing">
-                <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
-                  <Sparkles className="h-5 w-5" />
-                  Pricing
-                </Button>
-              </Link>
-              <Link href="/speaking-trainer">
-                <Button variant="secondary" size="default" className="gap-2 whitespace-nowrap font-semibold">
-                  <Mic className="h-5 w-5" />
-                  Speaking Trainer
-                </Button>
-              </Link>
-              <Link href="/libertyiq">
-                <Button variant="default" size="default" className="gap-2 whitespace-nowrap font-semibold">
-                  <GraduationCap className="h-5 w-5" />
-                  Test Your LibertyIQ
-                </Button>
-              </Link>
-            </div>
+            <HomeDesktopNav />
           </div>
         </div>
 
-        <HeritageAcademyFeatured className="mb-8" />
+        <div className="mb-8">
+          <div className="mb-3">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#7FD2F3]">
+              Special opportunity
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-foreground/95 max-w-3xl">
+              Heritage asked families who know the Academy to share this official
+              flyer. A LibertyIQ family is doing that here — applications close
+              September 13.
+            </p>
+          </div>
+          <HeritageAcademyFeatured />
+        </div>
 
+        <div id="issues" className="scroll-mt-6">
         {/* Mobile dropdown */}
         <div className="mb-6 md:hidden">
           <Select value={selectedId} onValueChange={setSelectedId}>
@@ -190,6 +137,9 @@ export default function Home() {
           {/* Sidebar — desktop only */}
           <aside className="hidden md:block">
             <div className="sticky top-6 space-y-2">
+              <h2 className="px-1 pb-1 text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                Issues
+              </h2>
               {topics.map((t) => (
                 <button
                   key={t.id}
@@ -288,6 +238,7 @@ export default function Home() {
             )}
 
           </section>
+        </div>
         </div>
 
         {/* Footer */}
