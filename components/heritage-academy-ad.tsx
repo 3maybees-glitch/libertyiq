@@ -153,7 +153,7 @@ export function HeritageAcademyFeatured({ className }: { className?: string }) {
       </div>
       <div className="px-5 py-4 sm:px-6 sm:py-5">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7FD2F3]">
-          Official {HERITAGE_ACADEMY.org} flyer
+          {HERITAGE_ACADEMY.org} flyer
         </p>
         <h2
           id="heritage-academy-ad-heading"

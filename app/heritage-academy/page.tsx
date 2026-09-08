@@ -54,7 +54,7 @@ export default function HeritageAcademyPage() {
         </Link>
 
         <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#7FD2F3]">
-          Official {HERITAGE_ACADEMY.org} materials
+          Materials from {HERITAGE_ACADEMY.org}
         </p>
         <h1 className="mt-3 font-serif text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
           {HERITAGE_ACADEMY.name}
