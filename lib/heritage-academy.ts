@@ -1,36 +1,70 @@
 /**
- * Fall 2026 Heritage Academy High School Track — facts for the LibertyIQ ad.
- *
- * Sources:
- * - Kirsten Holmberg email to LibertyIQ (Sep 8, 2026)
- * - https://www.heritage.org/the-academy
- * - https://www.heritage.org/academy-faq
- *
- * Copy on the site is original. Do not paste Heritage marketing text verbatim.
+ * Official Heritage Academy Fall 2026 marketing materials.
+ * Copy and creatives come from The Heritage Foundation flyer and graphics
+ * shared with LibertyIQ for distribution.
  */
 
 export const HERITAGE_ACADEMY = {
-  name: 'The Heritage Academy',
-  track: 'High School Track',
+  name: 'Heritage Academy',
   org: 'The Heritage Foundation',
-  learnMoreUrl: 'https://www.heritage.org/the-academy',
+  tagline: 'An online public policy fellowship',
+  headline: 'Want to help restore America?',
+  subhead: 'Take your next step as a Heritage Academy Fellow.',
+  description:
+    'The Heritage Academy is an eight-week, online fellowship focused on America’s founding principles, the history of the conservative movement, and the most pressing public policy issues of our time. Gain the knowledge, skills, and network you need to win the battle of ideas.',
+  applicationsOpen: 'Applications Now Open!',
+  applyBy: 'APPLY BY SEPTEMBER 13',
+  applyNow: 'APPLY NOW!',
+  printedUrl: 'heritage.org/heritage-academy',
+  learnMoreUrl: 'https://www.heritage.org/heritage-academy',
   applyUrl:
     'https://jobs.crelate.com/portal/heritagejobbank/job/apply/wb83e359zdt3h54h5b3jwg5e9y?crt=1783344410120',
-  faqUrl: 'https://www.heritage.org/academy-faq',
-  speakersUrl: 'https://www.heritage.org/article/the-academy-speakers',
-  contactEmail: 'theacademy@heritage.org',
-  termLabel: 'Fall 2026',
-  programStartLabel: 'September 28, 2026',
-  programEndLabel: 'November 23, 2026',
-  programRangeLabel: 'September 28 – November 23, 2026',
-  deadlineLabel: 'September 13, 2026',
-  weeklyHoursLabel: '2–3 hours',
-  weeklyHoursDetail:
-    'In a typical week, fellows watch two 30-minute lectures on their own time and join one live session.',
-  format: 'Free, virtual, part-time fellowship',
-  durationWeeks: 8,
-  lectureCount: 16,
-  liveQaCount: 4,
+  flyerPdf: '/heritage-academy/Heritage-Academy-Flyer-2026.pdf',
+  brandBlue: '#009CDE',
+  assets: {
+    libertyBell: '/heritage-academy/flyer-liberty-bell.jpg',
+    onlineFellowship: '/heritage-academy/flyer-online-fellowship.jpg',
+    eagle: '/heritage-academy/flyer-eagle.jpg',
+    flyerPage1: '/heritage-academy/flyer-page-1.jpg',
+    flyerPage2: '/heritage-academy/flyer-page-2.jpg',
+  },
+  pillars: [
+    {
+      title: 'On-demand policy lectures',
+      body: 'Learn from America’s leading policy experts.',
+    },
+    {
+      title: 'Live Q&A sessions',
+      body: 'Interact with leaders in the conservative movement.',
+    },
+    {
+      title: 'Small-group discussions',
+      body: 'Connect with conservatives from across America.',
+    },
+  ],
+  whoShouldApply: 'We are looking for talented conservatives of all ages.',
+  tracks: [
+    {
+      title: 'High school students',
+      body: 'Meet like-minded students and learn how you can defend your values.',
+    },
+    {
+      title: 'College students',
+      body: 'Gain the skills and contacts you need to land your first internship or job in the conservative movement.',
+    },
+    {
+      title: 'Professionals & patriots',
+      body: 'Connect with other professionals and engaged conservatives from all walks of life.',
+    },
+  ],
+  lectures: [
+    'America’s Founding',
+    'The History of American Conservatism',
+    'The Gender Ideology Takeover',
+    'Immigration & National Security',
+    'Holding Big Tech Accountable',
+    'Defending Life',
+  ],
 } as const
 
 /** Applications close at the end of September 13, 2026, Eastern Time. */
@@ -39,21 +73,5 @@ export const HERITAGE_ACADEMY_APPLY_DEADLINE = new Date('2026-09-13T23:59:59.999
 export function isHeritageAcademyApplyOpen(now: Date = new Date()): boolean {
   return now.getTime() <= HERITAGE_ACADEMY_APPLY_DEADLINE.getTime()
 }
-
-export const HERITAGE_ACADEMY_SPEAKERS = [
-  { name: 'Kevin D. Roberts, PhD', role: 'President, The Heritage Foundation' },
-  {
-    name: 'Dr. Christina Francis',
-    role: 'Chief Executive Officer, American Association of Pro-Life Obstetricians and Gynecologists',
-  },
-  {
-    name: 'Jay W. Richards, PhD',
-    role: 'Vice President, Social and Domestic Policy, and William E. Simon Senior Research Fellow',
-  },
-  {
-    name: 'Christopher Malagisi',
-    role: 'Executive Director of Outreach, Hillsdale College (D.C.)',
-  },
-] as const
 
 export const heritageExternalRel = 'noopener noreferrer' as const

@@ -1,5 +1,6 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import { CalendarDays, Clock, ExternalLink, GraduationCap } from 'lucide-react'
+import { Download, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import {
@@ -11,70 +12,52 @@ import {
 export function HeritageAcademyApplyButtons({
   className,
   size = 'default',
-  invert = false,
   secondary = 'invitation',
 }: {
   className?: string
   size?: 'default' | 'lg'
-  invert?: boolean
-  secondary?: 'invitation' | 'learn-more' | 'none'
+  secondary?: 'invitation' | 'flyer' | 'learn-more' | 'none'
 }) {
   const applyOpen = isHeritageAcademyApplyOpen()
 
   return (
     <div className={cn('flex flex-col sm:flex-row gap-2 sm:gap-3', className)}>
-      {applyOpen ? (
-        <Button asChild size={size} className="font-semibold">
-          <a
-            href={HERITAGE_ACADEMY.applyUrl}
-            target="_blank"
-            rel={heritageExternalRel}
-          >
-            Apply on Heritage&apos;s site
-            <ExternalLink className="size-4" aria-hidden />
-          </a>
-        </Button>
-      ) : (
-        <Button asChild size={size} className="font-semibold">
-          <a
-            href={HERITAGE_ACADEMY.learnMoreUrl}
-            target="_blank"
-            rel={heritageExternalRel}
-          >
-            See upcoming terms
-            <ExternalLink className="size-4" aria-hidden />
-          </a>
+      <Button
+        asChild
+        size={size}
+        className="font-semibold text-white hover:opacity-90"
+        style={{ backgroundColor: HERITAGE_ACADEMY.brandBlue }}
+      >
+        <a
+          href={applyOpen ? HERITAGE_ACADEMY.applyUrl : HERITAGE_ACADEMY.learnMoreUrl}
+          target="_blank"
+          rel={heritageExternalRel}
+        >
+          {applyOpen ? HERITAGE_ACADEMY.applyNow : 'See Heritage Academy'}
+          <ExternalLink className="size-4" aria-hidden />
+        </a>
+      </Button>
+      {secondary === 'invitation' && (
+        <Button asChild size={size} variant="outline" className="font-semibold">
+          <Link href="/heritage-academy">See the official flyer</Link>
         </Button>
       )}
-      {secondary === 'invitation' && (
-        <Button
-          asChild
-          size={size}
-          variant="outline"
-          className={cn(
-            'font-semibold',
-            invert && 'border-white/35 bg-transparent text-white hover:bg-white/10 hover:text-white',
-          )}
-        >
-          <Link href="/heritage-academy">Read the invitation</Link>
+      {secondary === 'flyer' && (
+        <Button asChild size={size} variant="outline" className="font-semibold">
+          <a href={HERITAGE_ACADEMY.flyerPdf} download>
+            Download the flyer
+            <Download className="size-4" aria-hidden />
+          </a>
         </Button>
       )}
       {secondary === 'learn-more' && (
-        <Button
-          asChild
-          size={size}
-          variant="outline"
-          className={cn(
-            'font-semibold',
-            invert && 'border-white/35 bg-transparent text-white hover:bg-white/10 hover:text-white',
-          )}
-        >
+        <Button asChild size={size} variant="outline" className="font-semibold">
           <a
             href={HERITAGE_ACADEMY.learnMoreUrl}
             target="_blank"
             rel={heritageExternalRel}
           >
-            Learn more at Heritage
+            {HERITAGE_ACADEMY.printedUrl}
             <ExternalLink className="size-4" aria-hidden />
           </a>
         </Button>
@@ -83,123 +66,109 @@ export function HeritageAcademyApplyButtons({
   )
 }
 
-export function HeritageAcademyTermPlate({ className }: { className?: string }) {
-  const applyOpen = isHeritageAcademyApplyOpen()
+function OfficialPoster({
+  src,
+  alt,
+  href,
+  priority = false,
+  width,
+  height,
+  className,
+}: {
+  src: string
+  alt: string
+  href: string
+  priority?: boolean
+  width: number
+  height: number
+  className?: string
+}) {
+  const external = href.startsWith('http')
+  const image = (
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      priority={priority}
+      className="h-auto w-full"
+    />
+  )
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel={heritageExternalRel}
+        className={cn(
+          'block overflow-hidden rounded-lg border border-white/15 bg-black shadow-lg transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#009CDE]',
+          className,
+        )}
+      >
+        {image}
+      </a>
+    )
+  }
 
   return (
-    <div
+    <Link
+      href={href}
       className={cn(
-        'relative overflow-hidden rounded-xl border border-[#C9A227]/45 bg-[#12121f]/80 px-4 py-4 sm:px-5',
+        'block overflow-hidden rounded-lg border border-white/15 bg-black shadow-lg transition-opacity hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#009CDE]',
         className,
       )}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#C9A227] to-transparent"
-      />
-      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C9A227]">
-        {HERITAGE_ACADEMY.termLabel} term plate
-      </p>
-      <div className="mt-3 grid gap-3 sm:grid-cols-2">
-        <div>
-          <p className="text-[11px] uppercase tracking-wider text-white/70">Program dates</p>
-          <p className="mt-1 font-serif text-lg leading-snug text-white">
-            {HERITAGE_ACADEMY.programRangeLabel}
-          </p>
-        </div>
-        <div className="flex items-start gap-3 sm:border-l sm:border-white/15 sm:pl-4">
-          <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-wider text-white/70">
-              {applyOpen ? 'Application deadline' : 'Applications'}
-            </p>
-            <p className="mt-1 font-serif text-lg leading-snug text-[#F3C6C9]">
-              {applyOpen
-                ? `Apply by ${HERITAGE_ACADEMY.deadlineLabel}`
-                : 'Fall 2026 applications have closed'}
-            </p>
-          </div>
-          <div
-            aria-hidden
-            className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#B22234] bg-[#8E1C2A] text-[9px] font-bold uppercase leading-tight tracking-wide text-white shadow-[0_0_0_3px_rgba(178,34,52,0.25)]"
-          >
-            {applyOpen ? (
-              <span>
-                Due
-                <br />
-                9/13
-              </span>
-            ) : (
-              <span>Closed</span>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+      {image}
+    </Link>
   )
 }
 
 export function HeritageAcademyFeatured({ className }: { className?: string }) {
   const applyOpen = isHeritageAcademyApplyOpen()
+  const applyHref = applyOpen ? HERITAGE_ACADEMY.applyUrl : HERITAGE_ACADEMY.learnMoreUrl
 
   return (
     <aside
-      className={cn(
-        'rounded-2xl border border-[#C9A227]/40 bg-card/80 shadow-lg overflow-hidden',
-        className,
-      )}
+      className={cn('overflow-hidden rounded-2xl border border-[#009CDE]/40 bg-[#0b1c2e] shadow-lg', className)}
       aria-labelledby="heritage-academy-ad-heading"
     >
-      <div
-        className="h-1 w-full"
-        style={{
-          background:
-            'linear-gradient(to right, #B22234 33%, #FFFFFF 33%, #FFFFFF 66%, #3C3B6E 66%)',
-        }}
-      />
-      <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C9A227]">
-            A LibertyIQ family recommends
-          </p>
-          <h2
-            id="heritage-academy-ad-heading"
-            className="mt-2 font-serif text-2xl sm:text-3xl font-bold tracking-tight text-foreground"
-          >
-            {HERITAGE_ACADEMY.name}
-          </h2>
-          <p className="mt-1 text-sm font-semibold text-accent">
-            {HERITAGE_ACADEMY.track} · {HERITAGE_ACADEMY.format} · {HERITAGE_ACADEMY.termLabel}
-          </p>
-          <p className="mt-3 text-sm leading-relaxed text-foreground/95 max-w-2xl">
-            Our son completed this program and loved it. {HERITAGE_ACADEMY.org} asked
-            families who believe in their mission to help other students find the{' '}
-            {HERITAGE_ACADEMY.termLabel} High School Track — a free online fellowship
-            on America&apos;s founding principles, the conservative movement, and the
-            policy questions that will shape their future.
-          </p>
-          <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground">
-            <li className="inline-flex items-center gap-1.5">
-              <CalendarDays className="size-3.5 text-[#C9A227]" aria-hidden />
-              {HERITAGE_ACADEMY.programRangeLabel}
-            </li>
-            <li className="inline-flex items-center gap-1.5">
-              <Clock className="size-3.5 text-[#C9A227]" aria-hidden />
-              About {HERITAGE_ACADEMY.weeklyHoursLabel} a week
-            </li>
-            <li className="inline-flex items-center gap-1.5">
-              <GraduationCap className="size-3.5 text-[#C9A227]" aria-hidden />
-              High school students nationwide
-            </li>
-          </ul>
-          <HeritageAcademyApplyButtons className="mt-5" />
-          {!applyOpen && (
-            <p className="mt-3 text-xs text-muted-foreground">
-              The {HERITAGE_ACADEMY.termLabel} deadline has passed. Heritage&apos;s
-              Academy page lists future terms when they open.
-            </p>
-          )}
-        </div>
-        <HeritageAcademyTermPlate />
+      <div className="grid gap-0 lg:grid-cols-2">
+        <OfficialPoster
+          src={HERITAGE_ACADEMY.assets.libertyBell}
+          alt="Heritage Academy official flyer: an online public policy fellowship. Applications now open. Apply by September 13. heritage.org/heritage-academy"
+          href={applyHref}
+          priority
+          width={1400}
+          height={1750}
+        />
+        <OfficialPoster
+          src={HERITAGE_ACADEMY.assets.onlineFellowship}
+          alt="Heritage Academy official flyer featuring a lecture, Why Be a Conservative?, with Dr. Kevin Roberts, President of The Heritage Foundation. Applications now open. Apply by September 13."
+          href="/heritage-academy"
+          width={1400}
+          height={1750}
+          className="hidden sm:block"
+        />
+      </div>
+      <div className="px-5 py-4 sm:px-6 sm:py-5">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#7FD2F3]">
+          Official {HERITAGE_ACADEMY.org} flyer
+        </p>
+        <h2
+          id="heritage-academy-ad-heading"
+          className="mt-1 font-serif text-2xl font-bold tracking-tight text-white"
+        >
+          {HERITAGE_ACADEMY.name}
+        </h2>
+        <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-white/85">
+          {HERITAGE_ACADEMY.tagline}
+        </p>
+        <p className="mt-2 text-sm text-white/90">
+          {applyOpen ? HERITAGE_ACADEMY.applicationsOpen : 'See Heritage Academy for the next term.'}{' '}
+          <span className="font-bold">{applyOpen ? HERITAGE_ACADEMY.applyBy : ''}</span>
+        </p>
+        <HeritageAcademyApplyButtons className="mt-4" />
       </div>
     </aside>
   )

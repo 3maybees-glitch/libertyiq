@@ -61,7 +61,10 @@ export default function Home() {
             </div>
             <div className="flex flex-col gap-2 w-full pt-1">
               <Link href="/heritage-academy" className="block w-full">
-                <div className="w-full flex items-center justify-center gap-2 border border-[#C9A227]/70 text-[#C9A227] rounded-xl py-3 px-4 font-semibold text-sm active:opacity-90 transition-opacity">
+                <div
+                  className="w-full flex items-center justify-center gap-2 rounded-xl py-3 px-4 font-semibold text-sm text-white active:opacity-90 transition-opacity"
+                  style={{ backgroundColor: '#009CDE' }}
+                >
                   <GraduationCap className="h-4 w-4 shrink-0" />
                   {academyApplyOpen
                     ? 'Heritage Academy · Apply by Sept 13'
@@ -294,7 +297,7 @@ export default function Home() {
           </p>
           <p className="mt-3 text-center text-xs text-muted-foreground">
             <Link href="/heritage-academy" className="font-semibold text-accent hover:underline">
-              Know a student for the Heritage Academy?
+              Heritage Academy flyer — apply by September 13
             </Link>
           </p>
         </div>
