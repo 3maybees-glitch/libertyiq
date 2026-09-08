@@ -127,16 +127,6 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0 pt-1">
-              <Link href="/heritage-academy">
-                <Button
-                  variant="outline"
-                  size="default"
-                  className="gap-2 whitespace-nowrap font-semibold border-[#C9A227]/70 text-[#C9A227] hover:bg-[#C9A227]/10 hover:text-[#C9A227]"
-                >
-                  <GraduationCap className="h-5 w-5" />
-                  Academy
-                </Button>
-              </Link>
               <ReferencesButton />
               <Link href="/debate-onepagers">
                 <Button variant="outline" size="default" className="gap-2 whitespace-nowrap font-semibold">
