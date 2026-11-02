@@ -3,9 +3,9 @@ import type { Metadata } from 'next'
 import PricingPage from './pricing-client'
 
 export const metadata: Metadata = {
-  title: 'Pricing — LibertyIQ Core & Lifetime',
+  title: 'Passes — LibertyIQ',
   description:
-    'Free teaser with easy quizzes, Core at $5.99/mo or $59/yr, and a $129 early-bird lifetime unlock.',
+    'Free library and easy quizzes. One-time passes: Core $17.77, Family $47.77, Group $147, or a Topic Pack $7.77. No subscription and no auto-renew.',
 }
 
 export default function Page() {

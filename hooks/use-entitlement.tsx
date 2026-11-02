@@ -3,59 +3,117 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { PaidPlan } from '@/lib/pricing'
 
-const SOFT_PRO_KEY = 'li_pro_soft'
+const DEVICE_KEY = 'li_device'
+const DEVICE_ALPHABET = '0123456789abcdefghjkmnpqrstvwxyz'
+
+export function getOrCreateDeviceId(): string {
+  const existing = localStorage.getItem(DEVICE_KEY)
+  if (existing && /^[a-z0-9]{8,32}$/.test(existing)) return existing
+  const bytes = crypto.getRandomValues(new Uint8Array(8))
+  let id = ''
+  for (const byte of bytes) id += DEVICE_ALPHABET[byte % DEVICE_ALPHABET.length]
+  localStorage.setItem(DEVICE_KEY, id)
+  return id
+}
 
 type EntitlementState = {
   isPro: boolean
+  topics: string[]
   configured: boolean
   loading: boolean
   customerId?: string
+  plan?: string
+  accessCode: string | null
+  seats: number | null
+  seatsUsed: number | null
+  accessExpiresAt: number | null
+  legacySubscription: boolean
   refresh: () => Promise<void>
-  startCheckout: (plan: PaidPlan) => Promise<void>
+  startCheckout: (plan: PaidPlan, topicId?: string) => Promise<void>
+  redeemCode: (code: string) => Promise<string>
   openPortal: () => Promise<void>
-  grantSoftPro: (sessionId: string) => void
 }
 
 const EntitlementContext = createContext<EntitlementState | null>(null)
 
-function readSoftPro(): boolean {
-  if (typeof window === 'undefined') return false
-  try {
-    const raw = localStorage.getItem(SOFT_PRO_KEY)
-    if (!raw) return false
-    const parsed = JSON.parse(raw) as { sessionId?: string; at?: number }
-    return Boolean(parsed.sessionId && String(parsed.sessionId).startsWith('cs_'))
-  } catch {
-    return false
-  }
+type EntitlementResponse = {
+  isPro?: boolean
+  topics?: string[]
+  configured?: boolean
+  customerId?: string
+  plan?: string
+  accessCode?: string | null
+  seats?: number | null
+  seatsUsed?: number | null
+  accessExpiresAt?: number | null
+  legacySubscription?: boolean
+  error?: string
 }
 
-async function readEntitlement(): Promise<{
-  isPro: boolean
-  configured: boolean
-  customerId?: string
-  mode?: 'checkout_session' | 'payment_links' | 'none'
-}> {
+async function readEntitlement(): Promise<EntitlementResponse> {
   const res = await fetch('/api/entitlement', { credentials: 'include' })
-  if (!res.ok) return { isPro: false, configured: true }
+  if (!res.ok) return { isPro: false, topics: [], configured: true }
   return res.json()
+}
+
+function applyResponse(
+  data: EntitlementResponse,
+  setters: {
+    setIsPro: (value: boolean) => void
+    setTopics: (value: string[]) => void
+    setConfigured: (value: boolean) => void
+    setCustomerId: (value: string | undefined) => void
+    setPlan: (value: string | undefined) => void
+    setAccessCode: (value: string | null) => void
+    setSeats: (value: number | null) => void
+    setSeatsUsed: (value: number | null) => void
+    setAccessExpiresAt: (value: number | null) => void
+    setLegacySubscription: (value: boolean) => void
+  },
+) {
+  setters.setIsPro(Boolean(data.isPro))
+  setters.setTopics(Array.isArray(data.topics) ? data.topics : [])
+  setters.setConfigured(data.configured !== false)
+  setters.setCustomerId(data.customerId)
+  setters.setPlan(data.plan)
+  setters.setAccessCode(data.accessCode ?? null)
+  setters.setSeats(data.seats ?? null)
+  setters.setSeatsUsed(data.seatsUsed ?? null)
+  setters.setAccessExpiresAt(data.accessExpiresAt ?? null)
+  setters.setLegacySubscription(Boolean(data.legacySubscription))
 }
 
 export function EntitlementProvider({ children }: { children: ReactNode }) {
   const [isPro, setIsPro] = useState(false)
+  const [topics, setTopics] = useState<string[]>([])
   const [configured, setConfigured] = useState(true)
   const [loading, setLoading] = useState(true)
   const [customerId, setCustomerId] = useState<string | undefined>()
+  const [plan, setPlan] = useState<string | undefined>()
+  const [accessCode, setAccessCode] = useState<string | null>(null)
+  const [seats, setSeats] = useState<number | null>(null)
+  const [seatsUsed, setSeatsUsed] = useState<number | null>(null)
+  const [accessExpiresAt, setAccessExpiresAt] = useState<number | null>(null)
+  const [legacySubscription, setLegacySubscription] = useState(false)
 
   const refresh = useCallback(async () => {
     try {
       const data = await readEntitlement()
-      const soft = data.mode === 'payment_links' && readSoftPro()
-      setIsPro(Boolean(data.isPro) || soft)
-      setConfigured(data.configured !== false)
-      setCustomerId(data.customerId)
+      applyResponse(data, {
+        setIsPro,
+        setTopics,
+        setConfigured,
+        setCustomerId,
+        setPlan,
+        setAccessCode,
+        setSeats,
+        setSeatsUsed,
+        setAccessExpiresAt,
+        setLegacySubscription,
+      })
     } catch {
       setIsPro(false)
+      setTopics([])
     } finally {
       setLoading(false)
     }
@@ -65,26 +123,41 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
     void refresh()
   }, [refresh])
 
-  const grantSoftPro = useCallback((sessionId: string) => {
-    if (!sessionId.startsWith('cs_')) return
-    localStorage.setItem(
-      SOFT_PRO_KEY,
-      JSON.stringify({ sessionId, at: Date.now() }),
-    )
-    setIsPro(true)
-  }, [])
-
-  const startCheckout = useCallback(async (plan: PaidPlan) => {
+  const startCheckout = useCallback(async (planId: PaidPlan, topicId?: string) => {
     const res = await fetch('/api/checkout', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan }),
+      body: JSON.stringify({ plan: planId, topicId }),
     })
     const data = await res.json()
     if (!res.ok || !data.url) {
       throw new Error(data.error || 'Unable to start checkout')
     }
     window.location.href = data.url
+  }, [])
+
+  const redeemCode = useCallback(async (code: string) => {
+    const res = await fetch('/api/redeem', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ code, deviceId: getOrCreateDeviceId() }),
+    })
+    const data = (await res.json()) as EntitlementResponse
+    if (!res.ok) throw new Error(data.error || 'Unable to redeem that code')
+    applyResponse(data, {
+      setIsPro,
+      setTopics,
+      setConfigured,
+      setCustomerId,
+      setPlan,
+      setAccessCode,
+      setSeats,
+      setSeatsUsed,
+      setAccessExpiresAt,
+      setLegacySubscription,
+    })
+    return data.plan ?? 'pass'
   }, [])
 
   const openPortal = useCallback(async () => {
@@ -100,13 +173,20 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
     <EntitlementContext.Provider
       value={{
         isPro,
+        topics,
         configured,
         loading,
         customerId,
+        plan,
+        accessCode,
+        seats,
+        seatsUsed,
+        accessExpiresAt,
+        legacySubscription,
         refresh,
         startCheckout,
+        redeemCode,
         openPortal,
-        grantSoftPro,
       }}
     >
       {children}

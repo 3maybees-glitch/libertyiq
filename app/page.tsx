@@ -94,14 +94,14 @@ export default function Home() {
             Study the issue. Practice the case.
           </h2>
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-foreground/95">
-            LibertyIQ is a Christian-conservative library for civic life. Choose an issue below for a structured argument, the biblical foundation, the evidence, and defense tips for a serious conversation. Easy quizzes are free on every topic. Core and Lifetime add the harder drills and the speaking trainer.
+            LibertyIQ is a Christian-conservative library for civic life. Choose an issue below for a structured argument, the biblical foundation, the evidence, and defense tips for a serious conversation. Easy quizzes are free on every topic. A pass opens the harder drills and the speaking trainer, with one payment and no auto-renew.
           </p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <Button asChild className="font-semibold">
               <Link href="/libertyiq">Try it free</Link>
             </Button>
             <Button asChild variant="secondary" className="font-semibold">
-              <Link href="/pricing">See plans</Link>
+              <Link href="/pricing">See passes</Link>
             </Button>
           </div>
         </section>

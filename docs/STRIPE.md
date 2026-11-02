@@ -2,50 +2,46 @@
 
 # LibertyIQ pricing / Stripe
 
-## Tiers
+## Passes
 
-| Tier | Price | Includes |
+| Pass | Price | Includes |
 |------|-------|----------|
-| **Free** | $0 | Full library, topic pages, **easy quizzes** on every topic |
-| **Core** | **$5.99/mo** or **$59/yr** | Medium/hard quizzes, ranks, speaking trainer |
-| **Lifetime** | **$129** once (early-bird) | Everything in Core, no renewals |
+| **Free** | $0 | Full library, easy quizzes, debate one-pagers |
+| **Core Pass** | **$17.77** once | 365 days, 1 student: medium/hard quizzes, ranks, speaking trainer |
+| **Family Pass** | **$47.77** once | 365 days, up to 6 students, one access code |
+| **Group Pass** | **$147** once | 365 days, up to 30 students, one access code |
+| **Topic Pack** | **$7.77** once | Permanent medium/hard quizzes for one chosen topic, on this device |
+
+No subscription and no auto-renew. Older monthly, yearly, and Lifetime purchases still revalidate from their Stripe subscription or Checkout Session.
 
 ## Setup
 
-1. Create Stripe Product **LibertyIQ Core** with Prices:
-   - Monthly recurring: `$5.99`
-   - Yearly recurring: `$59`
-   - One-time lifetime: `$129`
-2. Copy values into `.env.local` from `.env.example`
-3. Enable the [Customer Portal](https://dashboard.stripe.com/settings/billing/portal)
-4. For local webhooks: `stripe listen --forward-to localhost:3000/api/webhook`
-5. On Vercel, set the same env vars and `NEXT_PUBLIC_APP_URL=https://libertyiq.org`
+1. Live account `acct_1TsIsFEyq5c8DnMY` already has the four one-time prices. Copy the IDs into `.env.local` from `.env.example`:
+   - `STRIPE_PRICE_ID_CORE_PASS` = `price_1UXBabEyq5c8DnMYKhGL2WXi`
+   - `STRIPE_PRICE_ID_FAMILY_PASS` = `price_1UXBaeEyq5c8DnMYGWsqIipC`
+   - `STRIPE_PRICE_ID_GROUP_PASS` = `price_1UXBajEyq5c8DnMYjm3QFANQ`
+   - `STRIPE_PRICE_ID_TOPIC_PACK` = `price_1UXBakEyq5c8DnMYd90WtKFi`
+2. The Customer Portal is only for an older subscription. New passes do not open it.
+3. For local webhooks: `stripe listen --forward-to localhost:3000/api/webhook`
+4. On Vercel, set the same env vars and `NEXT_PUBLIC_APP_URL=https://libertyiq.org`
 
 Or run `./scripts/push-stripe-env-to-vercel.sh` after `vercel login` + `vercel link`.
 
 ## Production checklist
 
-Live Stripe account: `acct_1TsIsFEyq5c8DnMY`.
+1. Set the four price IDs above in Vercel Production, plus a live `STRIPE_SECRET_KEY` from the same account. Checkout Sessions do not read `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`.
+2. Add webhook endpoint `https://libertyiq.org/api/webhook`.
+3. Redeploy.
 
-1. Set the live price IDs in Vercel Production (see [GO_LIVE.md](./GO_LIVE.md)):
-   - `STRIPE_PRICE_ID_MONTHLY` = `price_1TsS6lEyq5c8DnMY7Tlymk7Q` ($5.99/mo)
-   - `STRIPE_PRICE_ID_YEARLY` = `price_1TsS6lEyq5c8DnMYwIsf3CZj` ($59/yr)
-   - `STRIPE_PRICE_ID_LIFETIME` = `price_1TsS6lEyq5c8DnMYBDMTgtIp` ($129)
-2. Set a live `STRIPE_SECRET_KEY` from that same account. Checkout Sessions also need this key; they do not read `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`.
-3. Add webhook endpoint `https://libertyiq.org/api/webhook`.
-4. Redeploy.
-
-`POST /api/checkout` answers with `mode: "checkout_session"` when `STRIPE_SECRET_KEY` and all three `STRIPE_PRICE_ID_*` variables are set, and the secret is not a test key on production. The selected plan maps to one price ID: `monthly` → `STRIPE_PRICE_ID_MONTHLY`, `yearly` → `STRIPE_PRICE_ID_YEARLY`, `lifetime` → `STRIPE_PRICE_ID_LIFETIME`.
-
-If those are missing, checkout uses a Payment Link only when `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY`, `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY`, or `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME` is a live `https://buy.stripe.com/…` URL. Links that contain `buy.stripe.com/test_` are ignored. With neither a Checkout Session nor a live Payment Link, the API returns 503 and `/pricing` shows checkout unavailable. There is no test-link fallback.
+`POST /api/checkout` answers with `mode: "checkout_session"` when `STRIPE_SECRET_KEY` and all four price IDs are set, and the secret is not a test key on production. The body is `{ plan: "core" | "family" | "group" | "topic", topicId? }`. Topic Pack requires `topicId`. Checkout always uses `mode: "payment"`. There is no Payment Link fallback.
 
 ## Flow
 
-1. `/pricing` — Free / Core (monthly|yearly) / Lifetime
-2. `POST /api/checkout` with `{ plan: "monthly" | "yearly" | "lifetime" }`
-3. Lifetime uses Checkout `mode: "payment"`; Core uses `mode: "subscription"`
-4. Success page confirms session and sets the entitlement cookie
-5. Easy quizzes stay free; medium/hard + speaking trainer require Core/Lifetime
+1. `/pricing` — Free, Core Pass, Family Pass, Group Pass, Topic Pack
+2. `POST /api/checkout` creates a one-time Checkout Session. Family and Group sessions are stamped with `access_code`, `seats`, `duration_days`, and `scope`.
+3. The success page posts the session id and this browser's device id to `POST /api/entitlement`, which claims one seat and sets the signed cookie.
+4. Other students open `/redeem` and post the code to `POST /api/redeem`. The server finds the PaymentIntent by `metadata.access_code` (this API version has no Checkout Session search), reads `metadata.checkout_session`, and appends the device id on that session until `seats` is full.
+5. A 365-day pass expires from the session's `created` time. A Topic Pack does not expire. Easy quizzes stay free. The speaking trainer requires Core, Family, or Group.
 
 ## Webhooks
 
@@ -60,4 +56,4 @@ Webhooks are **server-to-server** — they do not set browser cookies. After pay
 | `customer.subscription.deleted` | Acknowledged; next `GET /api/entitlement` clears expired subscriptions |
 | `charge.refunded` | Acknowledged; lifetime revalidation fails on next `GET /api/entitlement` |
 
-`GET /api/entitlement` revalidates **subscription and lifetime** cookies against Stripe (no database required).
+`GET /api/entitlement` revalidates passes, topic packs, lifetime purchases, and older subscriptions against Stripe. Seat lists live on the Checkout Session. There is no user database.
