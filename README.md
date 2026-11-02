@@ -18,9 +18,9 @@ Progress is stored locally in your browser (`localStorage`). Paid passes use Str
 
 ## Paid passes
 
-| Free | Core Pass ($17.77) | Family ($47.77) | Group ($147) | Topic Pack ($7.77) |
-|------|------------------------|-----------------|--------------|---------------------|
-| Library, easy quizzes, one-pagers | 365 days, 1 student: medium/hard, ranks, speaking trainer | 365 days, up to 6 students | 365 days, up to 30 students | One topic, permanent, this device |
+| Free | Patriot Pass ($17.77) | Topic Pack ($7.77) |
+|------|------------------------|---------------------|
+| Library, easy quizzes, one-pagers | 365 days on this device: medium/hard, ranks, speaking trainer | One topic, permanent, this device |
 
 Every paid pass is a single charge. No subscription and no auto-renew. Older Core subscriptions and Lifetime purchases keep working for people who already paid.
 

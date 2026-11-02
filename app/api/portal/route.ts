@@ -27,7 +27,7 @@ export async function POST() {
         {
           error: oneTime
             ? 'Passes are paid once and do not renew. There is nothing to cancel on this device.'
-            : 'No older Core subscription was found on this device.',
+            : 'No older subscription was found on this device.',
         },
         { status: 401 },
       )

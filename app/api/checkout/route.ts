@@ -6,7 +6,6 @@ import {
   isTopicId,
   type PaidPlan,
 } from '@/lib/pricing'
-import { createAccessCode } from '@/lib/pass-seats'
 import {
   getAppUrl,
   getPriceId,
@@ -17,7 +16,7 @@ import {
 } from '@/lib/stripe'
 
 const bodySchema = z.object({
-  plan: z.enum(['core', 'family', 'group', 'topic']),
+  plan: z.enum(['core', 'topic']),
   topicId: z.string().optional(),
 })
 
@@ -44,16 +43,14 @@ export async function POST(request: Request) {
     const stripe = getStripe()
     const appUrl = getAppUrl()
     const priceId = getPriceId(plan)
-    const accessCode = planMeta.seats > 1 ? createAccessCode() : undefined
 
     const metadata: Record<string, string> = {
       app: 'libertyiq',
       plan,
       tier: planMeta.label,
-      seats: String(planMeta.seats),
+      seats: '1',
       scope: planMeta.scope,
       ...(planMeta.durationDays ? { duration_days: String(planMeta.durationDays) } : {}),
-      ...(accessCode ? { access_code: accessCode } : {}),
       ...(topicId ? { topic_id: topicId } : {}),
     }
 
@@ -68,16 +65,6 @@ export async function POST(request: Request) {
       metadata,
       payment_intent_data: { metadata },
     })
-
-    const paymentIntentId =
-      typeof session.payment_intent === 'string'
-        ? session.payment_intent
-        : session.payment_intent?.id
-    if (paymentIntentId) {
-      await stripe.paymentIntents.update(paymentIntentId, {
-        metadata: { ...metadata, checkout_session: session.id },
-      })
-    }
 
     if (!session.url) {
       return NextResponse.json({ error: 'Unable to start checkout.' }, { status: 500 })
