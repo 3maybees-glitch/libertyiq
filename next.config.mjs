@@ -17,6 +17,14 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      // Homepage lists every topic in the argument library.
+      { source: '/library', destination: '/', permanent: true },
+      // Quiz dashboard.
+      { source: '/quiz', destination: '/libertyiq', permanent: true },
+    ]
+  },
 }
 
 export default withSerwist(nextConfig)
