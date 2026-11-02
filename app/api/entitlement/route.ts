@@ -8,25 +8,17 @@ import {
   getEntitlementFromCookies,
   revalidateEntitlement,
 } from '@/lib/entitlements'
-import { isStripeConfigured } from '@/lib/stripe'
-import { STRIPE_PAYMENT_LINKS } from '@/lib/pricing'
+import { hasLivePaymentLink, isCheckoutSessionAllowed } from '@/lib/stripe'
 
 export async function GET() {
   try {
-    const checkoutAvailable =
-      isStripeConfigured() ||
-      Boolean(
-        STRIPE_PAYMENT_LINKS.monthly ||
-          STRIPE_PAYMENT_LINKS.yearly ||
-          STRIPE_PAYMENT_LINKS.lifetime,
-      )
-
-    if (!isStripeConfigured()) {
+    if (!isCheckoutSessionAllowed()) {
+      const paymentLinks = hasLivePaymentLink()
       return NextResponse.json({
         isPro: false,
-        configured: checkoutAvailable,
-        mode: checkoutAvailable ? 'payment_links' : 'none',
-        reason: checkoutAvailable ? 'payment_links' : 'stripe_not_configured',
+        configured: paymentLinks,
+        mode: paymentLinks ? 'payment_links' : 'none',
+        reason: paymentLinks ? 'payment_links' : 'stripe_not_configured',
       })
     }
 
@@ -68,7 +60,7 @@ export async function GET() {
 /** Confirm a completed Checkout Session and set the Core/Lifetime cookie. */
 export async function POST(request: Request) {
   try {
-    if (!isStripeConfigured()) {
+    if (!isCheckoutSessionAllowed()) {
       return NextResponse.json({ error: 'Stripe is not configured yet.' }, { status: 503 })
     }
 

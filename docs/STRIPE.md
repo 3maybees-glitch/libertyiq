@@ -25,12 +25,19 @@ Or run `./scripts/push-stripe-env-to-vercel.sh` after `vercel login` + `vercel l
 
 ## Production checklist
 
-1. Claim the Stripe sandbox (or connect your live Stripe account).
-2. Add env vars in Vercel (including `STRIPE_PRICE_ID_LIFETIME`).
+Live Stripe account: `acct_1TsIsFEyq5c8DnMY`.
+
+1. Set the live price IDs in Vercel Production (see [GO_LIVE.md](./GO_LIVE.md)):
+   - `STRIPE_PRICE_ID_MONTHLY` = `price_1TsS6lEyq5c8DnMY7Tlymk7Q` ($5.99/mo)
+   - `STRIPE_PRICE_ID_YEARLY` = `price_1TsS6lEyq5c8DnMYwIsf3CZj` ($59/yr)
+   - `STRIPE_PRICE_ID_LIFETIME` = `price_1TsS6lEyq5c8DnMYBDMTgtIp` ($129)
+2. Set a live `STRIPE_SECRET_KEY` from that same account. Checkout Sessions also need this key; they do not read `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`.
 3. Add webhook endpoint `https://libertyiq.org/api/webhook`.
 4. Redeploy.
 
-Until secret keys are on Vercel, checkout uses **Payment Links** and unlocks on the success redirect.
+`POST /api/checkout` answers with `mode: "checkout_session"` when `STRIPE_SECRET_KEY` and all three `STRIPE_PRICE_ID_*` variables are set, and the secret is not a test key on production. The selected plan maps to one price ID: `monthly` → `STRIPE_PRICE_ID_MONTHLY`, `yearly` → `STRIPE_PRICE_ID_YEARLY`, `lifetime` → `STRIPE_PRICE_ID_LIFETIME`.
+
+If those are missing, checkout uses a Payment Link only when `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY`, `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY`, or `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME` is a live `https://buy.stripe.com/…` URL. Links that contain `buy.stripe.com/test_` are ignored. With neither a Checkout Session nor a live Payment Link, the API returns 503 and `/pricing` shows checkout unavailable. There is no test-link fallback.
 
 ## Flow
 

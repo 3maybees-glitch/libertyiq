@@ -1,34 +1,43 @@
 # LibertyIQ — Go live checklist
 
-Do these in order. The site is already live at https://libertyiq.org with **test-mode** checkout.
+The site is live at https://libertyiq.org. Paid checkout uses Stripe Checkout Sessions on the live account `acct_1TsIsFEyq5c8DnMY`.
 
-## 1. Claim your Stripe sandbox (required — expires 2026-07-19)
+Do not send a visitor to test mode. The app ignores `https://buy.stripe.com/test_…` Payment Links, including any that used to be hardcoded as fallbacks. On production it also refuses a test secret key (`sk_test_…` / `rk_test_…`) and a Checkout Session with `livemode: false`. If neither a live Checkout Session nor a live Payment Link is configured, `/pricing` shows **Checkout is unavailable** and `POST /api/checkout` returns 503.
 
-Open this link while logged into the Stripe account you want to keep:
-
-https://dashboard.stripe.com/onboard_sandbox/YWNjdF8xVHNFTDhSRTlKbkkzRGo1LDE3ODQ0NDM0MDUv100tLXPG6da
-
-After claiming you’ll get full API access (webhooks, live mode, etc.).
-
-## 2. Add environment variables in Vercel
+## 1. Add environment variables in Vercel
 
 **Vercel → libertyiq project → Settings → Environment Variables**  
-Apply to **Production** (and Preview if you want).
+Apply to **Production**. Use live keys from account `acct_1TsIsFEyq5c8DnMY` (Dashboard → API keys, with **Live** mode on). Preview can keep test keys if you want; production must not.
+
+`POST /api/checkout` returns `mode: "checkout_session"` only when all four of these are set: `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID_MONTHLY`, `STRIPE_PRICE_ID_YEARLY`, and `STRIPE_PRICE_ID_LIFETIME`. The price ID for the selected plan is read from the matching variable:
+
+| Plan | Env var | Live price ID |
+|------|---------|----------------|
+| Core monthly ($5.99/mo) | `STRIPE_PRICE_ID_MONTHLY` | `price_1TsS6lEyq5c8DnMY7Tlymk7Q` |
+| Core yearly ($59/yr) | `STRIPE_PRICE_ID_YEARLY` | `price_1TsS6lEyq5c8DnMYwIsf3CZj` |
+| Lifetime ($129 once) | `STRIPE_PRICE_ID_LIFETIME` | `price_1TsS6lEyq5c8DnMYBDMTgtIp` |
 
 | Name | Value |
 |------|--------|
 | `NEXT_PUBLIC_APP_URL` | `https://libertyiq.org` |
-| `STRIPE_PRICE_ID_MONTHLY` | `price_1TsHw2RE9JnI3Dj5OsOKnqsz` |
-| `STRIPE_PRICE_ID_YEARLY` | `price_1TsHw2RE9JnI3Dj5KPTeo5jt` |
-| `STRIPE_PRICE_ID_LIFETIME` | `price_1TsHw3RE9JnI3Dj5eXLfTkfW` |
-| `STRIPE_PORTAL_CONFIGURATION_ID` | `bpc_1TsH9BRE9JnI3Dj5NJN1N180` |
-| `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY` | `https://buy.stripe.com/test_4gMcN766ie6A4AF0K7cZa02` |
-| `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY` | `https://buy.stripe.com/test_cNibJ30LYbYs9UZ8czcZa03` |
-| `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME` | `https://buy.stripe.com/test_28E8wRfGS4w06IN9gDcZa04` |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | From Stripe Dashboard → API keys (`pk_test_…` or later `pk_live_…`) |
-| `STRIPE_SECRET_KEY` | From Stripe Dashboard → API keys (`rk_test_…` / `sk_test_…`, later live) |
+| `STRIPE_SECRET_KEY` | Live secret (`sk_live_…` or restricted `rk_live_…`) from `acct_1TsIsFEyq5c8DnMY` |
+| `STRIPE_PRICE_ID_MONTHLY` | `price_1TsS6lEyq5c8DnMY7Tlymk7Q` |
+| `STRIPE_PRICE_ID_YEARLY` | `price_1TsS6lEyq5c8DnMYwIsf3CZj` |
+| `STRIPE_PRICE_ID_LIFETIME` | `price_1TsS6lEyq5c8DnMYBDMTgtIp` |
 | `ENTITLEMENT_SECRET` | Any long random string (e.g. `openssl rand -hex 32`) |
-| `STRIPE_WEBHOOK_SECRET` | From step 3 (`whsec_…`) |
+| `STRIPE_WEBHOOK_SECRET` | Live webhook signing secret from step 2 (`whsec_…`) |
+| `STRIPE_PORTAL_CONFIGURATION_ID` | Customer Portal configuration from this **live** account. Do not reuse `bpc_1TsH9BRE9JnI3Dj5NJN1N180` — that ID is from a different Stripe account. |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Optional. Checkout Sessions do not read it. |
+
+Leave the Payment Link variables unset unless you have **live** links (`https://buy.stripe.com/…` with no `test_`). Test links are ignored.
+
+| Name | Value |
+|------|--------|
+| `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY` | Live Payment Link, or unset |
+| `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY` | Live Payment Link, or unset |
+| `NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME` | Live Payment Link, or unset |
+
+Price IDs from the old test account (`price_1TsHw2RE9JnI3Dj5OsOKnqsz`, `price_1TsHw2RE9JnI3Dj5KPTeo5jt`, `price_1TsHw3RE9JnI3Dj5eXLfTkfW`) must not be used on production.
 
 Then **Deployments → … → Redeploy** the latest production deployment.
 
@@ -39,7 +48,7 @@ Or locally after `vercel login` + `vercel link`:
 vercel --prod --yes
 ```
 
-## 3. Create the webhook (after claim)
+## 2. Create the live webhook
 
 Stripe Dashboard → Developers → Webhooks → Add endpoint:
 
@@ -49,28 +58,22 @@ Stripe Dashboard → Developers → Webhooks → Add endpoint:
 
 After deploy, canceled subscriptions lose Pro access on the next page load (`GET /api/entitlement` revalidates with Stripe).
 
-## 4. Confirm Customer Portal
+## 3. Confirm Customer Portal
 
 Stripe → Settings → Billing → Customer portal  
 Cancel / update payment method / invoice history should be on.  
 Return URL: `https://libertyiq.org/pricing`
 
-## 5. Smoke test (test mode)
+## 4. Smoke test (live mode)
 
-Use card `4242 4242 4242 4242`:
+`4242 4242 4242 4242` only works in Stripe test mode. Do not use it against https://libertyiq.org.
 
 1. https://libertyiq.org/pricing → Core monthly / yearly / Lifetime
-2. After pay → success page unlocks medium/hard + speaking trainer
-3. Easy quizzes stay free without paying
+2. Confirm the browser lands on a live Checkout page (the session id starts with `cs_live_`, not `cs_test_`)
+3. After a real payment → success page unlocks medium/hard + speaking trainer
+4. Easy quizzes stay free without paying
 
-## 6. Switch to live payments (when ready for real cards)
-
-1. Stripe Dashboard → toggle **Live mode**
-2. Recreate product/prices ($5.99, $59, $129) + Payment Links in live mode  
-   (or activate live prices on the claimed account)
-3. Replace Vercel env vars with `pk_live_…`, `rk_live_…` / `sk_live_…`, live price IDs & Payment Links
-4. Add a **live** webhook to the same `/api/webhook` URL
-5. Redeploy and buy once with a real card for $5.99 (then refund if testing)
+If the paid buttons are disabled and the page says checkout is unavailable, production is missing the live secret or one of the three `STRIPE_PRICE_ID_*` variables above (or the secret is still a test key).
 
 ## Current pricing (already in the app)
 
@@ -83,15 +86,14 @@ Use card `4242 4242 4242 4242`:
 ## What the agent already did
 
 - [x] Pricing UI + checkout live on libertyiq.org  
-- [x] Stripe Core/Lifetime prices + Payment Links (test mode)  
+- [x] Stripe Core/Lifetime prices on live account `acct_1TsIsFEyq5c8DnMY`  
 - [x] Old $9.99/$79 prices and links deactivated  
+- [x] Test-mode Payment Link fallbacks removed — visitors are not sent to `buy.stripe.com/test_…`  
 - [x] Customer portal return URL → libertyiq.org/pricing  
 - [x] Secure entitlement flow (server layout gate on speaking trainer, lifetime Stripe revalidation)  
-- [x] Payment Link soft-unlock only when Stripe secrets are not configured  
-- [ ] Claim sandbox (needs your browser login)  
-- [ ] Vercel env secrets (needs your Vercel login + Stripe keys in `.env.local`)  
-- [ ] Webhook signing secret (needs claim + dashboard or `stripe listen`)  
-- [ ] Live-mode keys (needs Stripe live onboarding)
+- [x] Payment Link soft-unlock only when Stripe secrets are not configured and the link is not a test link  
+- [ ] Vercel production env uses the live price IDs in this doc, plus a live `STRIPE_SECRET_KEY` and live `STRIPE_WEBHOOK_SECRET`  
+- [ ] Live Customer Portal configuration ID (do not reuse the old account’s `bpc_1TsH9BRE9JnI3Dj5NJN1N180`)
 
 Quick setup after copying keys to `.env.local`:
 

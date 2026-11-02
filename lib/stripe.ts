@@ -36,6 +36,47 @@ export function getAppUrl(): string {
   return 'http://localhost:3000'
 }
 
+/** Stripe test Payment Links are https://buy.stripe.com/test_… — never send a visitor there. */
+export function isTestModePaymentLink(url: string): boolean {
+  return /buy\.stripe\.com\/test_/i.test(url)
+}
+
+/** Checkout Session URLs from test mode include cs_test_. */
+export function isTestModeCheckoutUrl(url: string): boolean {
+  return isTestModePaymentLink(url) || /(?:^|[/._-])cs_test_/i.test(url)
+}
+
+export function isTestModeStripeKey(
+  key: string | undefined = process.env.STRIPE_SECRET_KEY,
+): boolean {
+  return Boolean(key && /^(?:sk|rk)_test_/.test(key))
+}
+
+export function isProductionDeployment(): boolean {
+  return process.env.VERCEL_ENV === 'production'
+}
+
+/**
+ * Live Payment Link for a plan, if one is configured.
+ * Test-mode links are dropped so they cannot be used as a fallback.
+ */
+export function getPaymentLink(plan: PaidPlan): string | null {
+  const map: Record<PaidPlan, string | undefined> = {
+    monthly: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY,
+    yearly: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY,
+    lifetime: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME,
+  }
+  const url = map[plan]?.trim() ?? ''
+  if (!url || isTestModePaymentLink(url)) return null
+  return url
+}
+
+export function hasLivePaymentLink(): boolean {
+  return (['monthly', 'yearly', 'lifetime'] as const).some((plan) =>
+    Boolean(getPaymentLink(plan)),
+  )
+}
+
 export function getPriceId(plan: PaidPlan): string {
   const map: Record<PaidPlan, string | undefined> = {
     monthly: process.env.STRIPE_PRICE_ID_MONTHLY,
@@ -58,12 +99,18 @@ export function isStripeConfigured(): boolean {
   )
 }
 
-/** True when users can start checkout (Checkout Sessions or Payment Links). */
+/**
+ * Checkout Sessions are allowed when the secret and all three price IDs are set,
+ * and production is not pointed at a test-mode secret key.
+ */
+export function isCheckoutSessionAllowed(): boolean {
+  if (!isStripeConfigured()) return false
+  if (isProductionDeployment() && isTestModeStripeKey()) return false
+  return true
+}
+
+/** True when a visitor can start live checkout (Checkout Sessions or a non-test Payment Link). */
 export function isCheckoutAvailable(): boolean {
-  if (isStripeConfigured()) return true
-  return Boolean(
-    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY ||
-      process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY ||
-      process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME,
-  )
+  if (isCheckoutSessionAllowed()) return true
+  return hasLivePaymentLink()
 }

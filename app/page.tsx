@@ -14,18 +14,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Link from 'next/link';
-import { GraduationCap } from 'lucide-react';
 import { DebateOnePagerButton } from '@/components/debate-onepager-button';
 import { WhoHoldsTheGavel } from '@/components/committees/who-holds-the-gavel';
-import { HeritageAcademyFeatured } from '@/components/heritage-academy-ad';
 import { HomeDesktopNav, HomeMobileNav } from '@/components/home-menu';
-import { isHeritageAcademyApplyOpen } from '@/lib/heritage-academy';
+import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 
 export default function Home() {
   const [selectedId, setSelectedId] = useState(topics[0]?.id ?? '');
   const selected = topics.find((t) => t.id === selectedId) ?? topics[0];
-  const academyApplyOpen = isHeritageAcademyApplyOpen();
 
   return (
     <div className="min-h-screen">
@@ -57,21 +54,7 @@ export default function Home() {
                 Structured arguments, biblical foundations, scientific evidence, and defense tips.
               </p>
             </div>
-            <HomeMobileNav
-              academyCta={
-                <Link href="/heritage-academy" className="block w-full">
-                  <div
-                    className="w-full flex items-center justify-center gap-2 rounded-xl py-3 px-4 font-semibold text-sm text-white active:opacity-90 transition-opacity"
-                    style={{ backgroundColor: '#009CDE' }}
-                  >
-                    <GraduationCap className="h-4 w-4 shrink-0" />
-                    {academyApplyOpen
-                      ? 'Heritage Academy · Apply by Sept 13'
-                      : 'Heritage Academy'}
-                  </div>
-                </Link>
-              }
-            />
+            <HomeMobileNav />
           </div>
 
           {/* Desktop layout: logo + text left, buttons right */}
@@ -100,19 +83,28 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mb-8">
-          <div className="mb-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#7FD2F3]">
-              Special opportunity
-            </p>
-            <p className="mt-1 text-sm leading-relaxed text-foreground/95 max-w-3xl">
-              LibertyIQ is announcing the Heritage Academy by the Heritage
-              Foundation. A wonderful opportunity to increase your knowledge in
-              every issue with like-minded students and patriots.
-            </p>
+        <section
+          aria-labelledby="library-lead"
+          className="mb-8 rounded-2xl border border-border bg-card px-5 py-5 sm:px-6 sm:py-6"
+        >
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+            The library
+          </p>
+          <h2 id="library-lead" className="mt-2 font-serif text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Study the issue. Practice the case.
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-foreground/95">
+            LibertyIQ is a Christian-conservative library for civic life. Choose an issue below for a structured argument, the biblical foundation, the evidence, and defense tips for a serious conversation. Easy quizzes are free on every topic. Core and Lifetime add the harder drills and the speaking trainer.
+          </p>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+            <Button asChild className="font-semibold">
+              <Link href="/libertyiq">Try it free</Link>
+            </Button>
+            <Button asChild variant="secondary" className="font-semibold">
+              <Link href="/pricing">See plans</Link>
+            </Button>
           </div>
-          <HeritageAcademyFeatured />
-        </div>
+        </section>
 
         <div id="issues" className="scroll-mt-6">
         {/* Mobile dropdown */}
@@ -245,11 +237,6 @@ export default function Home() {
         <div className="mt-16 pt-8 border-t border-border/30">
           <p className="text-sm text-muted-foreground text-center leading-relaxed">
             Use these arguments thoughtfully and compassionately. The goal is to engage in meaningful dialogue, not to win arguments.
-          </p>
-          <p className="mt-3 text-center text-xs text-muted-foreground">
-            <Link href="/heritage-academy" className="font-semibold text-accent hover:underline">
-              Heritage Academy flyer — apply by September 13
-            </Link>
           </p>
         </div>
       </div>
