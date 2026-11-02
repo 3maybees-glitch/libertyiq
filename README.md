@@ -14,13 +14,15 @@ A [Next.js](https://nextjs.org) conservative worldviews library and quiz app. Br
 - **Committees** (`/committees`) — 119th Congress roster by member, committee, or LibertyIQ issue
 - **Installable PWA** — Add to Home Screen; library and quizzes cache for offline use after first visit
 
-Progress is stored locally in your browser (`localStorage`). LibertyIQ Pro (quizzes + speaking trainer) uses Stripe Checkout.
+Progress is stored locally in your browser (`localStorage`). Paid passes use Stripe Checkout in one-time payment mode.
 
-## Paid features (LibertyIQ Core)
+## Paid passes
 
-| Free | Core ($5.99/mo or $59/yr) | Lifetime ($129 early-bird) |
-|------|---------------------------|----------------------------|
-| Library + easy quizzes | Medium/hard, ranks, speaking trainer | Everything in Core, pay once |
+| Free | Core Pass ($17.77) | Family ($47.77) | Group ($147) | Topic Pack ($7.77) |
+|------|------------------------|-----------------|--------------|---------------------|
+| Library, easy quizzes, one-pagers | 365 days, 1 student: medium/hard, ranks, speaking trainer | 365 days, up to 6 students | 365 days, up to 30 students | One topic, permanent, this device |
+
+Every paid pass is a single charge. No subscription and no auto-renew. Older Core subscriptions and Lifetime purchases keep working for people who already paid.
 
 See [docs/GO_LIVE.md](docs/GO_LIVE.md) for the production checklist and [docs/STRIPE.md](docs/STRIPE.md) for Stripe setup.
 

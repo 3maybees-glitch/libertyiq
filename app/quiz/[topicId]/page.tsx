@@ -41,10 +41,13 @@ export default function QuizPage({ params }: PageProps) {
     setMounted(true);
   }, []);
 
+  const { isPro, topics, loading: entitlementLoading } = useEntitlement();
+  const topicUnlocked = isPro || topics.includes(topicId);
+
   const startQuiz = useCallback((level: QuizLevel) => {
-    // Hard guard: medium/hard require Core even if UI is bypassed
-    if (!isDifficultyFree(level.difficulty)) {
-      // Entitlement checked inside LevelSelect; keep taking flow for already-selected paid users
+    if (!isDifficultyFree(level.difficulty) && !topicUnlocked) {
+      window.location.href = '/pricing';
+      return;
     }
     setSelectedLevel(level);
     setProgress({
@@ -55,7 +58,7 @@ export default function QuizPage({ params }: PageProps) {
     setSelectedAnswer(null);
     setShowExplanation(false);
     setState('taking');
-  }, []);
+  }, [topicUnlocked]);
 
   const submitAnswer = useCallback(() => {
     if (!progress || selectedAnswer === null) return;
@@ -131,12 +134,12 @@ export default function QuizPage({ params }: PageProps) {
           <Badge variant="secondary" className="mb-3">Knowledge Assessment</Badge>
           <h1 className="text-4xl font-bold text-primary font-serif">{quiz.topicTitle} Quiz</h1>
           <p className="mt-2 text-muted-foreground">
-            Easy quizzes are free. Medium and hard unlock with Core.
+            Easy quizzes are free. Medium and hard unlock with a pass.
           </p>
         </div>
 
         {state === 'select' && (
-          <LevelSelect quiz={quiz} onSelectLevel={startQuiz} />
+          <LevelSelect quiz={quiz} onSelectLevel={startQuiz} unlocked={topicUnlocked} entitlementLoading={entitlementLoading} />
         )}
 
         {state === 'taking' && selectedLevel && progress && (
@@ -167,8 +170,17 @@ export default function QuizPage({ params }: PageProps) {
 }
 
 // Level Selection Component
-function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; onSelectLevel: (level: QuizLevel) => void }) {
-  const { isPro, loading } = useEntitlement();
+function LevelSelect({
+  quiz,
+  onSelectLevel,
+  unlocked,
+  entitlementLoading,
+}: {
+  quiz: { levels: QuizLevel[] }
+  onSelectLevel: (level: QuizLevel) => void
+  unlocked: boolean
+  entitlementLoading: boolean
+}) {
   const levelIcons: Record<QuizDifficulty, React.ReactNode> = {
     easy: <BookOpen className="h-6 w-6" />,
     medium: <Target className="h-6 w-6" />,
@@ -195,7 +207,7 @@ function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; o
       <div className="grid gap-4 sm:grid-cols-3">
         {quiz.levels.map((level) => {
           const free = isDifficultyFree(level.difficulty);
-          const locked = !free && !isPro && !loading;
+          const locked = !free && !unlocked && !entitlementLoading;
           return (
           <button
             key={level.difficulty}
@@ -216,7 +228,7 @@ function LevelSelect({ quiz, onSelectLevel }: { quiz: { levels: QuizLevel[] }; o
                 {locked ? <Lock className="h-6 w-6" /> : levelIcons[level.difficulty]}
               </div>
               <Badge variant="outline" className={badgeColors[level.difficulty]}>
-                {free ? 'Free' : locked ? 'Core' : level.difficulty}
+                {free ? 'Free' : locked ? 'Pass' : level.difficulty}
               </Badge>
             </div>
             <h3 className="font-semibold text-lg capitalize mb-1">{level.difficulty}</h3>

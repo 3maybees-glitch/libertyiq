@@ -60,7 +60,7 @@ export function ProGate({ title, description, children }: ProGateProps) {
           <Link href="/pricing" className="w-full sm:w-auto">
             <Button size="lg" className="w-full font-semibold gap-2">
               <Sparkles className="size-4" />
-              Unlock LibertyIQ Core
+              See passes
             </Button>
           </Link>
           <Link href="/" className="w-full sm:w-auto">

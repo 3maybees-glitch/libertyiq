@@ -3,27 +3,31 @@ import {
   entitlementCookieOptions,
   ENTITLEMENT_COOKIE,
   getEntitlementFromCookies,
+  isLegacySubscription,
 } from '@/lib/entitlements'
-import { getAppUrl, getStripe, isStripeConfigured } from '@/lib/stripe'
+import { getAppUrl, getStripe, hasStripeSecret } from '@/lib/stripe'
 
 export async function POST() {
   try {
-    if (!isStripeConfigured()) {
+    if (!hasStripeSecret()) {
       return NextResponse.json({ error: 'Stripe is not configured yet.' }, { status: 503 })
     }
 
     const entitlement = await getEntitlementFromCookies()
+    const oneTime =
+      entitlement?.status === 'lifetime' ||
+      entitlement?.status === 'pass' ||
+      entitlement?.status === 'topic'
     if (
       !entitlement?.customerId ||
       entitlement.customerId.startsWith('guest_') ||
-      entitlement.status === 'lifetime'
+      !isLegacySubscription(entitlement)
     ) {
       return NextResponse.json(
         {
-          error:
-            entitlement?.status === 'lifetime'
-              ? 'Lifetime purchases do not use the billing portal. Contact support for billing help.'
-              : 'No active Core subscription found on this device.',
+          error: oneTime
+            ? 'Passes are paid once and do not renew. There is nothing to cancel on this device.'
+            : 'No older Core subscription was found on this device.',
         },
         { status: 401 },
       )

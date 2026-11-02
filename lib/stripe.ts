@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import type { PaidPlan } from '@/lib/pricing'
+import { PAID_PLANS, type PaidPlan } from '@/lib/pricing'
 
 let stripeClient: Stripe | null = null
 
@@ -56,61 +56,38 @@ export function isProductionDeployment(): boolean {
   return process.env.VERCEL_ENV === 'production'
 }
 
-/**
- * Live Payment Link for a plan, if one is configured.
- * Test-mode links are dropped so they cannot be used as a fallback.
- */
-export function getPaymentLink(plan: PaidPlan): string | null {
-  const map: Record<PaidPlan, string | undefined> = {
-    monthly: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY,
-    yearly: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY,
-    lifetime: process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME,
-  }
-  const url = map[plan]?.trim() ?? ''
-  if (!url || isTestModePaymentLink(url)) return null
-  return url
-}
-
-export function hasLivePaymentLink(): boolean {
-  return (['monthly', 'yearly', 'lifetime'] as const).some((plan) =>
-    Boolean(getPaymentLink(plan)),
-  )
+export function hasStripeSecret(): boolean {
+  return Boolean(process.env.STRIPE_SECRET_KEY)
 }
 
 export function getPriceId(plan: PaidPlan): string {
-  const map: Record<PaidPlan, string | undefined> = {
-    monthly: process.env.STRIPE_PRICE_ID_MONTHLY,
-    yearly: process.env.STRIPE_PRICE_ID_YEARLY,
-    lifetime: process.env.STRIPE_PRICE_ID_LIFETIME,
-  }
-  const priceId = map[plan]
+  const priceId = process.env[PAID_PLANS[plan].priceEnv]?.trim()
   if (!priceId) {
     throw new Error(`Stripe price for plan "${plan}" is not configured`)
   }
   return priceId
 }
 
+/** Secret key is enough to revalidate older subscriptions and lifetime purchases. */
 export function isStripeConfigured(): boolean {
-  return Boolean(
-    process.env.STRIPE_SECRET_KEY &&
-      process.env.STRIPE_PRICE_ID_MONTHLY &&
-      process.env.STRIPE_PRICE_ID_YEARLY &&
-      process.env.STRIPE_PRICE_ID_LIFETIME,
-  )
+  return hasStripeSecret()
 }
 
 /**
- * Checkout Sessions are allowed when the secret and all three price IDs are set,
+ * New passes check out only when the secret and all four price IDs are set,
  * and production is not pointed at a test-mode secret key.
  */
 export function isCheckoutSessionAllowed(): boolean {
-  if (!isStripeConfigured()) return false
+  if (!hasStripeSecret()) return false
+  const pricesReady = (Object.keys(PAID_PLANS) as PaidPlan[]).every((plan) =>
+    Boolean(process.env[PAID_PLANS[plan].priceEnv]?.trim()),
+  )
+  if (!pricesReady) return false
   if (isProductionDeployment() && isTestModeStripeKey()) return false
   return true
 }
 
-/** True when a visitor can start live checkout (Checkout Sessions or a non-test Payment Link). */
+/** True when a visitor can start a one-time Checkout Session for the current passes. */
 export function isCheckoutAvailable(): boolean {
-  if (isCheckoutSessionAllowed()) return true
-  return hasLivePaymentLink()
+  return isCheckoutSessionAllowed()
 }
