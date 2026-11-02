@@ -5,7 +5,7 @@ import PricingPage from './pricing-client'
 export const metadata: Metadata = {
   title: 'Passes — LibertyIQ',
   description:
-    'Free library and easy quizzes. One-time passes: Core $17.77, Family $47.77, Group $147, or a Topic Pack $7.77. No subscription and no auto-renew.',
+    'Free library and easy quizzes. Patriot Pass is $17.77 for 365 days. A Topic Pack is $7.77 for one issue, for good. No subscription and no auto-renew.',
 }
 
 export default function Page() {

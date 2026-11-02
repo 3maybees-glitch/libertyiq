@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, Check, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { RedeemPassForm } from '@/components/redeem-pass-form'
 import { useEntitlement } from '@/hooks/use-entitlement'
 import { OnlineOnlyNote } from '@/components/online-only-note'
 import {
@@ -24,7 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const PASS_ORDER: PaidPlan[] = ['core', 'family', 'group', 'topic']
+const PASS_ORDER: PaidPlan[] = ['core', 'topic']
 
 function formatDay(unix: number): string {
   return new Date(unix * 1000).toLocaleDateString(undefined, {
@@ -44,10 +43,6 @@ export default function PricingPage() {
     startCheckout,
     openPortal,
     configured,
-    plan,
-    accessCode,
-    seats,
-    seatsUsed,
     accessExpiresAt,
     legacySubscription,
   } = useEntitlement()
@@ -128,15 +123,11 @@ export default function PricingPage() {
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
               {isPro && accessExpiresAt
-                ? `${plan === 'family' ? 'Family' : plan === 'group' ? 'Group' : 'Core'} access runs through ${formatDay(accessExpiresAt)}.`
+                ? `Patriot Pass runs through ${formatDay(accessExpiresAt)} on this device.`
                 : isPro
                   ? 'Full training access is on this device.'
-                  : 'Medium and hard quizzes are open for the topic you bought. The speaking trainer stays with a Core, Family, or Group pass.'}
-              {seats != null && seatsUsed != null ? ` ${seatsUsed} of ${seats} seats are in use.` : ''}
+                  : 'Medium and hard quizzes are open for the topic you bought. The speaking trainer is part of Patriot Pass.'}
             </p>
-            {accessCode && seats != null && seats > 1 && (
-              <p className="mt-4 font-mono text-lg tracking-widest text-foreground">{accessCode}</p>
-            )}
             <div className="mt-5 flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/libertyiq">
                 <Button className="font-semibold w-full sm:w-auto">Go to quizzes</Button>
@@ -246,23 +237,13 @@ export default function PricingPage() {
           </p>
         )}
 
-        <section className="mt-12 mx-auto max-w-xl rounded-2xl border border-border px-5 py-6">
-          <h2 className="font-serif text-2xl font-bold">Have a code?</h2>
-          <div className="mt-4">
-            <RedeemPassForm />
-          </div>
-          <p className="mt-3 text-xs text-muted-foreground">
-            You can also open <Link href="/redeem" className="underline underline-offset-2">the redeem page</Link>.
-          </p>
-        </section>
-
         <div className="mt-10 mx-auto max-w-lg space-y-2 text-center">
           <OnlineOnlyNote>
             Checkout needs a network connection. The library and quizzes still work offline after you have opened them once.
           </OnlineOnlyNote>
           <p className="text-xs text-muted-foreground leading-relaxed">
             Secure checkout by Stripe. Every pass is a single charge. Nothing on this page renews.
-            An older Core subscription, if you already have one, keeps working until it is canceled.
+            An older subscription, if you already have one, keeps working until it is canceled.
           </p>
         </div>
       </div>

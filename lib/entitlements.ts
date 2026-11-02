@@ -6,9 +6,7 @@ import { isStripeConfigured, isProductionDeployment } from '@/lib/stripe'
 import { PAID_PLANS, isPaidPlan, isTopicId, type PaidPlan } from '@/lib/pricing'
 import {
   claimDevice,
-  createAccessCode,
   isPassCurrent,
-  normalizeAccessCode,
   normalizeCheckoutSessionId,
   normalizeDeviceId,
   parseDeviceList,
@@ -556,7 +554,8 @@ export async function entitlementFromCheckoutSession(
 
   if (session.mode === 'payment') {
     if (!isSessionPaid(session)) return null
-    if (isPaidPlan(session.metadata?.plan ?? '')) return null
+    const metaPlan = session.metadata?.plan ?? ''
+    if (isPaidPlan(metaPlan) || metaPlan === 'family' || metaPlan === 'group') return null
     const built = buildLifetimeEntitlementCookie(effectiveCustomerId, session.id)
     return { payload: built.payload, cookie: { value: built.value, maxAge: built.maxAge } }
   }
@@ -679,7 +678,7 @@ async function confirmPassSession(
     throw new PassAccessError('Choose a topic before checkout.', 400)
   }
 
-  const seats = Number(session.metadata?.seats || spec.seats)
+  const seats = spec.seats
   const durationDays = session.metadata?.duration_days
     ? Number(session.metadata.duration_days)
     : spec.durationDays
@@ -698,27 +697,8 @@ async function confirmPassSession(
   if (durationDays && session.metadata?.access_expires_at !== String(accessExpiresAt)) {
     metadata.access_expires_at = String(accessExpiresAt)
   }
-  let accessCode = session.metadata?.access_code || null
-  if (spec.seats > 1 && !accessCode) {
-    accessCode = createAccessCode()
-    metadata.access_code = accessCode
-  }
   if (Object.keys(metadata).length > 0) {
     session = await getStripe().checkout.sessions.update(session.id, { metadata })
-  }
-  const paymentIntentId =
-    typeof session.payment_intent === 'string'
-      ? session.payment_intent
-      : session.payment_intent?.id
-  if (paymentIntentId && (accessCode || session.metadata?.access_code)) {
-    await getStripe().paymentIntents.update(paymentIntentId, {
-      metadata: {
-        access_code: session.metadata?.access_code || accessCode || '',
-        checkout_session: session.id,
-        plan: plan as string,
-        seats: String(seats),
-      },
-    })
   }
 
   session = await bindDevice(session, deviceId, seats)
@@ -781,7 +761,7 @@ async function confirmPassSession(
     cookie: { value: signed.value, maxAge },
     isPro: payloadHasFullAccess(signed.payload),
     topics: signed.payload.topics ?? [],
-    accessCode: session.metadata?.access_code || accessCode,
+    accessCode: null,
     seats,
     seatsUsed: devices.length,
     accessExpiresAt: signed.payload.accessExpiresAt ?? null,
@@ -801,6 +781,9 @@ export async function confirmCheckoutSession(options: {
   if (!sessionId) throw new PassAccessError('Checkout session is not complete.', 400)
   const session = await loadSession(sessionId)
   const plan = session.metadata?.plan
+  if (plan === 'family' || plan === 'group') {
+    throw new PassAccessError('That pass is no longer sold.', 400)
+  }
   if (isPaidPlan(plan ?? '')) {
     const deviceId = normalizeDeviceId(options.deviceId)
     if (!deviceId) throw new PassAccessError('This browser could not be identified. Refresh and try again.', 400)
@@ -822,38 +805,6 @@ export async function confirmCheckoutSession(options: {
     purchasedPlan: legacy.payload.plan ?? 'lifetime',
     legacySubscription: isLegacySubscription(legacy.payload),
   }
-}
-
-/** Redeem a family or group code, or a checkout session id, onto this device. */
-export async function redeemAccessCode(options: {
-  code: string
-  deviceId: string
-  existing?: EntitlementPayload | null
-}): Promise<ConfirmedAccess> {
-  const deviceId = normalizeDeviceId(options.deviceId)
-  if (!deviceId) throw new PassAccessError('This browser could not be identified. Refresh and try again.', 400)
-
-  const sessionId = normalizeCheckoutSessionId(options.code)
-  if (sessionId) {
-    return confirmCheckoutSession({ sessionId, deviceId, existing: options.existing })
-  }
-
-  const accessCode = normalizeAccessCode(options.code)
-  if (!accessCode) throw new PassAccessError('Enter the access code from the pass.', 400)
-
-  const found = await getStripe().paymentIntents.search({
-    query: `metadata['access_code']:'${accessCode}'`,
-    limit: 1,
-  })
-  const linkedSessionId = normalizeCheckoutSessionId(found.data[0]?.metadata?.checkout_session ?? '')
-  if (!linkedSessionId) {
-    throw new PassAccessError(
-      'That code was not found. Check the letters, or wait a minute if the pass was just purchased.',
-      404,
-    )
-  }
-  const loaded = await loadSession(linkedSessionId)
-  return confirmPassSession(loaded, deviceId, options.existing ?? null)
 }
 
 /** Server-side Pro check with Stripe revalidation when configured. */

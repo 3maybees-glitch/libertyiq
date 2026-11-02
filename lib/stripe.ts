@@ -74,7 +74,7 @@ export function isStripeConfigured(): boolean {
 }
 
 /**
- * New passes check out only when the secret and all four price IDs are set,
+ * New passes check out only when the secret and both price IDs are set,
  * and production is not pointed at a test-mode secret key.
  */
 export function isCheckoutSessionAllowed(): boolean {

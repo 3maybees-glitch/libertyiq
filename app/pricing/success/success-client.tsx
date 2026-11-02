@@ -13,9 +13,6 @@ type ConfirmResponse = {
   topics?: string[]
   plan?: string
   purchasedPlan?: string
-  accessCode?: string | null
-  seats?: number | null
-  seatsUsed?: number | null
   accessExpiresAt?: number | null
   error?: string
 }
@@ -35,7 +32,6 @@ export default function PricingSuccessClient() {
   const [status, setStatus] = useState<'loading' | 'ok' | 'error'>('loading')
   const [message, setMessage] = useState('Confirming your pass…')
   const [details, setDetails] = useState<ConfirmResponse | null>(null)
-  const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -88,8 +84,6 @@ export default function PricingSuccessClient() {
     }
   }, [sessionId, refresh])
 
-  const showCode = Boolean(details?.accessCode && details.seats && details.seats > 1)
-
   return (
     <div className="min-h-screen">
       <div
@@ -110,33 +104,6 @@ export default function PricingSuccessClient() {
           {status === 'ok' ? 'Pass confirmed' : status === 'error' ? 'Almost there' : 'Finishing up'}
         </h1>
         <p className="mt-3 text-muted-foreground">{message}</p>
-
-        {showCode && details?.accessCode && (
-          <div className="mt-8 rounded-2xl border border-border bg-card px-5 py-5 text-left">
-            <p className="text-sm font-semibold">Access code</p>
-            <p className="mt-2 font-mono text-2xl tracking-widest">{details.accessCode}</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Up to {details.seats} students can use it, including this device. Each other student opens{' '}
-              <Link href="/redeem" className="underline underline-offset-2">
-                the redeem page
-              </Link>{' '}
-              and enters the code on their own device. This device already has a seat
-              {details.seatsUsed ? ` (${details.seatsUsed} of ${details.seats} in use)` : ''}.
-            </p>
-            <Button
-              type="button"
-              variant="secondary"
-              className="mt-4 font-semibold"
-              onClick={() => {
-                void navigator.clipboard.writeText(details.accessCode ?? '').then(() => {
-                  setCopied(true)
-                })
-              }}
-            >
-              {copied ? 'Copied' : 'Copy code'}
-            </Button>
-          </div>
-        )}
 
         <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
           {status === 'ok' ? (

@@ -23,14 +23,10 @@ type EntitlementState = {
   loading: boolean
   customerId?: string
   plan?: string
-  accessCode: string | null
-  seats: number | null
-  seatsUsed: number | null
   accessExpiresAt: number | null
   legacySubscription: boolean
   refresh: () => Promise<void>
   startCheckout: (plan: PaidPlan, topicId?: string) => Promise<void>
-  redeemCode: (code: string) => Promise<string>
   openPortal: () => Promise<void>
 }
 
@@ -42,9 +38,6 @@ type EntitlementResponse = {
   configured?: boolean
   customerId?: string
   plan?: string
-  accessCode?: string | null
-  seats?: number | null
-  seatsUsed?: number | null
   accessExpiresAt?: number | null
   legacySubscription?: boolean
   error?: string
@@ -64,9 +57,6 @@ function applyResponse(
     setConfigured: (value: boolean) => void
     setCustomerId: (value: string | undefined) => void
     setPlan: (value: string | undefined) => void
-    setAccessCode: (value: string | null) => void
-    setSeats: (value: number | null) => void
-    setSeatsUsed: (value: number | null) => void
     setAccessExpiresAt: (value: number | null) => void
     setLegacySubscription: (value: boolean) => void
   },
@@ -76,9 +66,6 @@ function applyResponse(
   setters.setConfigured(data.configured !== false)
   setters.setCustomerId(data.customerId)
   setters.setPlan(data.plan)
-  setters.setAccessCode(data.accessCode ?? null)
-  setters.setSeats(data.seats ?? null)
-  setters.setSeatsUsed(data.seatsUsed ?? null)
   setters.setAccessExpiresAt(data.accessExpiresAt ?? null)
   setters.setLegacySubscription(Boolean(data.legacySubscription))
 }
@@ -90,9 +77,6 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
   const [customerId, setCustomerId] = useState<string | undefined>()
   const [plan, setPlan] = useState<string | undefined>()
-  const [accessCode, setAccessCode] = useState<string | null>(null)
-  const [seats, setSeats] = useState<number | null>(null)
-  const [seatsUsed, setSeatsUsed] = useState<number | null>(null)
   const [accessExpiresAt, setAccessExpiresAt] = useState<number | null>(null)
   const [legacySubscription, setLegacySubscription] = useState(false)
 
@@ -105,9 +89,6 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
         setConfigured,
         setCustomerId,
         setPlan,
-        setAccessCode,
-        setSeats,
-        setSeatsUsed,
         setAccessExpiresAt,
         setLegacySubscription,
       })
@@ -136,30 +117,6 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
     window.location.href = data.url
   }, [])
 
-  const redeemCode = useCallback(async (code: string) => {
-    const res = await fetch('/api/redeem', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ code, deviceId: getOrCreateDeviceId() }),
-    })
-    const data = (await res.json()) as EntitlementResponse
-    if (!res.ok) throw new Error(data.error || 'Unable to redeem that code')
-    applyResponse(data, {
-      setIsPro,
-      setTopics,
-      setConfigured,
-      setCustomerId,
-      setPlan,
-      setAccessCode,
-      setSeats,
-      setSeatsUsed,
-      setAccessExpiresAt,
-      setLegacySubscription,
-    })
-    return data.plan ?? 'pass'
-  }, [])
-
   const openPortal = useCallback(async () => {
     const res = await fetch('/api/portal', { method: 'POST' })
     const data = await res.json()
@@ -178,14 +135,10 @@ export function EntitlementProvider({ children }: { children: ReactNode }) {
         loading,
         customerId,
         plan,
-        accessCode,
-        seats,
-        seatsUsed,
         accessExpiresAt,
         legacySubscription,
         refresh,
         startCheckout,
-        redeemCode,
         openPortal,
       }}
     >

@@ -1,6 +1,6 @@
 import { debateOnePagers } from '@/lib/debate-onepagers'
 
-export type PaidPlan = 'core' | 'family' | 'group' | 'topic'
+export type PaidPlan = 'core' | 'topic'
 
 /** Plans sold before November 2026. Still honored on existing cookies. */
 export type LegacyPaidPlan = 'monthly' | 'yearly' | 'lifetime'
@@ -40,53 +40,19 @@ type PassPlan = {
 export const PAID_PLANS: Record<PaidPlan, PassPlan> = {
   core: {
     id: 'core',
-    label: 'Core Pass',
+    label: 'Patriot Pass',
     priceLabel: '$17.77',
     priceEnv: 'STRIPE_PRICE_ID_CORE_PASS',
     durationDays: 365,
     seats: 1,
     scope: 'core',
     mode: 'payment',
-    blurb: 'One student. A year of the full training suite.',
+    blurb: 'One person. A year of the full training suite on this device.',
     features: [
       'Medium and hard quizzes on every issue',
       'Full rank progression to Chief Strategist',
       'Speaking trainer',
-      '1 seat on this device',
-      '365 days, then it ends',
-    ],
-  },
-  family: {
-    id: 'family',
-    label: 'Family Pass',
-    priceLabel: '$47.77',
-    priceEnv: 'STRIPE_PRICE_ID_FAMILY_PASS',
-    durationDays: 365,
-    seats: 6,
-    scope: 'core',
-    mode: 'payment',
-    blurb: 'The same Core training for a household.',
-    features: [
-      'Everything in Core Pass',
-      'One access code for the home',
-      'Up to 6 students, one device each',
-      '365 days, then it ends',
-    ],
-  },
-  group: {
-    id: 'group',
-    label: 'Group Pass',
-    priceLabel: '$147',
-    priceEnv: 'STRIPE_PRICE_ID_GROUP_PASS',
-    durationDays: 365,
-    seats: 30,
-    scope: 'core',
-    mode: 'payment',
-    blurb: 'A church class, a co-op, or a debate club.',
-    features: [
-      'Everything in Core Pass',
-      'One access code for the group',
-      'Up to 30 students, one device each',
+      'This device only',
       '365 days, then it ends',
     ],
   },
@@ -113,7 +79,7 @@ export const PAID_PLANS: Record<PaidPlan, PassPlan> = {
 export const CHECKOUT_UNAVAILABLE_MESSAGE =
   'Checkout is unavailable right now. The free library and easy quizzes are still open.'
 
-/** Routes that require a Core, Family, or Group pass (speaking trainer). */
+/** Routes that require a Patriot Pass (speaking trainer). */
 export const PRO_ROUTES = ['/speaking-trainer'] as const
 
 export function isProRoute(pathname: string): boolean {
@@ -128,7 +94,7 @@ export function isDifficultyFree(difficulty: string): boolean {
 }
 
 export function isPaidPlan(value: string): value is PaidPlan {
-  return value === 'core' || value === 'family' || value === 'group' || value === 'topic'
+  return value === 'core' || value === 'topic'
 }
 
 export function isTopicId(topicId: string): boolean {
