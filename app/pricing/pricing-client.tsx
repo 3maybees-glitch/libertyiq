@@ -7,7 +7,13 @@ import { ArrowLeft, Check, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useEntitlement } from '@/hooks/use-entitlement'
 import { OnlineOnlyNote } from '@/components/online-only-note'
-import { CORE_FEATURES, FREE_FEATURES, PAID_PLANS, type PaidPlan } from '@/lib/pricing'
+import {
+  CHECKOUT_UNAVAILABLE_MESSAGE,
+  CORE_FEATURES,
+  FREE_FEATURES,
+  PAID_PLANS,
+  type PaidPlan,
+} from '@/lib/pricing'
 import { cn } from '@/lib/utils'
 
 export default function PricingPage() {
@@ -73,6 +79,12 @@ export default function PricingPage() {
         {canceled && (
           <p className="mb-6 text-center text-sm text-muted-foreground">
             Checkout canceled — no charge was made. You can try again whenever you&apos;re ready.
+          </p>
+        )}
+
+        {!loading && !configured && !isPro && (
+          <p className="mb-8 text-center text-sm text-foreground/95" role="status">
+            {CHECKOUT_UNAVAILABLE_MESSAGE}
           </p>
         )}
 

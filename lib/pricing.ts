@@ -59,21 +59,9 @@ export const PRO_PLANS = {
 /** @deprecated Use PaidPlan */
 export type BillingInterval = PaidPlan
 
-/**
- * Public Stripe Payment Link URLs (safe to expose).
- * Used when server-side Checkout Sessions are not configured yet.
- */
-export const STRIPE_PAYMENT_LINKS: Record<PaidPlan, string> = {
-  monthly:
-    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_MONTHLY ||
-    'https://buy.stripe.com/test_4gMcN766ie6A4AF0K7cZa02',
-  yearly:
-    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_YEARLY ||
-    'https://buy.stripe.com/test_cNibJ30LYbYs9UZ8czcZa03',
-  lifetime:
-    process.env.NEXT_PUBLIC_STRIPE_PAYMENT_LINK_LIFETIME ||
-    'https://buy.stripe.com/test_28E8wRfGS4w06IN9gDcZa04',
-}
+/** Shown on /pricing and returned by POST /api/checkout when no live checkout is configured. */
+export const CHECKOUT_UNAVAILABLE_MESSAGE =
+  'Checkout is unavailable right now. The free library and easy quizzes are still open.'
 
 /** Routes that require Core/Lifetime (speaking trainer). Quizzes use level gating. */
 export const PRO_ROUTES = ['/speaking-trainer'] as const

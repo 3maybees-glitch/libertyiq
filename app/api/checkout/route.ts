@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
-import { PAID_PLANS, STRIPE_PAYMENT_LINKS, type PaidPlan } from '@/lib/pricing'
-import { getAppUrl, getPriceId, getStripe, isStripeConfigured } from '@/lib/stripe'
+import { CHECKOUT_UNAVAILABLE_MESSAGE, PAID_PLANS, type PaidPlan } from '@/lib/pricing'
+import {
+  getAppUrl,
+  getPaymentLink,
+  getPriceId,
+  getStripe,
+  isCheckoutSessionAllowed,
+  isProductionDeployment,
+  isTestModeCheckoutUrl,
+} from '@/lib/stripe'
 
 const bodySchema = z.object({
   plan: z.enum(['monthly', 'yearly', 'lifetime']).default('yearly'),
@@ -18,7 +26,7 @@ export async function POST(request: Request) {
     const plan = parsed.data.plan as PaidPlan
     const planMeta = PAID_PLANS[plan]
 
-    if (isStripeConfigured()) {
+    if (isCheckoutSessionAllowed()) {
       const stripe = getStripe()
       const appUrl = getAppUrl()
       const priceId = getPriceId(plan)
@@ -62,15 +70,19 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Unable to start checkout.' }, { status: 500 })
       }
 
+      if (
+        isProductionDeployment() &&
+        (session.livemode === false || isTestModeCheckoutUrl(session.url))
+      ) {
+        return NextResponse.json({ error: CHECKOUT_UNAVAILABLE_MESSAGE }, { status: 503 })
+      }
+
       return NextResponse.json({ url: session.url, mode: 'checkout_session', plan })
     }
 
-    const paymentLink = STRIPE_PAYMENT_LINKS[plan]
+    const paymentLink = getPaymentLink(plan)
     if (!paymentLink) {
-      return NextResponse.json(
-        { error: 'Stripe is not configured yet. Add your Stripe keys to continue.' },
-        { status: 503 },
-      )
+      return NextResponse.json({ error: CHECKOUT_UNAVAILABLE_MESSAGE }, { status: 503 })
     }
 
     return NextResponse.json({ url: paymentLink, mode: 'payment_link', plan })

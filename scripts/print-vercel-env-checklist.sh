@@ -29,7 +29,7 @@ if ((${#missing[@]} > 0)); then
   echo "Still missing in $ENV_FILE:"
   printf '  - %s\n' "${missing[@]}"
   echo
-  echo "Get Stripe keys: https://dashboard.stripe.com/test/apikeys"
+  echo "Get live Stripe keys (acct_1TsIsFEyq5c8DnMY): https://dashboard.stripe.com/apikeys"
   exit 1
 fi
 

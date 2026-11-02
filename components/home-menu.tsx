@@ -1,6 +1,5 @@
 'use client'
 
-import type { ReactNode } from 'react'
 import Link from 'next/link'
 import {
   ChevronDown,
@@ -138,11 +137,10 @@ export function HomeDesktopNav() {
   )
 }
 
-/** Mobile actions: keep the Academy CTA, then Issues, quiz, and the menu. */
-export function HomeMobileNav({ academyCta }: { academyCta: ReactNode }) {
+/** Mobile actions: Issues, quiz, and the menu. */
+export function HomeMobileNav() {
   return (
     <div className="flex flex-col gap-2 w-full pt-1">
-      {academyCta}
       <IssuesJumpButton fullWidth className="rounded-xl py-3 h-auto" />
       <Link href="/libertyiq" className="block w-full">
         <div className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground rounded-xl py-3 px-4 font-semibold text-sm shadow-md active:opacity-90 transition-opacity">
