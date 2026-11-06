@@ -3,11 +3,7 @@ import Link from 'next/link'
 import { Download, ExternalLink } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import {
-  HERITAGE_ACADEMY,
-  heritageExternalRel,
-  isHeritageAcademyApplyOpen,
-} from '@/lib/heritage-academy'
+import { HERITAGE_ACADEMY, heritageExternalRel } from '@/lib/heritage-academy'
 
 export function HeritageAcademyApplyButtons({
   className,
@@ -18,8 +14,6 @@ export function HeritageAcademyApplyButtons({
   size?: 'default' | 'lg'
   secondary?: 'invitation' | 'flyer' | 'learn-more' | 'none'
 }) {
-  const applyOpen = isHeritageAcademyApplyOpen()
-
   return (
     <div className={cn('flex flex-col sm:flex-row gap-2 sm:gap-3', className)}>
       <Button
@@ -28,12 +22,8 @@ export function HeritageAcademyApplyButtons({
         className="font-semibold text-white hover:opacity-90"
         style={{ backgroundColor: HERITAGE_ACADEMY.brandBlue }}
       >
-        <a
-          href={applyOpen ? HERITAGE_ACADEMY.applyUrl : HERITAGE_ACADEMY.learnMoreUrl}
-          target="_blank"
-          rel={heritageExternalRel}
-        >
-          {applyOpen ? HERITAGE_ACADEMY.applyNow : 'See Heritage Academy'}
+        <a href={HERITAGE_ACADEMY.applyUrl} target="_blank" rel={heritageExternalRel}>
+          {HERITAGE_ACADEMY.applyCta}
           <ExternalLink className="size-4" aria-hidden />
         </a>
       </Button>
@@ -125,8 +115,7 @@ function OfficialPoster({
 }
 
 export function HeritageAcademyFeatured({ className }: { className?: string }) {
-  const applyOpen = isHeritageAcademyApplyOpen()
-  const applyHref = applyOpen ? HERITAGE_ACADEMY.applyUrl : HERITAGE_ACADEMY.learnMoreUrl
+  const applyHref = HERITAGE_ACADEMY.applyUrl
 
   return (
     <aside
@@ -136,7 +125,7 @@ export function HeritageAcademyFeatured({ className }: { className?: string }) {
       <div className="grid gap-0 lg:grid-cols-2">
         <OfficialPoster
           src={HERITAGE_ACADEMY.assets.libertyBell}
-          alt="Heritage Academy official flyer: an online public policy fellowship. Applications now open. Apply by September 13. heritage.org/heritage-academy"
+          alt="Heritage Academy official flyer: an online public policy fellowship. heritage.org/heritage-academy"
           href={applyHref}
           priority
           width={1400}
@@ -144,7 +133,7 @@ export function HeritageAcademyFeatured({ className }: { className?: string }) {
         />
         <OfficialPoster
           src={HERITAGE_ACADEMY.assets.onlineFellowship}
-          alt="Heritage Academy official flyer featuring a lecture, Why Be a Conservative?, with Dr. Kevin Roberts, President of The Heritage Foundation. Applications now open. Apply by September 13."
+          alt="Heritage Academy official flyer featuring a lecture, Why Be a Conservative?, with Dr. Kevin Roberts, President of The Heritage Foundation."
           href="/heritage-academy"
           width={1400}
           height={1750}
@@ -164,10 +153,7 @@ export function HeritageAcademyFeatured({ className }: { className?: string }) {
         <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-white/85">
           {HERITAGE_ACADEMY.tagline}
         </p>
-        <p className="mt-2 text-sm text-white/90">
-          {applyOpen ? HERITAGE_ACADEMY.applicationsOpen : 'See Heritage Academy for the next term.'}{' '}
-          <span className="font-bold">{applyOpen ? HERITAGE_ACADEMY.applyBy : ''}</span>
-        </p>
+        <p className="mt-2 text-sm text-white/90">{HERITAGE_ACADEMY.promoLead}</p>
         <HeritageAcademyApplyButtons className="mt-4" />
       </div>
     </aside>

@@ -1,5 +1,5 @@
 /**
- * Official Heritage Academy Fall 2026 marketing materials.
+ * Official Heritage Academy marketing materials.
  * Copy and creatives come from The Heritage Foundation flyer and graphics
  * shared with LibertyIQ for distribution.
  */
@@ -12,9 +12,10 @@ export const HERITAGE_ACADEMY = {
   subhead: 'Take your next step as a Heritage Academy Fellow.',
   description:
     'The Heritage Academy is an eight-week, online fellowship focused on America’s founding principles, the history of the conservative movement, and the most pressing public policy issues of our time. Gain the knowledge, skills, and network you need to win the battle of ideas.',
-  applicationsOpen: 'Applications Now Open!',
-  applyBy: 'APPLY BY SEPTEMBER 13',
-  applyNow: 'APPLY NOW!',
+  /** Short promo line without open/closed or calendar claims (deadlines change on Heritage’s site). */
+  promoLead:
+    'Official Heritage Foundation materials — learn more about the fellowship and apply through Heritage.',
+  applyCta: 'Apply',
   printedUrl: 'heritage.org/heritage-academy',
   learnMoreUrl: 'https://www.heritage.org/heritage-academy',
   applyUrl:
@@ -66,12 +67,5 @@ export const HERITAGE_ACADEMY = {
     'Defending Life',
   ],
 } as const
-
-/** Applications close at the end of September 13, 2026, Eastern Time. */
-export const HERITAGE_ACADEMY_APPLY_DEADLINE = new Date('2026-09-13T23:59:59.999-04:00')
-
-export function isHeritageAcademyApplyOpen(now: Date = new Date()): boolean {
-  return now.getTime() <= HERITAGE_ACADEMY_APPLY_DEADLINE.getTime()
-}
 
 export const heritageExternalRel = 'noopener noreferrer' as const
