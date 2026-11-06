@@ -4,20 +4,16 @@ import Link from 'next/link'
 import { ArrowLeft, Download, ExternalLink } from 'lucide-react'
 import { HeritageAcademyApplyButtons } from '@/components/heritage-academy-ad'
 import { Button } from '@/components/ui/button'
-import {
-  HERITAGE_ACADEMY,
-  heritageExternalRel,
-  isHeritageAcademyApplyOpen,
-} from '@/lib/heritage-academy'
+import { HERITAGE_ACADEMY, heritageExternalRel } from '@/lib/heritage-academy'
 
 export const metadata: Metadata = {
-  title: 'Heritage Academy — Official Fall 2026 Flyer | LibertyIQ',
+  title: 'Heritage Academy — Official Flyer | LibertyIQ',
   description:
-    'Official Heritage Foundation flyer: Heritage Academy is an online public policy fellowship. Applications now open. Apply by September 13. heritage.org/heritage-academy',
+    'Official Heritage Foundation flyer: Heritage Academy is an online public policy fellowship. heritage.org/heritage-academy',
   alternates: { canonical: '/heritage-academy' },
   openGraph: {
     title: 'Heritage Academy — An online public policy fellowship',
-    description: 'Applications now open. Apply by September 13. heritage.org/heritage-academy',
+    description: 'Official Heritage Foundation materials for Heritage Academy. heritage.org/heritage-academy',
     url: 'https://libertyiq.org/heritage-academy',
     images: [
       {
@@ -31,8 +27,7 @@ export const metadata: Metadata = {
 }
 
 export default function HeritageAcademyPage() {
-  const applyOpen = isHeritageAcademyApplyOpen()
-  const applyHref = applyOpen ? HERITAGE_ACADEMY.applyUrl : HERITAGE_ACADEMY.learnMoreUrl
+  const applyHref = HERITAGE_ACADEMY.applyUrl
 
   return (
     <div className="min-h-screen">
@@ -73,7 +68,7 @@ export default function HeritageAcademyPage() {
 
         <HeritageAcademyApplyButtons className="mt-6" size="lg" secondary="flyer" />
         <p className="mt-3 text-xs text-muted-foreground">
-          {applyOpen ? HERITAGE_ACADEMY.applyBy : 'Fall 2026 applications have closed.'} ·{' '}
+          {HERITAGE_ACADEMY.promoLead} ·{' '}
           <a
             href={HERITAGE_ACADEMY.learnMoreUrl}
             target="_blank"
@@ -98,7 +93,7 @@ export default function HeritageAcademyPage() {
             >
               <Image
                 src={HERITAGE_ACADEMY.assets.flyerPage1}
-                alt="Heritage Academy official flyer, page 1: Want to help restore America? Take your next step as a Heritage Academy Fellow. Apply today. heritage.org/heritage-academy"
+                alt="Heritage Academy official flyer, page 1: Want to help restore America? Take your next step as a Heritage Academy Fellow. heritage.org/heritage-academy"
                 width={864}
                 height={1296}
                 className="h-auto w-full"
@@ -113,7 +108,7 @@ export default function HeritageAcademyPage() {
             >
               <Image
                 src={HERITAGE_ACADEMY.assets.flyerPage2}
-                alt="Heritage Academy official flyer, page 2: Who should apply — high school students, college students, professionals and patriots — and policy lecture topics. Apply now. heritage.org/heritage-academy"
+                alt="Heritage Academy official flyer, page 2: Who should apply — high school students, college students, professionals and patriots — and policy lecture topics. heritage.org/heritage-academy"
                 width={864}
                 height={1296}
                 className="h-auto w-full"
@@ -122,7 +117,7 @@ export default function HeritageAcademyPage() {
           </div>
           <Button asChild variant="outline" className="mt-4 font-semibold">
             <a href={HERITAGE_ACADEMY.flyerPdf} download>
-              Download Heritage Academy Flyer 2026 (PDF)
+              Download Heritage Academy flyer (PDF)
               <Download className="size-4" aria-hidden />
             </a>
           </Button>
@@ -139,7 +134,7 @@ export default function HeritageAcademyPage() {
             >
               <Image
                 src={HERITAGE_ACADEMY.assets.libertyBell}
-                alt="Heritage Academy Liberty Bell graphic. Applications now open. Apply by September 13."
+                alt="Heritage Academy Liberty Bell graphic."
                 width={1400}
                 height={1750}
                 className="h-auto w-full"
@@ -153,7 +148,7 @@ export default function HeritageAcademyPage() {
             >
               <Image
                 src={HERITAGE_ACADEMY.assets.onlineFellowship}
-                alt="Heritage Academy online fellowship graphic with Dr. Kevin Roberts lecture, Why Be a Conservative? Apply by September 13."
+                alt="Heritage Academy online fellowship graphic with Dr. Kevin Roberts lecture, Why Be a Conservative?"
                 width={1400}
                 height={1750}
                 className="h-auto w-full"
@@ -167,7 +162,7 @@ export default function HeritageAcademyPage() {
             >
               <Image
                 src={HERITAGE_ACADEMY.assets.eagle}
-                alt="Heritage Academy eagle graphic. An online public policy fellowship. Applications now open. Apply by September 13."
+                alt="Heritage Academy eagle graphic. An online public policy fellowship."
                 width={1200}
                 height={1200}
                 className="h-auto w-full"
@@ -218,10 +213,8 @@ export default function HeritageAcademyPage() {
         </section>
 
         <section className="mt-12 rounded-2xl px-5 py-6 sm:px-7" style={{ backgroundColor: HERITAGE_ACADEMY.brandBlue }}>
-          <p className="text-2xl font-bold text-white">{HERITAGE_ACADEMY.applicationsOpen}</p>
-          <p className="mt-1 text-lg font-bold uppercase tracking-wide text-[#0b1c2e]">
-            {HERITAGE_ACADEMY.applyBy}
-          </p>
+          <p className="text-2xl font-bold text-white">{HERITAGE_ACADEMY.headline}</p>
+          <p className="mt-1 text-lg font-bold uppercase tracking-wide text-[#0b1c2e]">{HERITAGE_ACADEMY.subhead}</p>
           <p className="mt-2 text-sm text-white/90">{HERITAGE_ACADEMY.printedUrl}</p>
           <HeritageAcademyApplyButtons className="mt-5" secondary="learn-more" />
         </section>
