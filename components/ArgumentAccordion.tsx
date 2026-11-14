@@ -33,11 +33,11 @@ const EVIDENCE_STYLES: Record<EvidenceType, string> = {
 
 const EVIDENCE_LABEL_STYLES: Record<EvidenceType, string> = {
   scripture: 'text-primary',
-  scientific: 'text-sky-300',
-  historical: 'text-slate-300',
-  philosophical: 'text-indigo-300',
-  practical: 'text-[oklch(0.78_0.06_250)]',
-  constitutional: 'text-accent',
+  scientific: 'text-sky-800',
+  historical: 'text-slate-700',
+  philosophical: 'text-indigo-800',
+  practical: 'text-slate-700',
+  constitutional: 'text-primary',
   quote: 'text-muted-foreground',
 };
 
@@ -82,21 +82,26 @@ export function ArgumentAccordion({ argument, index }: ArgumentAccordionProps) {
         className="w-full text-left"
         aria-expanded={expanded}
       >
-        <CardHeader className={cn('transition-opacity py-4 hover:opacity-90', accentHeader)}>
+        <CardHeader
+          className={cn(
+            'transition-opacity py-4 hover:opacity-90 text-white [&_.text-muted-foreground]:text-white/80',
+            accentHeader,
+          )}
+        >
           <div className="flex items-start gap-4">
             {/* White disc + red numeral stays legible on dark red / navy headers */}
             <span className="flex-shrink-0 w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 bg-white text-primary shadow-sm">
               {index + 1}
             </span>
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-base leading-snug">{argument.title}</CardTitle>
-              <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed font-normal">
+              <CardTitle className="text-base leading-snug text-white">{argument.title}</CardTitle>
+              <p className="text-sm text-white/85 mt-1.5 leading-relaxed font-normal">
                 {argument.summary}
               </p>
             </div>
             <ChevronDown
               className={cn(
-                'h-4 w-4 text-muted-foreground flex-shrink-0 transition-transform mt-1',
+                'h-4 w-4 text-white/80 flex-shrink-0 transition-transform mt-1',
                 expanded && 'rotate-180'
               )}
             />

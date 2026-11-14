@@ -97,12 +97,16 @@ export function LibertyIQClient({ topics }: Props) {
               </div>
             </div>
           ) : (
-            <div className="rounded-xl border border-dashed border-border bg-background/40 px-5 py-6 text-center sm:text-left sm:flex sm:items-center sm:justify-between sm:gap-6">
-              <p className="text-base text-card-foreground leading-relaxed max-w-xl">
+            <div className="relative overflow-hidden rounded-xl border border-primary/20 parchment-surface px-5 py-6 shadow-sm text-center sm:text-left sm:flex sm:items-center sm:justify-between sm:gap-6">
+              <span
+                className="absolute inset-y-0 left-0 w-1 bg-primary"
+                aria-hidden
+              />
+              <p className="text-base text-card-foreground leading-relaxed max-w-xl pl-2 sm:pl-3">
                 You have not started a quiz yet. Pick any topic below, pass the easy quiz at 70%, and
                 you will see your ranks here.
               </p>
-              <p className="mt-3 sm:mt-0 text-sm text-muted-foreground shrink-0">
+              <p className="mt-3 sm:mt-0 text-sm font-medium text-primary shrink-0 pl-2 sm:pl-0">
                 Easy quizzes stay free — no pass required.
               </p>
             </div>

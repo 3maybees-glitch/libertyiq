@@ -185,6 +185,19 @@
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
+/* Cream / parchment surfaces: navy ink (fixes light page text on cream cards) */
+.parchment-surface,
+.ink-on-cream,
+[data-slot='card'],
+[data-slot='popover-content'],
+[data-slot='select-content'],
+[data-slot='dialog-content'],
+[data-slot='alert-dialog-content'] {
+  --foreground: var(--card-foreground);
+  --muted-foreground: #4a5568;
+  color: var(--card-foreground);
+}
+
 /* Committee roster — majority crimson rail, minority indigo rail */
 .committee-rail-majority {
   box-shadow: inset 4px 0 0 #b22234;
