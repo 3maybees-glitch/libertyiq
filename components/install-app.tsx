@@ -21,6 +21,27 @@ import {
 import { cn } from '@/lib/utils'
 
 const DISMISS_KEY = 'libertyiq-pwa-install-dismissed'
+const INSTALL_ENGAGEMENT_KEY = 'libertyiq-install-engaged'
+export const LIBERTYIQ_ENGAGED_EVENT = 'libertyiq-engaged'
+
+export function markInstallEngagement() {
+  if (typeof window === 'undefined') return
+  try {
+    sessionStorage.setItem(INSTALL_ENGAGEMENT_KEY, '1')
+  } catch {
+    // ignore storage errors
+  }
+  window.dispatchEvent(new Event(LIBERTYIQ_ENGAGED_EVENT))
+}
+
+function readInstallEngagement() {
+  if (typeof window === 'undefined') return false
+  try {
+    return sessionStorage.getItem(INSTALL_ENGAGEMENT_KEY) === '1'
+  } catch {
+    return false
+  }
+}
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>
@@ -86,22 +107,31 @@ export function InstallAppProvider({ children }: { children: ReactNode }) {
       // ignore storage errors
     }
 
-    let timer: number | undefined
-    if (!dismissed) {
-      // Soft nudge after a beat so it doesn't fight the first paint.
-      timer = window.setTimeout(() => {
-        if (!isStandaloneDisplay()) setBannerVisible(true)
-      }, 1800)
+    const maybeShowBanner = () => {
+      if (isStandaloneDisplay() || dismissed) return
+      if (readInstallEngagement()) setBannerVisible(true)
     }
+
+    const onEngaged = () => maybeShowBanner()
+    const onScroll = () => {
+      if (window.scrollY > 520) {
+        markInstallEngagement()
+      }
+    }
+
+    maybeShowBanner()
+    window.addEventListener(LIBERTYIQ_ENGAGED_EVENT, onEngaged)
+    window.addEventListener('scroll', onScroll, { passive: true })
 
     const onBeforeInstall = (event: Event) => {
       event.preventDefault()
       setDeferred(event as BeforeInstallPromptEvent)
-      if (!dismissed) setBannerVisible(true)
+      markInstallEngagement()
     }
     window.addEventListener('beforeinstallprompt', onBeforeInstall)
     return () => {
-      if (timer !== undefined) window.clearTimeout(timer)
+      window.removeEventListener(LIBERTYIQ_ENGAGED_EVENT, onEngaged)
+      window.removeEventListener('scroll', onScroll)
       window.removeEventListener('beforeinstallprompt', onBeforeInstall)
     }
   }, [])
@@ -190,15 +220,15 @@ function InstallBanner({
     <div
       role="region"
       aria-label="Install LibertyIQ on your phone"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85 px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.08)]"
+      className="fixed inset-x-3 bottom-3 z-50 max-w-md mx-auto rounded-xl border border-border bg-card/95 text-card-foreground backdrop-blur supports-[backdrop-filter]:bg-card/90 px-3 py-2.5 shadow-lg sm:inset-x-auto sm:right-4 sm:left-auto sm:bottom-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]"
     >
-      <div className="mx-auto flex max-w-3xl items-start gap-3 sm:items-center">
-        <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg bg-[color:#3C3B6E] text-white sm:mt-0">
-          <Smartphone className="size-4" aria-hidden />
+      <div className="flex items-start gap-2.5 sm:items-center">
+        <div className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-secondary text-secondary-foreground sm:mt-0">
+          <Smartphone className="size-3.5" aria-hidden />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-semibold text-foreground">Use LibertyIQ on your phone</p>
-          <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{blurb}</p>
+          <p className="text-xs font-semibold text-card-foreground">Install LibertyIQ</p>
+          <p className="text-[11px] text-muted-foreground leading-snug mt-0.5 line-clamp-2">{blurb}</p>
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
           {canNativeInstall && (

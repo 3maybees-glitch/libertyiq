@@ -1,13 +1,18 @@
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Geist, Geist_Mono, Source_Serif_4 } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Providers } from '@/components/providers'
 import { HeritageAcademyRibbon } from '@/components/heritage-academy-ribbon'
 import { SiteAtmosphere } from '@/components/site-atmosphere'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
+const _geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
+const sourceSerif = Source_Serif_4({
+  subsets: ['latin'],
+  variable: '--font-source-serif',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://libertyiq.org'),
@@ -59,7 +64,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#1a1a35',
+  themeColor: '#1e2a45',
 }
 
 export default function RootLayout({
@@ -69,7 +74,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
+      <body className={`${geist.variable} ${sourceSerif.variable} font-sans antialiased`}>
         <SiteAtmosphere />
         <div className="relative z-[1]">
           <Providers>

@@ -148,7 +148,7 @@ export default function PricingPage() {
           </div>
         )}
 
-        <section className="rounded-2xl border border-border bg-card/60 px-5 py-5 mb-8 sm:px-6">
+        <section className="rounded-2xl border border-border parchment-surface px-5 py-5 mb-8 sm:px-6 shadow-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="font-serif text-2xl font-bold">Free</h2>
@@ -181,7 +181,7 @@ export default function PricingPage() {
             const disabled =
               busyPlan !== null || loading || !configured || (needsTopic && !topicId)
             return (
-              <section key={planId} className="rounded-2xl border border-border bg-card px-5 py-6 text-left">
+              <section key={planId} className="rounded-2xl border border-border parchment-surface px-5 py-6 text-left shadow-sm">
                 <h2 className="font-serif text-2xl font-bold flex items-center gap-2">
                   {pass.label}
                   {planId === 'core' && <Sparkles className="size-5 text-primary" aria-hidden />}
