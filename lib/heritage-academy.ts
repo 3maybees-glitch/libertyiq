@@ -13,8 +13,7 @@ export const HERITAGE_ACADEMY = {
   description:
     'The Heritage Academy is an eight-week, online fellowship focused on America’s founding principles, the history of the conservative movement, and the most pressing public policy issues of our time. Gain the knowledge, skills, and network you need to win the battle of ideas.',
   /** Short promo line without open/closed or calendar claims (deadlines change on Heritage’s site). */
-  promoLead:
-    'Official Heritage Foundation materials — learn more about the fellowship and apply through Heritage.',
+  promoLead: 'Learn more about the Heritage Academy fellowship.',
   applyCta: 'Apply',
   printedUrl: 'heritage.org/heritage-academy',
   learnMoreUrl: 'https://www.heritage.org/heritage-academy',

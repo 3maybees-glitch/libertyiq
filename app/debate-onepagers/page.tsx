@@ -48,7 +48,7 @@ export default function DebateOnePagersPage() {
           {debateOnePagers.map((sheet, index) => (
             <li
               key={sheet.topicId}
-              className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-border bg-card px-4 py-3"
+              className="flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-border parchment-surface ink-on-cream px-4 py-3 shadow-sm"
             >
               <div className="flex items-start gap-3 min-w-0 flex-1">
                 <span className="shrink-0 mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">

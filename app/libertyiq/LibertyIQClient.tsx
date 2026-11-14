@@ -55,41 +55,62 @@ export function LibertyIQClient({ topics }: Props) {
       <div className="h-1.5 w-full" style={{ background: 'linear-gradient(to right, #B22234 33%, #FFFFFF 33%, #FFFFFF 66%, #3C3B6E 66%)' }} />
 
       {/* Header */}
-      <div className="bg-primary text-primary-foreground py-8 px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-white/10 bg-[#151d32] text-foreground py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <Link href="/" className="inline-flex items-center gap-1.5 text-primary-foreground/70 hover:text-primary-foreground text-sm mb-4 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-foreground/70 hover:text-foreground text-sm mb-4 transition-colors">
             <ArrowLeft className="h-4 w-4" />
             Back to Library
           </Link>
           <div className="flex items-center gap-3 mb-1">
-            <Award className="h-8 w-8" />
+            <Award className="h-8 w-8 text-primary" />
             <h1 className="text-4xl font-bold font-serif">Test Your LibertyIQ</h1>
           </div>
-          <p className="text-primary-foreground/80 text-base">Advance through the ranks by mastering each topic.</p>
+          <p className="text-foreground/85 text-base sm:text-lg">
+            Advance through the ranks by mastering each topic.
+          </p>
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="bg-card border-b">
+      {/* Your progress */}
+      <div className="parchment-surface border-b border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div>
-              <div className="text-3xl font-bold text-primary">{rankCounts.chief}</div>
-              <div className="text-sm text-muted-foreground">Chief Strategists</div>
+          <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4">
+            Your progress
+          </h2>
+          {mounted && isLoaded && rankCounts.started > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+              <div>
+                <div className="text-3xl font-bold text-primary">{rankCounts.chief}</div>
+                <div className="text-sm text-muted-foreground">Chief Strategist{rankCounts.chief !== 1 ? 's' : ''}</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-secondary">{rankCounts.fellow}</div>
+                <div className="text-sm text-muted-foreground">Senior Fellow{rankCounts.fellow !== 1 ? 's' : ''}</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-[#2f4f8a]">{rankCounts.intern}</div>
+                <div className="text-sm text-muted-foreground">Intern rank{rankCounts.intern !== 1 ? 's' : ''}</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-card-foreground">{rankCounts.started}</div>
+                <div className="text-sm text-muted-foreground">Topics started</div>
+              </div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-purple-600">{rankCounts.fellow}</div>
-              <div className="text-sm text-muted-foreground">Senior Fellows</div>
+          ) : (
+            <div className="relative overflow-hidden rounded-xl border border-primary/20 parchment-surface px-5 py-6 shadow-sm text-center sm:text-left sm:flex sm:items-center sm:justify-between sm:gap-6">
+              <span
+                className="absolute inset-y-0 left-0 w-1 bg-primary"
+                aria-hidden
+              />
+              <p className="text-base text-card-foreground leading-relaxed max-w-xl pl-2 sm:pl-3">
+                You have not started a quiz yet. Pick any topic below, pass the easy quiz at 70%, and
+                you will see your ranks here.
+              </p>
+              <p className="mt-3 sm:mt-0 text-sm font-medium text-primary shrink-0 pl-2 sm:pl-0">
+                Easy quizzes stay free — no pass required.
+              </p>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-blue-600">{rankCounts.intern}</div>
-              <div className="text-sm text-muted-foreground">Intern Analysts</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-foreground">{rankCounts.started}</div>
-              <div className="text-sm text-muted-foreground">Topics Started</div>
-            </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -103,7 +124,7 @@ export function LibertyIQClient({ topics }: Props) {
           {topicsWithRanks.map((topic) => {
             const rank = topic.rank as 'none' | 'intern' | 'fellow' | 'chief';
             return (
-              <Card key={topic.id} className="overflow-hidden hover:shadow-md transition-shadow">
+              <Card key={topic.id} className="overflow-hidden hover:shadow-md transition-shadow parchment-surface border-border/80">
                 <div className="p-5 flex flex-col h-full">
                   <span className={`self-start mb-3 px-2.5 py-0.5 rounded-full text-xs font-medium ${RANK_COLORS[rank]}`}>
                     {RANK_LABELS[rank]}
@@ -139,7 +160,7 @@ export function LibertyIQClient({ topics }: Props) {
       </div>
 
       {/* Rank Legend */}
-      <div className="bg-card border-t">
+      <div className="parchment-surface border-t border-border">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h3 className="text-base font-bold mb-5">Rank System</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">

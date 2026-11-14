@@ -33,7 +33,7 @@ export function IssuesJumpButton({
 }) {
   return (
     <Button asChild variant="outline" className={cn('font-semibold gap-2', fullWidth && 'w-full', className)}>
-      <a href="#issues">
+      <a href="#topics-grid">
         <List className="size-4" aria-hidden />
         Issues
       </a>
@@ -137,8 +137,12 @@ export function HomeDesktopNav() {
   )
 }
 
-/** Mobile actions: Issues, quiz, and the menu. */
-export function HomeMobileNav() {
+/** Mobile actions: compact menu only, or full action stack on legacy layouts. */
+export function HomeMobileNav({ compact = false }: { compact?: boolean }) {
+  if (compact) {
+    return <SiteMenu align="end" />
+  }
+
   return (
     <div className="flex flex-col gap-2 w-full pt-1">
       <IssuesJumpButton fullWidth className="rounded-xl py-3 h-auto" />

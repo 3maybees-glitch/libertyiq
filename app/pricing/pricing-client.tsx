@@ -98,7 +98,7 @@ export default function PricingPage() {
           <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
             Study free. Buy a pass when you are ready.
           </h1>
-          <p className="mt-3 text-muted-foreground text-base sm:text-lg leading-relaxed">
+          <p className="mt-3 text-foreground/85 text-base sm:text-lg leading-relaxed">
             One payment. No subscription and no auto-renew. A 365-day pass ends on its own.
           </p>
         </div>
@@ -148,20 +148,20 @@ export default function PricingPage() {
           </div>
         )}
 
-        <section className="rounded-2xl border border-border bg-card/60 px-5 py-5 mb-8 sm:px-6">
+        <section className="rounded-2xl border border-border parchment-surface text-card-foreground px-5 py-5 mb-8 sm:px-6 shadow-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="font-serif text-2xl font-bold">Free</h2>
+              <h2 className="font-serif text-2xl font-bold text-card-foreground">Free</h2>
               <p className="text-sm text-muted-foreground mt-1">The library, easy quizzes, and one-pagers. No account.</p>
             </div>
-            <p className="font-serif text-3xl font-bold">
+            <p className="font-serif text-3xl font-bold text-card-foreground">
               $0
               <span className="text-base font-sans font-medium text-muted-foreground"> forever</span>
             </p>
           </div>
           <ul className="mt-4 grid gap-2 sm:grid-cols-2">
             {FREE_FEATURES.map((feature) => (
-              <li key={feature} className="flex gap-2 text-sm">
+              <li key={feature} className="flex gap-2 text-sm text-card-foreground">
                 <Check className="size-4 text-accent shrink-0 mt-0.5" aria-hidden />
                 <span>{feature}</span>
               </li>
@@ -181,19 +181,19 @@ export default function PricingPage() {
             const disabled =
               busyPlan !== null || loading || !configured || (needsTopic && !topicId)
             return (
-              <section key={planId} className="rounded-2xl border border-border bg-card px-5 py-6 text-left">
-                <h2 className="font-serif text-2xl font-bold flex items-center gap-2">
+              <section key={planId} className="rounded-2xl border border-border parchment-surface text-card-foreground px-5 py-6 text-left shadow-sm">
+                <h2 className="font-serif text-2xl font-bold text-card-foreground flex items-center gap-2">
                   {pass.label}
                   {planId === 'core' && <Sparkles className="size-5 text-primary" aria-hidden />}
                 </h2>
                 <p className="text-sm text-muted-foreground mt-1">{pass.blurb}</p>
-                <p className="mt-4 font-serif text-4xl font-bold">
+                <p className="mt-4 font-serif text-4xl font-bold text-card-foreground">
                   {pass.priceLabel}
                   <span className="text-base font-sans font-medium text-muted-foreground"> once</span>
                 </p>
                 <ul className="mt-5 space-y-2.5 mb-6">
                   {pass.features.map((feature) => (
-                    <li key={feature} className="flex gap-2 text-sm">
+                    <li key={feature} className="flex gap-2 text-sm text-card-foreground">
                       <Check className="size-4 text-primary shrink-0 mt-0.5" aria-hidden />
                       <span>{feature}</span>
                     </li>

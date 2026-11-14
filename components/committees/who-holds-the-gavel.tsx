@@ -42,7 +42,7 @@ export function WhoHoldsTheGavel({
   return (
     <section
       className={cn(
-        'rounded-xl border border-border/70 bg-card/70 overflow-hidden',
+        'rounded-xl border border-border/70 parchment-surface ink-on-cream overflow-hidden shadow-sm',
         variant === 'page' && 'mt-8',
       )}
     >
