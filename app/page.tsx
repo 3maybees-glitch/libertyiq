@@ -95,7 +95,7 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#f5d0d5]">
-            Free library
+            One payment. No subscription.
           </p>
           <h1
             id="hero-heading"
@@ -104,8 +104,9 @@ export default function Home() {
             Study the issue. Practice the case.
           </h1>
           <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-white/90">
-            A free Christian-conservative library of arguments, quizzes, and debate one-pagers on{' '}
-            {topics.length} issues that shape American civic life.
+            The library, easy quizzes, and debate one-pagers are free on all 14 issues. When you are
+            ready, the Patriot Pass unlocks harder drills and the speaking trainer for a year — $17.77
+            once, and nothing renews.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button
@@ -113,7 +114,7 @@ export default function Home() {
               size="lg"
               className="font-semibold text-base shadow-lg bg-primary hover:bg-primary/90"
             >
-              <a href="#topics-grid">Start free</a>
+              <Link href="/pricing#patriot-pass">Get the Patriot Pass — $17.77</Link>
             </Button>
             <Button
               asChild
@@ -121,7 +122,7 @@ export default function Home() {
               variant="secondary"
               className="font-semibold text-base border border-white/20 bg-white/10 text-white hover:bg-white/20"
             >
-              <Link href="/libertyiq">Test your LibertyIQ</Link>
+              <a href="#topics-grid">Start free</a>
             </Button>
           </div>
         </div>

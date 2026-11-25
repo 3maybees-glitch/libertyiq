@@ -174,28 +174,61 @@ export default function PricingPage() {
           </Link>
         </section>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
           {PASS_ORDER.map((planId) => {
             const pass = PAID_PLANS[planId]
+            const isPrimary = planId === 'core'
             const needsTopic = planId === 'topic'
             const disabled =
               busyPlan !== null || loading || !configured || (needsTopic && !topicId)
             return (
-              <section key={planId} className="rounded-2xl border border-border parchment-surface text-card-foreground px-5 py-6 text-left shadow-sm">
-                <h2 className="font-serif text-2xl font-bold text-card-foreground flex items-center gap-2">
+              <section
+                key={planId}
+                id={isPrimary ? 'patriot-pass' : undefined}
+                className={cn(
+                  'scroll-mt-6 rounded-2xl px-5 py-6 text-left',
+                  isPrimary
+                    ? 'border-2 border-primary bg-primary/5 parchment-surface text-card-foreground shadow-lg ring-1 ring-primary/25 md:order-first'
+                    : 'border border-border/60 parchment-surface text-card-foreground shadow-sm opacity-95',
+                )}
+              >
+                <h2
+                  className={cn(
+                    'font-serif text-2xl font-bold flex items-center gap-2',
+                    isPrimary ? 'text-card-foreground' : 'text-card-foreground/90',
+                  )}
+                >
                   {pass.label}
-                  {planId === 'core' && <Sparkles className="size-5 text-primary" aria-hidden />}
+                  {isPrimary && <Sparkles className="size-5 text-primary" aria-hidden />}
                 </h2>
-                <p className="text-sm text-muted-foreground mt-1">{pass.blurb}</p>
-                <p className="mt-4 font-serif text-4xl font-bold text-card-foreground">
+                <p
+                  className={cn(
+                    'text-sm mt-1',
+                    isPrimary ? 'text-muted-foreground' : 'text-muted-foreground/90',
+                  )}
+                >
+                  {pass.blurb}
+                </p>
+                <p
+                  className={cn(
+                    'mt-4 font-serif font-bold text-card-foreground',
+                    isPrimary ? 'text-4xl' : 'text-3xl',
+                  )}
+                >
                   {pass.priceLabel}
                   <span className="text-base font-sans font-medium text-muted-foreground"> once</span>
                 </p>
                 <ul className="mt-5 space-y-2.5 mb-6">
                   {pass.features.map((feature) => (
                     <li key={feature} className="flex gap-2 text-sm text-card-foreground">
-                      <Check className="size-4 text-primary shrink-0 mt-0.5" aria-hidden />
-                      <span>{feature}</span>
+                      <Check
+                        className={cn(
+                          'size-4 shrink-0 mt-0.5',
+                          isPrimary ? 'text-primary' : 'text-muted-foreground',
+                        )}
+                        aria-hidden
+                      />
+                      <span className={cn(!isPrimary && 'text-muted-foreground')}>{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -221,6 +254,7 @@ export default function PricingPage() {
                 <Button
                   className={cn('w-full font-semibold')}
                   size="lg"
+                  variant={isPrimary ? 'default' : 'secondary'}
                   disabled={disabled}
                   onClick={() => void onCheckout(planId)}
                 >
